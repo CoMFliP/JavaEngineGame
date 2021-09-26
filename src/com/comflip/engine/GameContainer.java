@@ -37,7 +37,7 @@ public class GameContainer implements Runnable {
 
 		boolean render = false;
 		double firstTime = 0;
-		double lasttTime = System.nanoTime() / 1000000000.0;
+		double lastTime = System.nanoTime() / 1000000000.0;
 		double passedTime = 0;
 		double unprocessedTime = 0;
 
@@ -49,8 +49,8 @@ public class GameContainer implements Runnable {
 			render = false;
 
 			firstTime = System.nanoTime() / 1000000000.0;
-			passedTime = firstTime - lasttTime;
-			lasttTime = firstTime;
+			passedTime = firstTime - lastTime;
+			lastTime = firstTime;
 
 			unprocessedTime += passedTime;
 			frameTime += passedTime;
