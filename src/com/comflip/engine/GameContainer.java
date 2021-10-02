@@ -1,22 +1,24 @@
 package com.comflip.engine;
 
+import com.comflip.game.LoaderManager;
+
 public class GameContainer implements Runnable {
 
 	private Thread thread;
 	private Window window;
 	private Renderer renderer;
 	private Input input;
-	private AbstractGame game;
-	
+	private LoaderManager loaderManager;
+
 	private boolean running = false;
 	private final double UPDATE = 1.0 / 60.0;
 
-	private int width = 256, heigth = 144;
-	private float scale = 5f;
-	private String title = "Java Engine 2D";
+	private int width, heigth;
+	private float scale;
+	private String title;
 
-	public GameContainer(AbstractGame game) {
-		this.game = game;
+	public GameContainer(LoaderManager loaderManager) {
+		this.loaderManager = loaderManager;
 	}
 
 	public void start() {
@@ -25,11 +27,11 @@ public class GameContainer implements Runnable {
 		input = new Input(this);
 
 		thread = new Thread(this);
-		thread.run();		
+		thread.run();
 	}
 
 	public void stop() {
-
+		System.exit(0);
 	}
 
 	public void run() {
@@ -46,7 +48,8 @@ public class GameContainer implements Runnable {
 		int fps = 0;
 
 		while (running) {
-			render = false;
+//			render = false; // Lock to 60 FPS
+			render = true; // Unlock to 60 FPS
 
 			firstTime = System.nanoTime() / 1000000000.0;
 			passedTime = firstTime - lastTime;
@@ -59,21 +62,23 @@ public class GameContainer implements Runnable {
 				unprocessedTime -= UPDATE;
 				render = true;
 
-				game.update(this, (float) UPDATE);
-				
+				loaderManager.update(this, (float) UPDATE);
+
 				input.update();
 
 				if (frameTime >= 1.0) {
 					frameTime = 0;
 					fps = frames;
 					frames = 0;
-					System.out.println("FPS: " + fps);
 				}
 			}
 
 			if (render) {
 				renderer.clear();
-				game.render(this, renderer);
+				loaderManager.render(renderer);
+				renderer.process();
+				renderer.drawText("Test Engine", 0, 0, 0xFFFFFFFF);
+				renderer.drawText("  FPS: " + fps, 0, 12, 0xff00ffff);
 				window.update();
 				frames++;
 			} else {
