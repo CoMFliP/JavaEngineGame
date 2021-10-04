@@ -17,6 +17,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	private boolean[] buttons = new boolean[NUM_BUTTONS];
 	private boolean[] buttonsLast = new boolean[NUM_BUTTONS];
 	private boolean isButtonsActive;
+	private boolean isButtonsUpActive;
+	private boolean isButtonsDownActive;
 
 	private int mouseX, mouseY;
 	private int scroll;
@@ -35,7 +37,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 	public void update() {
 		scroll = 0;
-		
+
 		for (int i = 0; i < NUM_KEYS; i++) {
 			keysLast[i] = keys[i];
 		}
@@ -44,43 +46,60 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 			buttonsLast[i] = buttons[i];
 		}
 	}
-	
-	public boolean isKey(int keyCode) {		
-		if(keys[keyCode]) {
-			isKeyActive = true;			
-		}else {
+
+	public boolean isKey(int keyCode) {
+		if (keys[keyCode]) {
+			isKeyActive = true;
+		} else {
 			isKeyActive = false;
 		}
 		return keys[keyCode];
 	}
+
 	public boolean isKeyUp(int keyCode) {
-		if(!keys[keyCode] && keysLast[keyCode]) {
-			isKeyUpActive = true;			
-		}else {
+		if (!keys[keyCode] && keysLast[keyCode]) {
+			isKeyUpActive = true;
+		} else {
 			isKeyUpActive = false;
 		}
 		return !keys[keyCode] && keysLast[keyCode];
 	}
+
 	public boolean isKeyDown(int keyCode) {
-		if(keys[keyCode] && !keysLast[keyCode]) {
-			isKeyDownActive = true;			
-		}else {
+		if (keys[keyCode] && !keysLast[keyCode]) {
+			isKeyDownActive = true;
+		} else {
 			isKeyDownActive = false;
 		}
 		return keys[keyCode] && !keysLast[keyCode];
 	}
 
 	public boolean isButton(int button) {
+		if(buttons[button]) {
+			isButtonsActive = true;
+		} else {
+			isButtonsActive = false;
+		}
 		return buttons[button];
 	}
+
 	public boolean isButtonUp(int button) {
+		if(!buttons[button] && buttonsLast[button]) {
+			isButtonsUpActive = true;
+		} else {
+			isButtonsUpActive = false;
+		}
 		return !buttons[button] && buttonsLast[button];
 	}
+
 	public boolean isButtonDown(int button) {
+		if(buttons[button] && !buttonsLast[button]) {
+			isButtonsDownActive = true;
+		} else {
+			isButtonsDownActive = false;
+		}
 		return buttons[button] && !buttonsLast[button];
 	}
-	
-	
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		scroll = e.getWheelRotation();
@@ -97,11 +116,11 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
 	}
 
 	public void mousePressed(MouseEvent e) {
 		buttons[e.getButton()] = true;
+		System.out.println(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -150,5 +169,17 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 	public boolean isKeyDownActive() {
 		return isKeyDownActive;
+	}
+
+	public boolean isButtonsActive() {
+		return this.isButtonsActive;
+	}
+
+	public boolean isButtonsUpActive() {
+		return this.isButtonsUpActive;
+	}
+
+	public boolean isButtonsDownActive() {
+		return this.isButtonsDownActive;
 	}
 }

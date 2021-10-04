@@ -4,8 +4,8 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 
 public class Objects {
-	private static final Wheel wheel = new Wheel();
-	private static final Arrow arrow = new Arrow();
+	public static final Wheel wheel = new Wheel();
+	public static final Arrow arrow = new Arrow();	
 
 	public void update(Input input, float dt) {
 		wheel.update(input, dt);
@@ -23,21 +23,20 @@ abstract class Positions {
 	public float frame;
 	public int lastFrame;
 
-	public int x, y;
-
+	public int x;
+	public int y;
+	
 	public int getX() {
-		return this.x;
+		return x;
 	}
-
 	public int getY() {
-		return this.y;
+		return y;
 	}
-
-	public void setX(int x) {
-		this.x = x;
+	
+	public int setX(int x) {
+		return this.x = x;
 	}
-
-	public void setY(int y) {
-		this.y = y;
+	public int setY(int y) {
+		return this.y = y;
 	}
 }

@@ -14,8 +14,6 @@ public class Gui {
 	public void render(Renderer r) {
 		cursor.render(r);		
 	}
-
-
 }
 
 abstract class GuiPosition {

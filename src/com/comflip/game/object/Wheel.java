@@ -33,7 +33,7 @@ public class Wheel extends Positions{
 		if (input.isKey(KeyEvent.VK_RIGHT)) {
 			x += 3;
 			indexLine = 0;
-		}
+		}		
 	}
 
 	public void render(Renderer r) {
