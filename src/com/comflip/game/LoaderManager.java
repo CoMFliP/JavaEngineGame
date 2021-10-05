@@ -6,16 +6,15 @@ import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
-import com.comflip.game.gui.Gui;
 
 public class LoaderManager {
-	private ListObjects objects;
+	private Objects objects;
 	private Gui gui;
 	
 	private SoundClip clip;
 
 	public LoaderManager() {
-		objects = new ListObjects();
+		objects = new Objects();
 		gui = new Gui();
 		
 		

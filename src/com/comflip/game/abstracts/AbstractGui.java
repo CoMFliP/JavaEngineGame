@@ -1,6 +1,6 @@
 package com.comflip.game.abstracts;
 
-public abstract class AnchorGui {
+public abstract class AbstractGui {
 	public int x;
 	public int y;
 	

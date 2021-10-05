@@ -1,6 +1,6 @@
 package com.comflip.game.abstracts;
 
-public abstract class AnchorObject {
+public abstract class AbstractObject {
 	public int indexLine;
 	public float frame;
 	public int lastFrame;

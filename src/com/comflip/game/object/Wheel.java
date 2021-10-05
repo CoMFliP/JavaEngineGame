@@ -5,9 +5,9 @@ import java.awt.event.KeyEvent;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.ImageTile;
-import com.comflip.game.abstracts.AnchorObject;
+import com.comflip.game.abstracts.AbstractObject;
 
-public class Wheel extends AnchorObject{
+public class Wheel extends AbstractObject{
 	private ImageTile wheel = new ImageTile("/circle.png", 37, 35);
 
 	public void updateInput(Input input, float dt) {
