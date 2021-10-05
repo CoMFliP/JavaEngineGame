@@ -1,4 +1,4 @@
-package com.comflip.audio;
+package com.comflip.engine.audio;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

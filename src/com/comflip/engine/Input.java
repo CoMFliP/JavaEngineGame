@@ -120,7 +120,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 	public void mousePressed(MouseEvent e) {
 		buttons[e.getButton()] = true;
-		System.out.println(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {

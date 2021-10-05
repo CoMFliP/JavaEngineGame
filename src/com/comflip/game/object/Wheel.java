@@ -5,11 +5,12 @@ import java.awt.event.KeyEvent;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.ImageTile;
+import com.comflip.game.abstracts.AnchorObject;
 
-public class Wheel extends Positions{
+public class Wheel extends AnchorObject{
 	private ImageTile wheel = new ImageTile("/circle.png", 37, 35);
 
-	public void update(Input input, float dt) {
+	public void updateInput(Input input, float dt) {
 		if (input.isKeyActive()) {
 			frame += dt * 15;
 			if (frame > 4) {
