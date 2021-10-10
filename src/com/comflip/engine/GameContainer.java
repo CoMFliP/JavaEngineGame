@@ -8,8 +8,9 @@ public class GameContainer implements Runnable {
 	private Window window;
 	private Renderer renderer;
 	private Input input;
-	private LoaderManager loaderManager;
 
+	private LoaderManager loaderManager;
+	
 	private boolean running = false;
 	private final double UPDATE = 1.0 / 60.0;
 
