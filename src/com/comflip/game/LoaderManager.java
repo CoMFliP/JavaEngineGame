@@ -57,6 +57,37 @@ public class LoaderManager implements AbstractGame {
 						elementGui.indexTileY);
 			}
 		}
+		
+		if (Main.getArgs().length > 0) {
+			for (String arg : Main.getArgs()) {
+				if(arg.equals("-debugMode")) {
+					debugMode(r);
+				}
+			}
+		}
+	}
+	
+	private void debugMode(Renderer r) {
+		for (Objects object : Objects.ArrayList()) {
+			if (object.image != null) {
+				r.drawRect(object.posX, object.posY, object.image.getW(), object.image.getH(), 0xFF00FF00);
+			}
+			if (object.imageTile != null) {
+				r.drawRect(object.posX, object.posY, object.imageTile.getTileW(), object.imageTile.getTileH(),
+						0xFF00FF00);
+			}
+		}
+
+		for (GUI elementGui : GUI.ArrayList()) {
+			if (elementGui.image != null) {
+				r.drawRect(elementGui.posX, elementGui.posY, elementGui.image.getW(), elementGui.image.getH(),
+						0xFF00FF00);
+			}
+			if (elementGui.imageTile != null) {
+				r.drawRect(elementGui.posX, elementGui.posY, elementGui.imageTile.getTileW(),
+						elementGui.imageTile.getTileH(), 0xFF00FF00);
+			}
+		}
 	}
 
 	public int getPosX() {
