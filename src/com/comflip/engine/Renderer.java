@@ -64,7 +64,6 @@ public class Renderer {
 	}
 
 	public void setPixel(int x, int y, int value) {
-
 		int alpha = (value >> 24) & 0xFF;
 
 		if ((x < 0 || x >= pW || y < 0 || y >= pH) || alpha == 0) {
@@ -97,9 +96,8 @@ public class Renderer {
 	}
 
 	public void drawText(String text, int offX, int offY, int color) {
-
-		text = text.toUpperCase();
 		int offset = 0;
+		text = text.toUpperCase();
 
 		for (int i = 0; i < text.length(); i++) {
 			int unicode = text.codePointAt(i) - 32;
@@ -116,7 +114,6 @@ public class Renderer {
 	}
 
 	public void drawImage(Image image, int offX, int offY) {
-
 		if(image.isAlpha() && !processing) {
 			imageRequest.add(new ImageRequest(image, zDepth, offX, offY));
 			return;
@@ -230,11 +227,11 @@ public class Renderer {
 			newHeight -= newHeight + offY - pH;
 		}
 
-		for (int y = newY; y < newHeight; y++) {
+		for (int y = newY; y <= newHeight; y++) {
 			setPixel(offX, y + offY, color);
 			setPixel(offX + width, y + offY, color);
 		}
-		for (int x = newX; x < newWidth; x++) {
+		for (int x = newX; x <= newWidth; x++) {
 			setPixel(x + offX, offY, color);
 			setPixel(x + offX, offY + height, color);
 		}

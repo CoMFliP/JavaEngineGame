@@ -7,6 +7,7 @@ import com.comflip.engine.audio.SoundClip;
 import com.comflip.engine.gfc.Image;
 import com.comflip.engine.gfc.ImageTile;
 import com.comflip.game.abstracts.GUI;
+import com.comflip.game.abstracts.Layers;
 import com.comflip.game.abstracts.Objects;
 
 public class LoaderManager implements AbstractGame {
@@ -18,15 +19,13 @@ public class LoaderManager implements AbstractGame {
 	protected float frame;
 	protected int indexTileX, indexTileY;
 
+	protected int width, height;
 	protected int posX, posY;
+	protected int color;
 
 	public void update(GameContainer gc, float dt) {
-		for (Objects object : Objects.ArrayList()) {
-			try {
-				object.update(gc, dt);
-			} catch (Exception e) {
-				System.err.println("Object " + object.tag + " is missed");
-			}
+		for (Layers layer : Layers.ArrayList()) {
+			layer.update(gc, dt);
 		}
 
 		for (GUI elementGui : GUI.ArrayList()) {
@@ -39,13 +38,8 @@ public class LoaderManager implements AbstractGame {
 	}
 
 	public void render(Renderer r) {
-		for (Objects object : Objects.ArrayList()) {
-			if (object.image != null) {
-				r.drawImage(object.image, object.posX, object.posY);
-			}
-			if (object.imageTile != null) {
-				r.drawImageTile(object.imageTile, object.posX, object.posY, object.indexTileX, object.indexTileY);
-			}
+		for (Layers layer : Layers.ArrayList()) {
+			layer.render(r);
 		}
 
 		for (GUI elementGui : GUI.ArrayList()) {
@@ -57,16 +51,16 @@ public class LoaderManager implements AbstractGame {
 						elementGui.indexTileY);
 			}
 		}
-		
+
 		if (Main.getArgs().length > 0) {
 			for (String arg : Main.getArgs()) {
-				if(arg.equals("-debugMode")) {
+				if (arg.equals("-debugMode")) {
 					debugMode(r);
 				}
 			}
 		}
 	}
-	
+
 	private void debugMode(Renderer r) {
 		for (Objects object : Objects.ArrayList()) {
 			if (object.image != null) {
