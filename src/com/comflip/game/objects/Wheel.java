@@ -7,10 +7,10 @@ import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.gfc.ImageTile;
 import com.comflip.game.abstracts.GUI;
-import com.comflip.game.abstracts.Objects;
 import com.comflip.game.abstracts.SFX;
+import com.comflip.game.abstracts.Sprites;
 
-public class Wheel extends Objects  {
+public class Wheel extends Sprites  {
 	private final int step = 2;
 
 	public Wheel(String path, int tileW, int tileH) {
@@ -21,11 +21,11 @@ public class Wheel extends Objects  {
 	public void update(GameContainer gc, float dt) {
 		Input input = gc.getInput();
 		
-		int wheelPosX = Objects.wheel.getPosX();
-		int wheelPosY = Objects.wheel.getPosY();
+		int wheelPosX = Sprites.wheel.getPosX();
+		int wheelPosY = Sprites.wheel.getPosY();
 
-		int wheelWight = Objects.wheel.imageTile.getTileW();
-		int wheelHeight = Objects.wheel.imageTile.getTileH();
+		int wheelWight = Sprites.wheel.imageTile.getTileW();
+		int wheelHeight = Sprites.wheel.imageTile.getTileH();
 
 		int cursorPosX = GUI.cursor.getPosX();
 		int cursorPosY = GUI.cursor.getPosY();

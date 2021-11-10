@@ -1,27 +1,60 @@
 package com.comflip.game;
 
+import java.util.*;
+
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.Layers;
-import com.comflip.game.abstracts.Objects;
+import com.comflip.game.abstracts.Sprites;
+import com.comflip.game.gui.Button;
 
-public class Menu extends Layers {	
+public class Menu extends Layers {
+	private int widthWindow, heigthWindow;
+
+	ArrayList<GUI> listGUI = new ArrayList<GUI>();
+
 	public Menu() {
+		for (int i = 0; i < 3; i++) {
+			Button button = new Button("button_" + i);
+			listGUI.add(button);
+		}
 	}
 
 	public void update(GameContainer gc, float dt) {
-		for (Objects object : Objects.ArrayList()) {
+		widthWindow = gc.getWidth();
+		heigthWindow = gc.getHeigth();
+
+		for (Sprites object : Sprites.ArrayList()) {
 			try {
 				object.update(gc, dt);
 			} catch (Exception e) {
 				System.err.println("Object " + object.tag + " is missed");
 			}
 		}
+		
+		for (GUI elementGui : listGUI) {
+			if (((Button) elementGui).isActive()) {
+				switch (elementGui.tag) {
+				case "button_0":
+					System.err.println("GO");
+					break;
+				case "button_1":
+					System.err.println("GOGOGO!");
+					break;
+				case "button_2":
+					System.out.println("ok =c");
+					break;
+				default:
+					break;
+				}				
+			}
+			elementGui.update(gc, dt);
+		}
 	}
 
 	public void render(Renderer r) {
-		for (Objects object : Objects.ArrayList()) {
+		for (Sprites object : Sprites.ArrayList()) {
 			if (object.image != null) {
 				r.drawImage(object.image, object.posX, object.posY);
 			}
@@ -30,17 +63,30 @@ public class Menu extends Layers {
 			}
 		}
 
-		for (GUI elementGui : GUI.ArrayList()) {			
-			if (elementGui.equals(GUI.button)) {
-				elementGui.posX = 100;
-				elementGui.posY = 100;
-				elementGui.width = 100;
-				elementGui.height = 15;
-				elementGui.render(r);
-//				for (int i = 0; i <= 1; i++) {
-//					elementGui.posY += 20;
-//				}
+		for (GUI elementGui : listGUI) {
+			elementGui.width = widthWindow / 3;
+			elementGui.height = 15;
+
+			elementGui.posX = elementGui.width;
+			elementGui.posY = heigthWindow / 2;
+
+			switch (elementGui.tag) {
+			case "button_0":
+				((Button) elementGui).setString("one player");
+				break;
+			case "button_1":
+				((Button) elementGui).setString("two player");
+				elementGui.posY += 20;
+				break;
+			case "button_2":
+				((Button) elementGui).setString("exit");
+				elementGui.posY += 40;
+				break;
+			default:
+				break;
 			}
+
+			elementGui.render(r);
 		}
 	}
 }

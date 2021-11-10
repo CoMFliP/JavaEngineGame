@@ -1,8 +1,9 @@
 package com.comflip.engine.gfc;
 
-public class ImageTile extends Image {
-	private int tileW, tileH;
+import com.comflip.engine.GameObject;
 
+public class ImageTile extends Image {
+	
 	public ImageTile(String path, int tileW, int tileH) {
 		super(path);
 		this.tileW = tileW;
@@ -13,10 +14,10 @@ public class ImageTile extends Image {
 		int[] p = new int[tileW * tileH];
 		for (int y = 0; y < tileH; y++) {
 			for (int x = 0; x < tileH; x++) {
-				p[x + y * tileW] = this.getP()[(x + tileX * tileW) + (y + tileY * tileH) * this.getW()];
+				p[x + y * tileW] = this.p[(x + tileX * tileW) + (y + tileY * tileH) * w];
 			}
 		}
-		return new Image(p, tileW, tileH);
+		return (Image) new GameObject(p, tileW, tileH);
 	}
 
 	public int getTileW() {

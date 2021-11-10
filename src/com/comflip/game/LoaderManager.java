@@ -8,7 +8,7 @@ import com.comflip.engine.gfc.Image;
 import com.comflip.engine.gfc.ImageTile;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.Layers;
-import com.comflip.game.abstracts.Objects;
+import com.comflip.game.abstracts.Sprites;
 
 public class LoaderManager implements AbstractGame {
 	public Image image;
@@ -21,7 +21,6 @@ public class LoaderManager implements AbstractGame {
 
 	protected int width, height;
 	protected int posX, posY;
-	protected int color;
 
 	public void update(GameContainer gc, float dt) {
 		for (Layers layer : Layers.ArrayList()) {
@@ -32,7 +31,7 @@ public class LoaderManager implements AbstractGame {
 			try {
 				elementGui.update(gc, dt);
 			} catch (Exception e) {
-				System.err.println("Object " + elementGui.tag + " is missed");
+				System.err.println("Object " + elementGui.tag + " is missed / UPDATE");
 			}
 		}
 	}
@@ -62,7 +61,7 @@ public class LoaderManager implements AbstractGame {
 	}
 
 	private void debugMode(Renderer r) {
-		for (Objects object : Objects.ArrayList()) {
+		for (Sprites object : Sprites.ArrayList()) {
 			if (object.image != null) {
 				r.drawRect(object.posX, object.posY, object.image.getW(), object.image.getH(), 0xFF00FF00);
 			}

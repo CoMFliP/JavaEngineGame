@@ -11,8 +11,9 @@ import com.comflip.engine.gfc.ImageRequest;
 import com.comflip.engine.gfc.ImageTile;
 
 public class Renderer {
-
 	private Font font = Font.STANDARD;
+	private GameObject gameObject = null;
+	
 	private ArrayList<ImageRequest> imageRequest = new ArrayList<ImageRequest>();
 	
 	private int pW, pH;
@@ -21,7 +22,7 @@ public class Renderer {
 
 	private int zDepth = 0;
 	private boolean processing = false;
-
+	
 	public Renderer(GameContainer gc) {
 		pW = gc.getWidth();
 		pH = gc.getHeigth();
@@ -95,44 +96,46 @@ public class Renderer {
 		}
 	}
 
-	public void drawText(String text, int offX, int offY, int color) {
+	public GameObject drawText(String text, int offX, int offY, int color) {
 		int offset = 0;
-		text = text.toUpperCase();
 
+		text = text.toUpperCase();
 		for (int i = 0; i < text.length(); i++) {
 			int unicode = text.codePointAt(i) - 32;
 			for (int y = 0; y < font.getFontImage().getH(); y++) {
 				for (int x = 0; x < font.getWidths()[unicode]; x++) {
 					if (font.getFontImage().getP()[(x + font.getOffsets()[unicode])
 							+ y * font.getFontImage().getW()] == 0xffffffff) {
-						setPixel(x + offX + offset, y + offY, color);
+						 setPixel(x + offX + offset, y + offY, color);
 					}
 				}
 			}
 			offset += font.getWidths()[unicode];
-		}
+		}		
+		gameObject = new GameObject(p, offset, font.getFontImage().getH());
+		return gameObject;
 	}
 
-	public void drawImage(Image image, int offX, int offY) {
+	public GameObject drawImage(Image image, int offX, int offY) {
 		if(image.isAlpha() && !processing) {
 			imageRequest.add(new ImageRequest(image, zDepth, offX, offY));
-			return;
+			return null;
 		}
 		
 		// Don't render code
-		if (offX < -image.getW())
-			return;
-		if (offY < -image.getH())
-			return;
+		if (offX < -image.w)
+			return null;
+		if (offY < -image.h)
+			return null;
 		if (offX >= pW)
-			return;
+			return null;
 		if (offY >= pH)
-			return;
+			return null;
 
 		int newX = 0;
 		int newY = 0;
-		int newWidth = image.getW();
-		int newHeight = image.getH();
+		int newWidth = image.w;
+		int newHeight = image.h;
 
 		// Clipping code
 		if (offX < 0) {
@@ -150,30 +153,32 @@ public class Renderer {
 
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
-				setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
+				setPixel(x + offX, y + offY, image.p[x + y * image.w]);
 			}
 		}
+		gameObject = new GameObject(p, image.w, image.h);
+		return gameObject;
 	}
 
-	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
-		if(image.isAlpha() && !processing) {
-			imageRequest.add(new ImageRequest(image.getTileImage(tileX, tileY), zDepth, offX, offY));
-			return;
+	public GameObject drawImageTile(ImageTile imageTile, int offX, int offY, int tileX, int tileY) {
+		if(imageTile.isAlpha() && !processing) {
+			imageRequest.add(new ImageRequest(imageTile.getTileImage(tileX, tileY), zDepth, offX, offY));
+			return null;
 		}
 		// Don't render code
-		if (offX < -image.getTileW())
-			return;
-		if (offY < -image.getTileH())
-			return;
+		if (offX < -imageTile.tileW)
+			return null;
+		if (offY < -imageTile.tileH)
+			return null;
 		if (offX >= pW)
-			return;
+			return null;
 		if (offY >= pH)
-			return;
+			return null;
 
 		int newX = 0;
 		int newY = 0;
-		int newWidth = image.getTileW();
-		int newHeight = image.getTileH();
+		int newWidth = imageTile.tileW;
+		int newHeight = imageTile.tileH;
 
 		// Clipping code
 		if (offX < 0) {
@@ -191,22 +196,24 @@ public class Renderer {
 
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
-				setPixel(x + offX, y + offY,
-						image.getP()[(x + tileX * image.getTileW()) + (y + tileY * image.getTileH()) * image.getW()]);
+				setPixel(x + offX, y + offY, 
+						imageTile.p[(x + tileX * imageTile.tileW) + (y + tileY * imageTile.tileH) * imageTile.w]);
 			}
 		}
+		gameObject = new GameObject(p, imageTile.tileW, imageTile.tileH);
+		return gameObject;
 	}
 
-	public void drawRect(int offX, int offY, int width, int height, int color) {
+	public GameObject drawRect(int offX, int offY, int width, int height, int color) {
 		// Don't render code
 		if (offX < -width)
-			return;
+			return null;
 		if (offY < -height)
-			return;
+			return null;
 		if (offX >= pW)
-			return;
+			return null;
 		if (offY >= pH)
-			return;
+			return null;
 
 		int newX = 0;
 		int newY = 0;
@@ -235,18 +242,20 @@ public class Renderer {
 			setPixel(x + offX, offY, color);
 			setPixel(x + offX, offY + height, color);
 		}
+		gameObject = new GameObject(p, newWidth, newHeight);		
+		return gameObject;
 	}
 
-	public void drawFillRect(int offX, int offY, int width, int height, int color) {
+	public GameObject drawFillRect(int offX, int offY, int width, int height, int color) {
 		// Don't render code
 		if (offX < -width)
-			return;
+			return null;
 		if (offY < -height)
-			return;
+			return null;
 		if (offX >= pW)
-			return;
+			return null;
 		if (offY >= pH)
-			return;
+			return null;
 
 		int newX = 0;
 		int newY = 0;
@@ -267,11 +276,13 @@ public class Renderer {
 			newHeight -= newHeight + offY - pH;
 		}
 
-		for (int y = newY; y < newHeight; y++) {
-			for (int x = newX; x < newWidth; x++) {
+		for (int y = newY; y <= newHeight; y++) {
+			for (int x = newX; x <= newWidth; x++) {
 				setPixel(x + offX, y + offY, color);
 			}
 		}
+		gameObject = new GameObject(p, newWidth, newHeight);
+		return gameObject;
 
 	}
 

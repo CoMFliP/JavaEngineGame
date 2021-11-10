@@ -1,29 +1,63 @@
 package com.comflip.game.gui;
 
+import java.awt.event.MouseEvent;
+
+import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
+import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
-import com.comflip.engine.gfc.Font;
+import com.comflip.engine.gfc.Color;
 import com.comflip.game.abstracts.GUI;
 
 public class Button extends GUI {
-	private Font font;
-	private String string;
-	private int widhtText;
+	private String string = "";
+	private GameObject imageText;
 	
-	public Button(String string) {
-		this.string = string;		
+	private boolean isActive = false;
+
+	public Button(String tag) {
+		this.tag = tag;
 	}
-	
+
 	public void update(GameContainer gameContainer, float dt) {
-		
+		Input input = gameContainer.getInput();
+
+		int buttonPosX = posX;
+		int buttonPosY = posY;
+
+		int buttonWight = width;
+		int buttonHeight = height;
+
+		int cursorPosX = GUI.cursor.getPosX();
+		int cursorPosY = GUI.cursor.getPosY();
+
+		boolean axisX = Collisions.axisX(buttonPosX, buttonWight, cursorPosX, 0);
+		boolean axisY = Collisions.axisY(buttonPosY, buttonHeight, cursorPosY, 0);
+
+		if (axisX && axisY) {
+			if (input.isButtonDown(MouseEvent.BUTTON1)) {
+				isActive = true;
+			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
+				isActive = false;
+			}
+		}
 	}
-	
-	public void render(Renderer r) {		
-		r.drawFillRect(posX, posY, width, height, 0xFFFF00FF);
-		r.drawText(string, posX, posY, 0xFFFFFFFF);
-//		r.drawRect(posX, posY, widhtText, height-1, 0xFF00FFFF);
-		
-		
-		System.err.println(font.getWidths());
+
+	public void render(Renderer r) {
+		imageText = r.drawText(string, 0, 0, 0);
+
+		r.drawFillRect(posX, posY, width, height, Color.GREY);
+		r.drawText(string, posX + ((width - imageText.getW()) / 2), posY + ((height - imageText.getH()) / 2),
+				Color.WHITE);
+		r.drawRect(posX, posY, width, height, Color.DARK_GREY);
+	}
+
+	public void setString(String string) {
+		this.string = string;
+	}
+
+	public boolean isActive() {
+		return isActive;
 	}
 }
