@@ -17,7 +17,7 @@ public class ImageTile extends Image {
 				p[x + y * tileW] = this.p[(x + tileX * tileW) + (y + tileY * tileH) * w];
 			}
 		}
-		return (Image) new GameObject(p, tileW, tileH);
+		return (Image) new GameObject(tileW, tileH);
 	}
 
 	public int getTileW() {

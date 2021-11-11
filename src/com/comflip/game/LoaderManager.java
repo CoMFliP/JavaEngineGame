@@ -1,5 +1,7 @@
 package com.comflip.game;
 
+import java.util.ArrayList;
+
 import com.comflip.engine.AbstractGame;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
@@ -22,16 +24,24 @@ public class LoaderManager implements AbstractGame {
 	protected int width, height;
 	protected int posX, posY;
 
+	private int FPS;
+
+	ArrayList<GUI> listGUI = new ArrayList<GUI>();
+
+	public LoaderManager() {
+		listGUI.add(GUI.cursor);
+	}
+
 	public void update(GameContainer gc, float dt) {
 		for (Layers layer : Layers.ArrayList()) {
 			layer.update(gc, dt);
 		}
 
-		for (GUI elementGui : GUI.ArrayList()) {
+		for (GUI elementGui : listGUI) {
 			try {
 				elementGui.update(gc, dt);
 			} catch (Exception e) {
-				System.err.println("Object " + elementGui.tag + " is missed / UPDATE");
+				System.err.println("Object " + elementGui.tag + " is missed");
 			}
 		}
 	}
@@ -41,13 +51,9 @@ public class LoaderManager implements AbstractGame {
 			layer.render(r);
 		}
 
-		for (GUI elementGui : GUI.ArrayList()) {
-			if (elementGui.image != null) {
+		for (GUI elementGui : listGUI) {
+			if (elementGui.getClass() == GUI.cursor.getClass()) {
 				r.drawImage(elementGui.image, elementGui.posX, elementGui.posY);
-			}
-			if (elementGui.imageTile != null) {
-				r.drawImageTile(elementGui.imageTile, elementGui.posX, elementGui.posY, elementGui.indexTileX,
-						elementGui.indexTileY);
 			}
 		}
 
@@ -58,6 +64,9 @@ public class LoaderManager implements AbstractGame {
 				}
 			}
 		}
+
+		r.drawText("Test Engine", 0, 0, 0xFFFFFFFF);
+		r.drawText("FPS: " + FPS, 8, 12, 0xff00ffff);
 	}
 
 	private void debugMode(Renderer r) {
@@ -71,7 +80,7 @@ public class LoaderManager implements AbstractGame {
 			}
 		}
 
-		for (GUI elementGui : GUI.ArrayList()) {
+		for (GUI elementGui : listGUI) {
 			if (elementGui.image != null) {
 				r.drawRect(elementGui.posX, elementGui.posY, elementGui.image.getW(), elementGui.image.getH(),
 						0xFF00FF00);
@@ -113,5 +122,9 @@ public class LoaderManager implements AbstractGame {
 
 	public int getIndexTileY() {
 		return this.indexTileY;
+	}
+
+	public int setFPS(int fps) {
+		return this.FPS = fps;
 	}
 }

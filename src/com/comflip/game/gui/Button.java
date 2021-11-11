@@ -41,16 +41,24 @@ public class Button extends GUI {
 			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
 				isActive = false;
 			}
+		} else {
+			isActive = false;
 		}
 	}
 
 	public void render(Renderer r) {
 		imageText = r.drawText(string, 0, 0, 0);
 
-		r.drawFillRect(posX, posY, width, height, Color.GREY);
-		r.drawText(string, posX + ((width - imageText.getW()) / 2), posY + ((height - imageText.getH()) / 2),
-				Color.WHITE);
-		r.drawRect(posX, posY, width, height, Color.DARK_GREY);
+		if (isActive) {
+			r.drawFillRect(posX, posY, width, height, Color.DARK_GREY);
+			r.drawRect(posX, posY, width, height, Color.BLACK);
+		} else {
+			r.drawFillRect(posX, posY, width, height, Color.GREY);
+			r.drawRect(posX, posY, width, height, Color.DARK_GREY);
+		}
+		
+		r.drawText(string, posX + ((width - imageText.getW()) / 2), 
+				posY + ((height - imageText.getH()) / 2), Color.WHITE).setScale(0);
 	}
 
 	public void setString(String string) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Font;
 import com.comflip.engine.gfc.Image;
 import com.comflip.engine.gfc.ImageRequest;
@@ -13,16 +14,16 @@ import com.comflip.engine.gfc.ImageTile;
 public class Renderer {
 	private Font font = Font.STANDARD;
 	private GameObject gameObject = null;
-	
+
 	private ArrayList<ImageRequest> imageRequest = new ArrayList<ImageRequest>();
-	
+
 	private int pW, pH;
 	private int[] p;
 	private int[] zbuffer;
 
 	private int zDepth = 0;
 	private boolean processing = false;
-	
+
 	public Renderer(GameContainer gc) {
 		pW = gc.getWidth();
 		pH = gc.getHeigth();
@@ -37,15 +38,15 @@ public class Renderer {
 			zbuffer[i] = 0;
 		}
 	}
-	
+
 	public void process() {
 		processing = true;
 		
 		Collections.sort(imageRequest, new Comparator<ImageRequest>() {
 
 			public int compare(ImageRequest i0, ImageRequest i1) {
-				if(i0.zDepth < i1.zDepth) {
-					return -1;					
+				if (i0.zDepth < i1.zDepth) {
+					return -1;
 				} else if (i0.zDepth > i1.zDepth) {
 					return 1;
 				} else {
@@ -53,8 +54,8 @@ public class Renderer {
 				}
 			}
 		});
-		
-		for(int i = 0; i < imageRequest.size(); i++) {
+
+		for (int i = 0; i < imageRequest.size(); i++) {
 			ImageRequest ir = imageRequest.get(i);
 			setzDepth(ir.zDepth);
 			ir.image.setAlpha(false);
@@ -66,32 +67,31 @@ public class Renderer {
 
 	public void setPixel(int x, int y, int value) {
 		int alpha = (value >> 24) & 0xFF;
+		int index = x + y * pW;
 
 		if ((x < 0 || x >= pW || y < 0 || y >= pH) || alpha == 0) {
 			return;
 		}
 
-		int index = x + y * pW;
-		
 		if (zbuffer[index] > zDepth) {
 			return;
 		}
-		
+
 		zbuffer[index] = zDepth;
 
 		if (alpha == 255) {
 			p[index] = value;
 		} else {
 			int pixelColor = p[index];
-			
+
 			int pixelColorRed = ((pixelColor >> 16) & 0xFF);
 			int pixelColorGreen = ((pixelColor >> 8) & 0xFF);
-			int pixelColorBlue = (pixelColor & 0xFF);			
-			
-			int newRed = pixelColorRed - (int)((pixelColorRed - ((value >> 16) & 0xFF)) * (alpha / 255f));
-			int newGreen = pixelColorGreen - (int)((pixelColorGreen - ((value >> 8) & 0xFF)) * (alpha / 255f));
-			int newBlue = pixelColorBlue - (int)((pixelColorBlue - (value & 0xFF)) * (alpha / 255f));
-			
+			int pixelColorBlue = (pixelColor & 0xFF);
+
+			int newRed = pixelColorRed - (int) ((pixelColorRed - ((value >> 16) & 0xFF)) * (alpha / 255f));
+			int newGreen = pixelColorGreen - (int) ((pixelColorGreen - ((value >> 8) & 0xFF)) * (alpha / 255f));
+			int newBlue = pixelColorBlue - (int) ((pixelColorBlue - (value & 0xFF)) * (alpha / 255f));
+
 			p[index] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
 		}
 	}
@@ -105,23 +105,28 @@ public class Renderer {
 			for (int y = 0; y < font.getFontImage().getH(); y++) {
 				for (int x = 0; x < font.getWidths()[unicode]; x++) {
 					if (font.getFontImage().getP()[(x + font.getOffsets()[unicode])
-							+ y * font.getFontImage().getW()] == 0xffffffff) {
-						 setPixel(x + offX + offset, y + offY, color);
+							+ y * font.getFontImage().getW()] == Color.WHITE) {
+
+						int newX = x + offX + offset;
+						int newY = y + offY;
+
+						setPixel(newX, newY, color);
 					}
 				}
 			}
 			offset += font.getWidths()[unicode];
-		}		
-		gameObject = new GameObject(p, offset, font.getFontImage().getH());
+		}
+
+		gameObject = new GameObject(offset, font.getFontImage().getH());
 		return gameObject;
 	}
 
 	public GameObject drawImage(Image image, int offX, int offY) {
-		if(image.isAlpha() && !processing) {
+		if (image.isAlpha() && !processing) {
 			imageRequest.add(new ImageRequest(image, zDepth, offX, offY));
 			return null;
 		}
-		
+
 		// Don't render code
 		if (offX < -image.w)
 			return null;
@@ -156,12 +161,12 @@ public class Renderer {
 				setPixel(x + offX, y + offY, image.p[x + y * image.w]);
 			}
 		}
-		gameObject = new GameObject(p, image.w, image.h);
+		gameObject = new GameObject(image.w, image.h);
 		return gameObject;
 	}
 
 	public GameObject drawImageTile(ImageTile imageTile, int offX, int offY, int tileX, int tileY) {
-		if(imageTile.isAlpha() && !processing) {
+		if (imageTile.isAlpha() && !processing) {
 			imageRequest.add(new ImageRequest(imageTile.getTileImage(tileX, tileY), zDepth, offX, offY));
 			return null;
 		}
@@ -196,11 +201,11 @@ public class Renderer {
 
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
-				setPixel(x + offX, y + offY, 
+				setPixel(x + offX, y + offY,
 						imageTile.p[(x + tileX * imageTile.tileW) + (y + tileY * imageTile.tileH) * imageTile.w]);
 			}
 		}
-		gameObject = new GameObject(p, imageTile.tileW, imageTile.tileH);
+		gameObject = new GameObject(imageTile.tileW, imageTile.tileH);
 		return gameObject;
 	}
 
@@ -235,14 +240,14 @@ public class Renderer {
 		}
 
 		for (int y = newY; y <= newHeight; y++) {
-			setPixel(offX, y + offY, color);
-			setPixel(offX + width, y + offY, color);
+				setPixel(offX, y + offY, color);
+				setPixel(offX + width, y + offY, color);				
 		}
 		for (int x = newX; x <= newWidth; x++) {
-			setPixel(x + offX, offY, color);
-			setPixel(x + offX, offY + height, color);
+				setPixel(x + offX, offY, color);
+				setPixel(x + offX, offY + height, color);
 		}
-		gameObject = new GameObject(p, newWidth, newHeight);		
+		gameObject = new GameObject(newWidth, newHeight);
 		return gameObject;
 	}
 
@@ -281,7 +286,7 @@ public class Renderer {
 				setPixel(x + offX, y + offY, color);
 			}
 		}
-		gameObject = new GameObject(p, newWidth, newHeight);
+		gameObject = new GameObject(newWidth, newHeight);
 		return gameObject;
 
 	}

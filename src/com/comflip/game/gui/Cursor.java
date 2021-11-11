@@ -7,7 +7,11 @@ import com.comflip.game.abstracts.GUI;
 
 public class Cursor extends GUI {
 	public Cursor(String path) {
-		image = new Image(path);
+		try {
+			image = new Image(path);
+		} catch (Exception e) {
+			System.exit(0);
+		}
 	}
 
 	public void update(GameContainer gameContainer, float dt) {
