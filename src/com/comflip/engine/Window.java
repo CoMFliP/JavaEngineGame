@@ -1,7 +1,14 @@
 package com.comflip.engine;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -31,6 +38,8 @@ public class Window {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
+		
+		frame.setIconImage(gc.getIconImage());
 		
 		imageCursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		cursor = Toolkit.getDefaultToolkit().createCustomCursor(imageCursor, new Point(0, 0), "blank cursor");

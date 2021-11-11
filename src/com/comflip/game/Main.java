@@ -8,7 +8,8 @@ public class Main {
 	public static void main(String[] args) {		
 		argsMain = args;
 		GameContainer gc = new GameContainer(new LoaderManager());
-		gc.setTitle("Java Engine 2D");
+		gc.setIconImage("/icon.png");
+		gc.setTitle("The Checkers");
 		gc.setWidth(640);
 		gc.setHeigth(360);
 		gc.setScale(2f);

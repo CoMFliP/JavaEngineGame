@@ -1,5 +1,9 @@
 package com.comflip.engine;
 
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+
 import com.comflip.game.LoaderManager;
 
 public class GameContainer implements Runnable {
@@ -17,7 +21,8 @@ public class GameContainer implements Runnable {
 	private int width, heigth;
 	private float scale;
 	private String title;
-
+	private ImageIcon imageIcon;
+	
 	public GameContainer(LoaderManager loaderManager) {
 		this.loaderManager = loaderManager;
 	}
@@ -134,6 +139,14 @@ public class GameContainer implements Runnable {
 
 	public Input getInput() {
 		return this.input;
+	}
+
+	public void setIconImage(String path) {
+		 this.imageIcon = new ImageIcon(getClass().getResource(path));
+	}
+
+	public Image getIconImage() {
+		return this.imageIcon.getImage();
 	}
 
 }

@@ -10,7 +10,6 @@ public class GameObject {
 	protected int tileW, tileH;
 
 	public GameObject(int w, int h) {
-//		this.p = p;
 		this.w = w;
 		this.h = h;
 	}

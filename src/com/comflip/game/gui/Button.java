@@ -15,6 +15,7 @@ public class Button extends GUI {
 	private GameObject imageText;
 	
 	private boolean isActive = false;
+	private boolean isExecute = false;
 
 	public Button(String tag) {
 		this.tag = tag;
@@ -38,8 +39,12 @@ public class Button extends GUI {
 		if (axisX && axisY) {
 			if (input.isButtonDown(MouseEvent.BUTTON1)) {
 				isActive = true;
+				isExecute = false;
 			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
 				isActive = false;
+				isExecute = true;
+			} else {
+				isExecute = false;
 			}
 		} else {
 			isActive = false;
@@ -67,5 +72,9 @@ public class Button extends GUI {
 
 	public boolean isActive() {
 		return isActive;
+	}
+
+	public boolean isExecute() {
+		return isExecute;
 	}
 }

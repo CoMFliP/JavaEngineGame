@@ -10,13 +10,14 @@ import com.comflip.engine.gfc.Image;
 import com.comflip.engine.gfc.ImageTile;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.Layers;
+import com.comflip.game.abstracts.SFX;
 import com.comflip.game.abstracts.Sprites;
 
 public class LoaderManager implements AbstractGame {
 	public Image image;
 	public ImageTile imageTile;
 	public SoundClip soundClip;
-
+	
 	protected String tag;
 	protected float frame;
 	protected int indexTileX, indexTileY;
@@ -26,41 +27,92 @@ public class LoaderManager implements AbstractGame {
 
 	private int FPS;
 
+	ArrayList<Layers> listLayers = new ArrayList<Layers>();
 	ArrayList<GUI> listGUI = new ArrayList<GUI>();
+	ArrayList<Sprites> listSprites = new ArrayList<Sprites>();
+	ArrayList<SFX> listSFXs = new ArrayList<SFX>();
 
 	public LoaderManager() {
+		listLayers.add(Layers.menu);
+		listLayers.add(Layers.game);
+
+		listSprites.add(Sprites.wheel);
+		listSprites.add(Sprites.arrow);
+
 		listGUI.add(GUI.cursor);
 	}
 
 	public void update(GameContainer gc, float dt) {
-		for (Layers layer : Layers.ArrayList()) {
-			layer.update(gc, dt);
+		if (!listLayers.isEmpty()) {
+			for (int i = 0; i < listLayers.size(); i++) {
+				if (listLayers.get(i) != null) {
+					switch (listLayers.get(i).tag) {
+					case "menu":
+						listLayers.get(i).update(gc, dt);
+						break;
+					case "gameMode_1":
+						listLayers.get(i).update(gc, dt);
+						break;
+					case "gameMode_2":
+						listLayers.get(i).update(gc, dt);
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
 		}
 
-		for (GUI elementGui : listGUI) {
-			try {
-				elementGui.update(gc, dt);
-			} catch (Exception e) {
-				System.err.println("Object " + elementGui.tag + " is missed");
+		if(!listGUI.isEmpty()) {
+			for (int i = 0; i < listGUI.size(); i++) {
+				if (listGUI.get(i) != null) {
+					try {
+						listGUI.get(i).update(gc, dt);
+					} catch (Exception e) {
+						System.err.println("Object " + listGUI.get(i).tag + " is missed");
+					}
+				}
 			}
 		}
 	}
 
 	public void render(Renderer r) {
-		for (Layers layer : Layers.ArrayList()) {
-			layer.render(r);
+		if (!listLayers.isEmpty()) {
+			for (int i = 0; i < listLayers.size(); i++) {
+				if (listLayers.get(i) != null) {
+					switch (listLayers.get(i).tag) {
+					case "menu":
+						listLayers.get(i).render(r);
+						break;
+					case "gameMode_1":
+						listLayers.get(i).render(r);
+						break;
+					case "gameMode_2":
+						listLayers.get(i).render(r);
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
 		}
 
-		for (GUI elementGui : listGUI) {
-			if (elementGui.getClass() == GUI.cursor.getClass()) {
-				r.drawImage(elementGui.image, elementGui.posX, elementGui.posY);
+		if(!listGUI.isEmpty()) {
+			for (int i = 0; i < listGUI.size(); i++) {
+				if (listGUI.get(i) != null) {
+					if (listGUI.get(i).getClass() == GUI.cursor.getClass()) {
+						r.drawImage(listGUI.get(i).image, listGUI.get(i).posX, listGUI.get(i).posY);
+					}
+				}
 			}
 		}
 
 		if (Main.getArgs().length > 0) {
 			for (String arg : Main.getArgs()) {
 				if (arg.equals("-debugMode")) {
-					debugMode(r);
+//					debugMode(r);
 				}
 			}
 		}
@@ -69,28 +121,28 @@ public class LoaderManager implements AbstractGame {
 		r.drawText("FPS: " + FPS, 8, 12, 0xff00ffff);
 	}
 
-	private void debugMode(Renderer r) {
-		for (Sprites object : Sprites.ArrayList()) {
-			if (object.image != null) {
-				r.drawRect(object.posX, object.posY, object.image.getW(), object.image.getH(), 0xFF00FF00);
-			}
-			if (object.imageTile != null) {
-				r.drawRect(object.posX, object.posY, object.imageTile.getTileW(), object.imageTile.getTileH(),
-						0xFF00FF00);
-			}
-		}
-
-		for (GUI elementGui : listGUI) {
-			if (elementGui.image != null) {
-				r.drawRect(elementGui.posX, elementGui.posY, elementGui.image.getW(), elementGui.image.getH(),
-						0xFF00FF00);
-			}
-			if (elementGui.imageTile != null) {
-				r.drawRect(elementGui.posX, elementGui.posY, elementGui.imageTile.getTileW(),
-						elementGui.imageTile.getTileH(), 0xFF00FF00);
-			}
-		}
-	}
+//	private void debugMode(Renderer r) {
+//		for (Sprites object : listSprites) {
+//			if (object.image != null) {
+//				r.drawRect(object.posX, object.posY, object.image.getW(), object.image.getH(), 0xFF00FF00);
+//			}
+//			if (object.imageTile != null) {
+//				r.drawRect(object.posX, object.posY, object.imageTile.getTileW(), object.imageTile.getTileH(),
+//						0xFF00FF00);
+//			}
+//		}
+//
+//		for (GUI elementGui : listGUI) {
+//			if (elementGui.image != null) {
+//				r.drawRect(elementGui.posX, elementGui.posY, elementGui.image.getW(), elementGui.image.getH(),
+//						0xFF00FF00);
+//			}
+//			if (elementGui.imageTile != null) {
+//				r.drawRect(elementGui.posX, elementGui.posY, elementGui.imageTile.getTileW(),
+//						elementGui.imageTile.getTileH(), 0xFF00FF00);
+//			}
+//		}
+//	}
 
 	public int getPosX() {
 		return posX;
