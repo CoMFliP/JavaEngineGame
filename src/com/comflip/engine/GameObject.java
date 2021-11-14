@@ -1,84 +1,75 @@
 package com.comflip.engine;
 
 public class GameObject {
-	protected int w, h;
-	protected int[] p;
-	protected boolean alpha = false;
+	protected int width, height;
+	
+	private GameObject gameObject;
 
-	protected int scale;
-
-	protected int tileW, tileH;
-
-	public GameObject(int w, int h) {
-		this.w = w;
-		this.h = h;
+	public GameObject(GameObject gameObject, int width, int height) {
+		this.setGameObject(gameObject);
+		this.width = width;
+		this.height = height;
 	}
 
-	public GameObject(String path) {
+	protected GameObject(String path) {
 	}
 
-	public void setScale(int scale) {
-		this.scale = scale;
-		setH(h * scale);
-		setW(w * scale);
-
-		int[] p = new int[w * h];
-		for (int y = 0; y < w; y++) {
-			for (int x = 0; x < h; x++) {
-				p[x + y * w] = this.p[x + y * w];
-			}
-		}
+	protected GameObject(int[] pixel, int tileWidth, int tileHeight) {
 	}
 
-	public int getW() {
-		return this.w;
+	public GameObject getGameObject() {
+		return gameObject;
 	}
 
-	public int getH() {
-		return this.h;
+	public void setGameObject(GameObject gameObject) {
+		this.gameObject = gameObject;
+	}
+	
+	public int getWidth() {
+		return this.width;
 	}
 
-	public int[] getP() {
-		return this.p;
+	public int getHeight() {
+		return this.height;
+	}
+
+	public int[] getPixel() {
+		return getGameObject().getPixel();
 	}
 
 	public boolean isAlpha() {
-		return this.alpha;
+		return getGameObject().isAlpha();
 	}
 
 	public void setAlpha(boolean alpha) {
-		this.alpha = alpha;
+		getGameObject().setAlpha(alpha);
 	}
 
-	public int getScale() {
-		return this.scale;
+	public int getTileWidth() {
+		return getGameObject().getTileWidth();
 	}
 
-	public int getTileW() {
-		return this.tileW;
+	public void setTileWidth(int tileWidth) {
+		getGameObject().setTileWidth(tileWidth);
 	}
 
-	public void setTileW(int tileW) {
-		this.tileW = tileW;
+	public int getTileHeight() {
+		return getGameObject().getTileWidth();
 	}
 
-	public int getTileH() {
-		return this.tileH;
+	public void setTileHeight(int tileHeight) {
+		getGameObject().getTileHeight();
 	}
 
-	public void setTileH(int tileH) {
-		this.tileH = tileH;
+	public void setScale(float scale) {
+		getGameObject().setScale(scale);
 	}
 
-	public void setW(int w) {
-		this.w = w;
+	public float getScale() {
+		return getGameObject().getScale();
 	}
 
-	public void setH(int h) {
-		this.h = h;
-	}
-
-	public void setP(int[] p) {
-		this.p = p;
+	public void setScaleTile(float scale) {
+		getGameObject().setScaleTile(scale);
 	}
 }

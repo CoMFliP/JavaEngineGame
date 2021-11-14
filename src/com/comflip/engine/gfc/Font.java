@@ -1,52 +1,60 @@
 package com.comflip.engine.gfc;
 
-public class Font {
-	public static final Font STANDARD = new Font("/fonts/standard.png");
+public class Font extends Sprite {
+	public static final Font STANDARD = new Font("/fonts/new-standard.png");
+	public static final Font NONSTANDARD = new Font("/fonts/non-standard.png");
 
-	private Image fontImage;
-	private int[] offsets;
-	private int[] widths;
+	private Sprite fontImage;
+
+	private int unicode;
+
+	private int tileFontWidth, tileFontHeight;
 
 	public Font(String path) {
-		fontImage = new Image(path);
-
-		offsets = new int[65];
-		widths = new int[65];
-
-		int unicode = 0;
+		super(path);
+		this.tileFontWidth = 12;
+		this.tileFontHeight = 12;
 		
-		for (int i = 0; i < fontImage.getW(); i++) {
-			if (fontImage.getP()[i] == 0xffff00ff) {
-				offsets[unicode] = i;
-			}
-			if (fontImage.getP()[i] == 0xff000000) {
-				widths[unicode] = i - offsets[unicode];
-				unicode++;
-			}
-		}
+		fontImage = new Sprite(path);
 	}
 
-	public Image getFontImage() {
+	public Sprite getFontImage() {
 		return this.fontImage;
 	}
 
-	public void setFontImage(Image fontImage) {
+	public void setFontImage(Sprite fontImage) {
 		this.fontImage = fontImage;
 	}
 
-	public int[] getOffsets() {
-		return this.offsets;
+	public int getLine(int unicode) {
+		int line = 0;
+		if (unicode <= 32 && unicode >= 0) {
+			line = 0;
+		} else if (unicode > 32 && unicode <= 62) {
+			line = 1;
+		} else if (unicode > 62) {
+			line = 2;
+		}
+		return this.tileFontHeight * line;
 	}
 
-	public void setOffsets(int[] offsets) {
-		this.offsets = offsets;
+	public int setUnicode(int unicode) {
+		if (unicode <= 32 && unicode >= 0) {
+			this.unicode = unicode;
+		} else if (unicode > 32 && unicode <= 62) {
+			this.unicode = unicode - 33;
+		} else if (unicode > 62) {
+			this.unicode = unicode - 65;
+		}
+		return this.tileFontWidth * this.unicode;
 	}
 
-	public int[] getWidths() {
-		return this.widths;
+	public int getTileFontWidth() {
+		return this.tileFontWidth;
 	}
 
-	public void setWidths(int[] widths) {
-		this.widths = widths;
+	public int getTileFontHeight() {
+		return this.tileFontHeight;
 	}
+
 }

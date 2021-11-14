@@ -51,7 +51,7 @@ public class Button extends GUI {
 		}
 	}
 
-	public void render(Renderer r) {
+	public GameObject render(Renderer r) {
 		imageText = r.drawText(string, 0, 0, 0);
 
 		if (isActive) {
@@ -62,8 +62,9 @@ public class Button extends GUI {
 			r.drawRect(posX, posY, width, height, Color.DARK_GREY);
 		}
 		
-		r.drawText(string, posX + ((width - imageText.getW()) / 2), 
-				posY + ((height - imageText.getH()) / 2), Color.WHITE).setScale(0);
+		r.drawText(string, posX + ((width - imageText.getWidth()) / 2), 
+				posY + ((height - imageText.getHeight()) / 2), Color.WHITE);
+		return null;
 	}
 
 	public void setString(String string) {

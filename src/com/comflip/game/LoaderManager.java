@@ -4,18 +4,19 @@ import java.util.ArrayList;
 
 import com.comflip.engine.AbstractGame;
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
-import com.comflip.engine.gfc.Image;
-import com.comflip.engine.gfc.ImageTile;
+import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.gfc.SpriteTile;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.Layers;
 import com.comflip.game.abstracts.SFX;
 import com.comflip.game.abstracts.Sprites;
 
 public class LoaderManager implements AbstractGame {
-	public Image image;
-	public ImageTile imageTile;
+	public Sprite image;
+	public SpriteTile imageTile;
 	public SoundClip soundClip;
 	
 	protected String tag;
@@ -35,9 +36,6 @@ public class LoaderManager implements AbstractGame {
 	public LoaderManager() {
 		listLayers.add(Layers.menu);
 		listLayers.add(Layers.game);
-
-		listSprites.add(Sprites.wheel);
-		listSprites.add(Sprites.arrow);
 
 		listGUI.add(GUI.cursor);
 	}
@@ -77,7 +75,7 @@ public class LoaderManager implements AbstractGame {
 		}
 	}
 
-	public void render(Renderer r) {
+	public GameObject render(Renderer r) {
 		if (!listLayers.isEmpty()) {
 			for (int i = 0; i < listLayers.size(); i++) {
 				if (listLayers.get(i) != null) {
@@ -102,13 +100,11 @@ public class LoaderManager implements AbstractGame {
 		if(!listGUI.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
 				if (listGUI.get(i) != null) {
-					if (listGUI.get(i).getClass() == GUI.cursor.getClass()) {
-						r.drawImage(listGUI.get(i).image, listGUI.get(i).posX, listGUI.get(i).posY);
-					}
+					listGUI.get(i).render(r).setScale(0.6f);
 				}
 			}
 		}
-
+		
 		if (Main.getArgs().length > 0) {
 			for (String arg : Main.getArgs()) {
 				if (arg.equals("-debugMode")) {
@@ -119,6 +115,8 @@ public class LoaderManager implements AbstractGame {
 
 		r.drawText("Test Engine", 0, 0, 0xFFFFFFFF);
 		r.drawText("FPS: " + FPS, 8, 12, 0xff00ffff);
+		
+		return null;
 	}
 
 //	private void debugMode(Renderer r) {

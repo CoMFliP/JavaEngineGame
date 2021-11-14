@@ -1,12 +1,12 @@
 package com.comflip.engine.gfc;
 
-public class ImageRequest {
-	public Image image;
+public class SpriteRequest {
+	public Sprite sprite;
 	public int zDepth;
 	public int offX, offY;
 	
-	public ImageRequest(Image image, int zDepth, int offX, int offY) {
-		this.image = image;
+	public SpriteRequest(Sprite sprite, int zDepth, int offX, int offY) {
+		this.sprite = sprite;
 		this.zDepth = zDepth;
 		this.offX = offX;
 		this.offY = offY;

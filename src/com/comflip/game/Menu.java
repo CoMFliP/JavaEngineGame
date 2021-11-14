@@ -3,8 +3,9 @@ package com.comflip.game;
 import java.util.ArrayList;
 
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
-import com.comflip.engine.gfc.Image;
+import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.Layers;
 import com.comflip.game.gui.Button;
@@ -13,7 +14,7 @@ public class Menu extends Layers {
 	private int widthWindow, heigthWindow;
 
 	ArrayList<GUI> listGUI = new ArrayList<GUI>();
-	Image image = new Image("/menu.png");
+	Sprite image = new Sprite("/menu.png");
 
 	public Menu() {
 		this.tag = "menu";
@@ -54,8 +55,8 @@ public class Menu extends Layers {
 		}
 	}
 
-	public void render(Renderer r) {
-		r.drawImage(image, 0, 0);
+	public GameObject render(Renderer r) {
+		r.drawSprite(image, 0, 0);
 
 		if (!listGUI.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
@@ -87,5 +88,6 @@ public class Menu extends Layers {
 				}
 			}
 		}
+		return null;
 	}
 }

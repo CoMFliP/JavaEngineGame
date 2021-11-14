@@ -4,8 +4,10 @@ import java.awt.event.KeyEvent;
 
 import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Input;
-import com.comflip.engine.gfc.ImageTile;
+import com.comflip.engine.Renderer;
+import com.comflip.engine.gfc.SpriteTile;
 import com.comflip.game.abstracts.GUI;
 import com.comflip.game.abstracts.SFX;
 import com.comflip.game.abstracts.Sprites;
@@ -13,8 +15,8 @@ import com.comflip.game.abstracts.Sprites;
 public class Wheel extends Sprites  {
 	private final int step = 2;
 
-	public Wheel(String path, int tileW, int tileH) {
-		imageTile = new ImageTile(path, tileW, tileH);
+	public Wheel(String path, int tileWidht, int tileHeight) {
+		imageTile = new SpriteTile(path, tileWidht, tileHeight);
 		tag = getClass().getSimpleName();
 	}
 
@@ -24,14 +26,14 @@ public class Wheel extends Sprites  {
 		int wheelPosX = Sprites.wheel.getPosX();
 		int wheelPosY = Sprites.wheel.getPosY();
 
-		int wheelWight = Sprites.wheel.imageTile.getTileW();
-		int wheelHeight = Sprites.wheel.imageTile.getTileH();
+		int wheelWight = Sprites.wheel.imageTile.getTileWidth();
+		int wheelHeight = Sprites.wheel.imageTile.getTileHeight();
 
 		int cursorPosX = GUI.cursor.getPosX();
 		int cursorPosY = GUI.cursor.getPosY();
 
-		int cursorWight = GUI.cursor.image.getW();
-		int cursorHeight = GUI.cursor.image.getH();
+		int cursorWight = GUI.cursor.image.getWidth();
+		int cursorHeight = GUI.cursor.image.getHeight();
 
 		boolean axisX = Collisions.axisX(wheelPosX, wheelWight, cursorPosX, cursorWight);
 		boolean axisY = Collisions.axisY(wheelPosY, wheelHeight, cursorPosY, cursorHeight);
@@ -96,5 +98,9 @@ public class Wheel extends Sprites  {
 				SFX.collisionSFX.soundClip.play();				
 			}
 		}
+	}
+	
+	public GameObject render(Renderer r) {
+		return r.drawSpriteTile(imageTile, posX, posY, indexTileX, indexTileY);
 	}
 }
