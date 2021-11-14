@@ -2,7 +2,6 @@ package com.comflip.engine.gfc;
 
 public class Font extends Sprite {
 	public static final Font STANDARD = new Font("/fonts/new-standard.png");
-	public static final Font NONSTANDARD = new Font("/fonts/non-standard.png");
 
 	private Sprite fontImage;
 
@@ -12,10 +11,10 @@ public class Font extends Sprite {
 
 	public Font(String path) {
 		super(path);
+		fontImage = this;
 		this.tileFontWidth = 12;
 		this.tileFontHeight = 12;
-		
-		fontImage = new Sprite(path);
+		this.scale = 1;
 	}
 
 	public Sprite getFontImage() {
@@ -35,7 +34,7 @@ public class Font extends Sprite {
 		} else if (unicode > 62) {
 			line = 2;
 		}
-		return this.tileFontHeight * line;
+		return getTileFontHeight() * line;
 	}
 
 	public int setUnicode(int unicode) {
@@ -46,15 +45,15 @@ public class Font extends Sprite {
 		} else if (unicode > 62) {
 			this.unicode = unicode - 65;
 		}
-		return this.tileFontWidth * this.unicode;
+		return getTileFontWidth() * this.unicode;
 	}
 
 	public int getTileFontWidth() {
-		return this.tileFontWidth;
+		return Math.round(this.tileFontWidth * scale);
 	}
 
 	public int getTileFontHeight() {
-		return this.tileFontHeight;
+		return Math.round(this.tileFontHeight * scale);
 	}
 
 }

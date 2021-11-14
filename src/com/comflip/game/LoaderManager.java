@@ -38,6 +38,7 @@ public class LoaderManager implements AbstractGame {
 		listLayers.add(Layers.game);
 
 		listGUI.add(GUI.cursor);
+		
 	}
 
 	public void update(GameContainer gc, float dt) {
@@ -113,6 +114,12 @@ public class LoaderManager implements AbstractGame {
 			}
 		}
 
+		if(!listSprites.isEmpty()) {
+			for(int i=0; i < listSprites.size(); i++) {
+				
+			}
+		}
+		 
 		r.drawText("Test Engine", 0, 0, 0xFFFFFFFF);
 		r.drawText("FPS: " + FPS, 8, 12, 0xff00ffff);
 		

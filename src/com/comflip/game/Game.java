@@ -15,6 +15,7 @@ public class Game extends Layers {
 	private int heigthWindow;
 
 	ArrayList<Sprites> listSprites = new ArrayList<Sprites>();
+	ArrayList<GameObject> listTextObjects = new ArrayList<GameObject>();
 
 	public Game(String tag) {
 		this.tag = tag;
@@ -36,14 +37,17 @@ public class Game extends Layers {
 
 	public GameObject render(Renderer r) {
 		imageText = r.drawText("welcome to the game!!!", 0, 0, 0);
-
+		listTextObjects.clear();
+		
+		
 		if (!listSprites.isEmpty()) {
 			for (int i = 0; i < listSprites.size(); i++) {
 				listSprites.get(i).render(r).setScale(0.6f);
 			}
 		}
 		r.drawText("welcome to the game!!!", (widthWindow / 2) - (imageText.getWidth() / 2),
-				(heigthWindow / 2) - (imageText.getHeight() / 2), Color.WHITE).setScale(10f);
+				(heigthWindow / 2) - (imageText.getHeight() / 2), Color.WHITE);
+		
 		return null;
 	}
 }

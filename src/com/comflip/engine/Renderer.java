@@ -132,23 +132,27 @@ public class Renderer {
 	}
 
 	public GameObject drawText(String text, int offX, int offY, int color) {
+		insideWindowRender(offX, offY, font.getTileFontWidth(), font.getTileFontHeight());
 		int offset = 0;
+		int nbr = 0;
 
 		for (int i = 0; i < text.length(); i++) {
 			int unicode = text.codePointAt(i) - 32;
 
 			for (int y = 0; y < font.getTileFontHeight(); y++) {
 				for (int x = 0; x < font.getTileFontWidth(); x++) {
-					if (font.getFontImage().getPixel()[(x + font.setUnicode(unicode))
-					                                   + (y + font.getLine(unicode)) * font.getFontImage().getWidth()] == Color.WHITE) {
-						int newX = x + offX + offset;
+					int index = (x + font.setUnicode(unicode))
+							+ (y + font.getLine(unicode)) * font.getFontImage().getWidth();
+					if (font.getFontImage().getPixel()[index] == Color.BLACK) {
+					}
+					if (font.getFontImage().getPixel()[index] == Color.WHITE) {
 						int newY = y + offY;
-						
+						int newX = x + offX + offset;
 						setPixel(newX, newY, color);
 					}
 				}
 			}
-			offset += font.getTileFontWidth()-4;
+			offset += font.getTileFontWidth() - 4;
 		}
 		return new GameObject(font, offset, font.getTileFontHeight());
 	}
