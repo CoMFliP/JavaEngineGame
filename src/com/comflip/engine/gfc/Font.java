@@ -1,9 +1,13 @@
 package com.comflip.engine.gfc;
 
+import java.util.HashMap;
+
 public class Font extends Sprite {
 	public static final Font STANDARD = new Font("/fonts/new-standard.png");
 
 	private Sprite fontImage;
+
+	HashMap<Integer, int[]> mapFont = new HashMap<Integer, int[]>();
 
 	private int unicode;
 
@@ -15,37 +19,21 @@ public class Font extends Sprite {
 		this.tileFontWidth = 12;
 		this.tileFontHeight = 12;
 		this.scale = 1;
-	}
-
-	public Sprite getFontImage() {
-		return this.fontImage;
-	}
-
-	public void setFontImage(Sprite fontImage) {
-		this.fontImage = fontImage;
-	}
-
-	public int getLine(int unicode) {
-		int line = 0;
-		if (unicode <= 32 && unicode >= 0) {
-			line = 0;
-		} else if (unicode > 32 && unicode <= 62) {
-			line = 1;
-		} else if (unicode > 62) {
-			line = 2;
+		
+		for (int tileY = 0; tileY < fontImage.getHeight() / this.tileFontHeight; tileY++) {
+			for (int tileX = 0; tileX < fontImage.getWidth() / this.tileFontWidth; tileX++) {
+				int[] fontPixel = new int[this.tileFontHeight * this.tileFontWidth];
+				unicode++;
+				for (int x = 0; x < this.tileFontWidth; x++) {
+					for (int y = 0; y < this.tileFontHeight; y++) {
+						fontPixel[x + y * this.tileFontWidth] = fontImage.getPixel()[(x + tileX * this.tileFontWidth)
+						+ (y + tileY * this.tileFontHeight) * fontImage.getWidth()];
+					}
+				}
+				this.mapFont.put(unicode, fontPixel);
+				fontPixel = null;
+			}
 		}
-		return getTileFontHeight() * line;
-	}
-
-	public int setUnicode(int unicode) {
-		if (unicode <= 32 && unicode >= 0) {
-			this.unicode = unicode;
-		} else if (unicode > 32 && unicode <= 62) {
-			this.unicode = unicode - 33;
-		} else if (unicode > 62) {
-			this.unicode = unicode - 65;
-		}
-		return getTileFontWidth() * this.unicode;
 	}
 
 	public int getTileFontWidth() {
@@ -56,4 +44,7 @@ public class Font extends Sprite {
 		return Math.round(this.tileFontHeight * scale);
 	}
 
+	public HashMap<Integer, int[]> getMapFont() {
+		return this.mapFont;
+	}
 }

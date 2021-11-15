@@ -20,7 +20,7 @@ public class SpriteTile extends Sprite {
 		}
 		return new Sprite(pixelTile, tileWidht, tileHeight);
 	}
-
+	
 	public int getTileWidth() {
 		return Math.round(this.tileWidht * scale);
 	}
