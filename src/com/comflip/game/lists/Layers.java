@@ -1,8 +1,8 @@
-package com.comflip.game.abstracts;
+package com.comflip.game.lists;
 
-import com.comflip.game.Game;
 import com.comflip.game.LoaderManager;
-import com.comflip.game.Menu;
+import com.comflip.game.layers.Game;
+import com.comflip.game.layers.Menu;
 
 public abstract class Layers extends LoaderManager {
 	public static final Menu menu = new Menu();

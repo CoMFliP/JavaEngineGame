@@ -1,4 +1,4 @@
-package com.comflip.game.abstracts;
+package com.comflip.game.lists;
 
 import com.comflip.game.LoaderManager;
 import com.comflip.game.gui.Button;

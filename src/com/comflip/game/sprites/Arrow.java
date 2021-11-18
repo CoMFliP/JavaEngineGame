@@ -1,4 +1,4 @@
-package com.comflip.game.objects;
+package com.comflip.game.sprites;
 
 import java.awt.event.KeyEvent;
 
@@ -7,7 +7,7 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.SpriteTile;
-import com.comflip.game.abstracts.Sprites;
+import com.comflip.game.lists.Sprites;
 
 public class Arrow extends Sprites {
 	public Arrow(String path, int tileW, int tileH) {

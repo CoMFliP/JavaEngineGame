@@ -5,7 +5,7 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.game.abstracts.GUI;
+import com.comflip.game.lists.GUI;
 
 public class Cursor extends GUI {
 	public Cursor(String path) {

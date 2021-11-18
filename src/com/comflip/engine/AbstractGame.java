@@ -1,6 +1,6 @@
 package com.comflip.engine;
 
 public interface AbstractGame {
-	abstract void update(GameContainer gameContainer, float dt);
-	abstract GameObject render(Renderer renderer);
+	public void update(GameContainer gameContainer, float dt);
+	public GameObject render(Renderer renderer);
 }

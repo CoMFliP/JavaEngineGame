@@ -1,4 +1,4 @@
-package com.comflip.game;
+package com.comflip.game.layers;
 
 import java.util.ArrayList;
 
@@ -6,9 +6,9 @@ import com.comflip.engine.GameContainer;
 import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.game.abstracts.GUI;
-import com.comflip.game.abstracts.Layers;
 import com.comflip.game.gui.Button;
+import com.comflip.game.lists.GUI;
+import com.comflip.game.lists.Layers;
 
 public class Menu extends Layers {
 	private int widthWindow, heigthWindow;

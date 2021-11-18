@@ -9,22 +9,22 @@ import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.gfc.SpriteTile;
-import com.comflip.game.abstracts.GUI;
-import com.comflip.game.abstracts.Layers;
-import com.comflip.game.abstracts.SFX;
-import com.comflip.game.abstracts.Sprites;
+import com.comflip.game.lists.GUI;
+import com.comflip.game.lists.Layers;
+import com.comflip.game.lists.SFX;
+import com.comflip.game.lists.Sprites;
 
 public class LoaderManager implements AbstractGame {
 	public Sprite image;
 	public SpriteTile imageTile;
 	public SoundClip soundClip;
 	
-	protected String tag;
-	protected float frame;
-	protected int indexTileX, indexTileY;
+	public String tag;
+	public float frame;
+	public int indexTileX, indexTileY;
 
-	protected int width, height;
-	protected int posX, posY;
+	public int width, height;
+	public int posX, posY;
 
 	private int FPS;
 
@@ -38,7 +38,6 @@ public class LoaderManager implements AbstractGame {
 		listLayers.add(Layers.game);
 
 		listGUI.add(GUI.cursor);
-		
 	}
 
 	public void update(GameContainer gc, float dt) {
@@ -167,6 +166,9 @@ public class LoaderManager implements AbstractGame {
 
 	public String getTag() {
 		return this.tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 	public float getFrame() {

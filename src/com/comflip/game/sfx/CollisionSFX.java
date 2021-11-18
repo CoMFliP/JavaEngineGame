@@ -1,7 +1,7 @@
 package com.comflip.game.sfx;
 
 import com.comflip.engine.audio.SoundClip;
-import com.comflip.game.abstracts.SFX;
+import com.comflip.game.lists.SFX;
 
 public class CollisionSFX extends SFX {
 

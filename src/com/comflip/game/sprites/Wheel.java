@@ -1,4 +1,4 @@
-package com.comflip.game.objects;
+package com.comflip.game.sprites;
 
 import java.awt.event.KeyEvent;
 
@@ -8,9 +8,9 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.SpriteTile;
-import com.comflip.game.abstracts.GUI;
-import com.comflip.game.abstracts.SFX;
-import com.comflip.game.abstracts.Sprites;
+import com.comflip.game.lists.GUI;
+import com.comflip.game.lists.SFX;
+import com.comflip.game.lists.Sprites;
 
 public class Wheel extends Sprites  {
 	private final int step = 2;
