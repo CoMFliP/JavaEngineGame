@@ -1,39 +1,40 @@
-package com.comflip.game.sprites;
+package com.comflip.game.lists.sprite;
 
 import java.awt.event.KeyEvent;
 
 import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
-import com.comflip.engine.GameObject;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.SpriteTile;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
+import com.comflip.game.lists.gui.Cursor;
 
 public class Wheel extends Sprites  {
 	private final int step = 2;
 
 	public Wheel(String path, int tileWidht, int tileHeight) {
-		imageTile = new SpriteTile(path, tileWidht, tileHeight);
-		tag = getClass().getSimpleName();
+		this.imageTile = new SpriteTile(path, tileWidht, tileHeight);
+		this.tag = getClass().getSimpleName();
 	}
 
 	public void update(GameContainer gc, float dt) {
 		Input input = gc.getInput();
+		Cursor cursor = GUI.CURSOR;
 		
-		int wheelPosX = Sprites.wheel.getPosX();
-		int wheelPosY = Sprites.wheel.getPosY();
+		int wheelPosX = this.posX;
+		int wheelPosY = this.posY;
 
-		int wheelWight = Sprites.wheel.imageTile.getTileWidth();
-		int wheelHeight = Sprites.wheel.imageTile.getTileHeight();
+		int wheelWight = this.imageTile.getTileWidth();
+		int wheelHeight = this.imageTile.getTileHeight();
 
-		int cursorPosX = GUI.cursor.getPosX();
-		int cursorPosY = GUI.cursor.getPosY();
+		int cursorPosX = cursor.posX;
+		int cursorPosY = cursor.posY;
 
-		int cursorWight = GUI.cursor.image.getWidth();
-		int cursorHeight = GUI.cursor.image.getHeight();
+		int cursorWight = cursor.image.getWidth();
+		int cursorHeight = cursor.image.getHeight();
 
 		boolean axisX = Collisions.axisX(wheelPosX, wheelWight, cursorPosX, cursorWight);
 		boolean axisY = Collisions.axisY(wheelPosY, wheelHeight, cursorPosY, cursorHeight);
@@ -93,14 +94,14 @@ public class Wheel extends Sprites  {
 		}
 		
 		if (!animationWheel) {
-			SFX.collisionSFX.soundClip.setVolume(-10);
-			if(!SFX.collisionSFX.soundClip.isRunning()) {
-				SFX.collisionSFX.soundClip.play();				
+			SFX.COLLISION_SFX.soundClip.setVolume(-10);
+			if(!SFX.COLLISION_SFX.soundClip.isRunning()) {
+				SFX.COLLISION_SFX.soundClip.play();				
 			}
 		}
 	}
 	
-	public GameObject render(Renderer r) {
-		return r.drawSpriteTile(imageTile, posX, posY, indexTileX, indexTileY);
+	public void render(Renderer r) {
+		r.drawSpriteTile(imageTile, posX, posY, indexTileX, indexTileY);
 	}
 }

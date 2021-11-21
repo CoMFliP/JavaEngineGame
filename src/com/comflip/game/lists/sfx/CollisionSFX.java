@@ -1,4 +1,4 @@
-package com.comflip.game.sfx;
+package com.comflip.game.lists.sfx;
 
 import com.comflip.engine.audio.SoundClip;
 import com.comflip.game.lists.SFX;

@@ -1,4 +1,4 @@
-package com.comflip.game.gui;
+package com.comflip.game.lists.gui;
 
 import java.awt.event.MouseEvent;
 
@@ -11,30 +11,21 @@ import com.comflip.engine.gfc.Color;
 import com.comflip.game.lists.GUI;
 
 public class Button extends GUI {
-	private String string = "";
-	private GameObject imageText;
-	
+	private String text = "";
+
 	private boolean isActive = false;
 	private boolean isExecute = false;
-
+	
 	public Button(String tag) {
 		this.tag = tag;
 	}
 
 	public void update(GameContainer gameContainer, float dt) {
 		Input input = gameContainer.getInput();
+		Cursor cursor = GUI.CURSOR;
 
-		int buttonPosX = posX;
-		int buttonPosY = posY;
-
-		int buttonWight = width;
-		int buttonHeight = height;
-
-		int cursorPosX = GUI.cursor.getPosX();
-		int cursorPosY = GUI.cursor.getPosY();
-
-		boolean axisX = Collisions.axisX(buttonPosX, buttonWight, cursorPosX, 0);
-		boolean axisY = Collisions.axisY(buttonPosY, buttonHeight, cursorPosY, 0);
+		boolean axisX = Collisions.axisX(this.posX, this.width, cursor.posX, 0);
+		boolean axisY = Collisions.axisY(this.posY, this.height, cursor.posY, 0);
 
 		if (axisX && axisY) {
 			if (input.isButtonDown(MouseEvent.BUTTON1)) {
@@ -51,8 +42,8 @@ public class Button extends GUI {
 		}
 	}
 
-	public GameObject render(Renderer r) {
-		imageText = r.drawText(string, 0, 0, 0);
+	public void render(Renderer r) {
+		GameObject imageText = r.drawText(text, 0, 0, 0);
 
 		if (isActive) {
 			r.drawFillRect(posX, posY, width, height, Color.DARK_GREY);
@@ -62,20 +53,18 @@ public class Button extends GUI {
 			r.drawRect(posX, posY, width, height, Color.DARK_GREY);
 		}
 		
-		r.drawText(string, posX + ((width - imageText.getWidth()) / 2), 
+		r.drawText(text, posX + ((width - imageText.getWidth()) / 2), 
 				posY + ((height - imageText.getHeight()) / 2), Color.WHITE);
-		return null;
 	}
-
-	public void setString(String string) {
-		this.string = string;
-	}
-
+	
 	public boolean isActive() {
-		return isActive;
+		return this.isActive;
 	}
-
 	public boolean isExecute() {
-		return isExecute;
+		return this.isExecute;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
 	}
 }

@@ -45,8 +45,8 @@ public class Sprite extends GameObject {
 
 		this.scale = scale;
 		
-		int scaleWidth = Math.round((image.getWidth() * this.scale));
-		int scaleHeight = Math.round((image.getHeight() * this.scale));
+		int scaleWidth = Math.round((image.getWidth() * scale));
+		int scaleHeight = Math.round((image.getHeight() * scale));
 
 		BufferedImage resizedImage = new BufferedImage(scaleWidth, scaleHeight,
 				BufferedImage.TYPE_INT_ARGB);
