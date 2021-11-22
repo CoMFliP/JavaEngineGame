@@ -64,11 +64,11 @@ public class Game extends Layer {
 		if (!listGUI.isEmpty() && !listCheckers.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
 				GUI elementGui = listGUI.get(i);
+				elementGui.update(gc, dt);
 				if (elementGui.equals(GUI.MAP_BOARD)) {
 					MapBoard mapBoard = (MapBoard) listGUI.get(i);
 					mapBoard.setCheckerList(listCheckers);
 				}
-				elementGui.update(gc, dt);
 			}
 		}
 
