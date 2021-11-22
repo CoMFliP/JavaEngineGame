@@ -15,7 +15,7 @@ public class Button extends GUI {
 
 	private boolean isActive = false;
 	private boolean isExecute = false;
-	
+
 	public Button(String tag) {
 		this.tag = tag;
 	}
@@ -34,10 +34,9 @@ public class Button extends GUI {
 			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
 				isActive = false;
 				isExecute = true;
-			} else {
-				isExecute = false;
 			}
 		} else {
+			isExecute = false;
 			isActive = false;
 		}
 	}
@@ -52,18 +51,19 @@ public class Button extends GUI {
 			r.drawFillRect(posX, posY, width, height, Color.GREY);
 			r.drawRect(posX, posY, width, height, Color.DARK_GREY);
 		}
-		
-		r.drawText(text, posX + ((width - imageText.getWidth()) / 2), 
-				posY + ((height - imageText.getHeight()) / 2), Color.WHITE);
+
+		r.drawText(text, posX + ((width - imageText.getWidth()) / 2), posY + ((height - imageText.getHeight()) / 2),
+				Color.WHITE);
 	}
-	
+
 	public boolean isActive() {
 		return this.isActive;
 	}
+
 	public boolean isExecute() {
 		return this.isExecute;
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}

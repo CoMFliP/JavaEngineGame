@@ -38,11 +38,13 @@ public class Game extends Layer {
 				if (checker.tag.equals("black_normal_" + Integer.toString(i / 2))) {
 					checker.posX = mapBoard.getPossiton(i / 2)[0];
 					checker.posY = mapBoard.getPossiton(i / 2)[1];
+					checker.setIdTileBoard(i / 2);
 				}
 			} else {
 				if (checker.tag.equals("white_normal_" + Integer.toString(i / 2))) {
 					checker.posX = mapBoard.getPossiton(i / 2 + 30)[0];
 					checker.posY = mapBoard.getPossiton(i / 2 + 30)[1];
+					checker.setIdTileBoard(i / 2 + 30);
 				}
 			}
 		}
@@ -59,12 +61,12 @@ public class Game extends Layer {
 			}
 		}
 
-		if (!listGUI.isEmpty()) {
+		if (!listGUI.isEmpty() && !listCheckers.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
 				GUI elementGui = listGUI.get(i);
 				if (elementGui.equals(GUI.MAP_BOARD)) {
 					MapBoard mapBoard = (MapBoard) listGUI.get(i);
-					mapBoard.input(listCheckers);
+					mapBoard.setCheckerList(listCheckers);
 				}
 				elementGui.update(gc, dt);
 			}

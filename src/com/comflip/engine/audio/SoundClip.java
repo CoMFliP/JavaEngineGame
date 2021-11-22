@@ -36,7 +36,7 @@ public class SoundClip {
 			
 			gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 			
-		} catch (UnsupportedAudioFileException | LineUnavailableException |IOException e) {
+		} catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
 			e.printStackTrace();
 		}
 	}
