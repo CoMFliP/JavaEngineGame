@@ -2,9 +2,7 @@ package com.comflip.game.lists.gui;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.PrimitiveIterator.OfDouble;
 
 import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
@@ -21,7 +19,7 @@ public class MapBoard extends GUI {
 	private String currentCheckerTag;
 	private boolean isPickUpChecker;
 
-	int[] listNextIdTileBoard;
+	HashMap<Integer, HashMap<String, Integer>> mapLines;
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -59,23 +57,55 @@ public class MapBoard extends GUI {
 					if (checker.tag.equals(currentCheckerTag)) {
 						boolean isSetIdTileBoard = false;
 
-						for (int j = 0; j < listNextIdTileBoard.length; j++) {
-							if (this.mapBoard.get(listNextIdTileBoard[j]) != null) {
-								int newX = this.mapBoard.get(listNextIdTileBoard[j])[0] - 3;
-								int newY = this.mapBoard.get(listNextIdTileBoard[j])[1] - 3;
+						for (int idLine = 0; idLine < mapLines.size(); idLine++) {
+							HashMap<String, Integer> mapLine = mapLines.get(idLine);
+							for (String status : mapLine.keySet()) {
+								String currentColor = "";
 
-								boolean axisNewX = Collisions.axisX(checker.posX + (checker.width / 2), 0, newX, 29);
-								boolean axisNewY = Collisions.axisY(checker.posY + (checker.height / 2), 0, newY, 29);
+								if (currentCheckerTag.indexOf("white") != -1) {
+									currentColor = "white";
+								}
 
-								if (axisNewX && axisNewY) {
-									checker.posX = newX + 3;
-									checker.posY = newY + 3;
-									checker.setIdTileBoard(listNextIdTileBoard[j]);
-									isSetIdTileBoard = true;
+								if (currentCheckerTag.indexOf("black") != -1) {
+									currentColor = "black";
+								}
+
+								if (status == "empty") {
+									if (mapLine.get(status) != null) {
+										int emptyIdTileBoard = mapLine.get(status);
+										if (this.mapBoard.get(emptyIdTileBoard) != null) {
+											int emptyX = this.mapBoard.get(emptyIdTileBoard)[0] - 3;
+											int emptyY = this.mapBoard.get(emptyIdTileBoard)[1] - 3;
+
+											boolean axisEmptyX = Collisions.axisX(checker.posX + (checker.width / 2), 0,
+													emptyX, 29);
+											boolean axisEmptyY = Collisions.axisY(checker.posY + (checker.height / 2),
+													0, emptyY, 29);
+
+											if (axisEmptyX && axisEmptyY) {
+												checker.posX = emptyX + 3;
+												checker.posY = emptyY + 3;
+												checker.setIdTileBoard(emptyIdTileBoard);
+												isSetIdTileBoard = true;
+
+												for (String checkerColor : mapLine.keySet()) {
+													if (currentColor != checkerColor && checkerColor != "empty") {
+														for (int j = 0; j < listCheckers.size(); j++) {
+															Sprites enemyChecker = listCheckers.get(j);
+															if (enemyChecker.getIdTileBoard() == mapLine
+																	.get(checkerColor)) {
+																listCheckers.remove(enemyChecker);
+																break;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 						}
-
 						if (!isSetIdTileBoard) {
 							checker.posX = this.mapBoard.get(currentIdTileBoard)[0];
 							checker.posY = this.mapBoard.get(currentIdTileBoard)[1];
@@ -91,17 +121,45 @@ public class MapBoard extends GUI {
 		if (isPickUpChecker) {
 			int x = this.mapBoard.get(currentIdTileBoard)[0] - 3;
 			int y = this.mapBoard.get(currentIdTileBoard)[1] - 3;
-			r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FF6666);
-			r.drawRect(x, y, 29, 29, 0xFFCC0000);
+			r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FFFF66);
+			r.drawRect(x, y, 29, 29, 0xFFCCCC00);
 
-			for (int i = 0; i < listNextIdTileBoard.length; i++) {
-				if (this.mapBoard.get(listNextIdTileBoard[i]) != null) {
-					if (this.mapBoard.get(listNextIdTileBoard[i]) != this.mapBoard.get(currentIdTileBoard)) {
-						int newX = this.mapBoard.get(listNextIdTileBoard[i])[0] - 3;
-						int newY = this.mapBoard.get(listNextIdTileBoard[i])[1] - 3;
+			for (int idLine = 0; idLine < mapLines.size(); idLine++) {
+				HashMap<String, Integer> mapLine = mapLines.get(idLine);
+				for (String status : mapLine.keySet()) {
+					String currentColor = "";
 
-						r.drawFillRect(newX + 1, newY + 1, 27, 27, 0x5599DDFF);
-						r.drawRect(newX, newY, 29, 29, 0xFF66CCFF);
+					if (currentCheckerTag.indexOf("white") != -1) {
+						currentColor = "white";
+					}
+
+					if (currentCheckerTag.indexOf("black") != -1) {
+						currentColor = "black";
+					}
+
+					if (status == "empty") {
+						if (mapLine.get(status) != null) {
+							int emptyIdTileBoard = mapLine.get(status);
+							if (this.mapBoard.get(emptyIdTileBoard) != null) {
+								int emptyX = this.mapBoard.get(emptyIdTileBoard)[0] - 3;
+								int emptyY = this.mapBoard.get(emptyIdTileBoard)[1] - 3;
+
+								r.drawFillRect(emptyX + 1, emptyY + 1, 27, 27, 0x5599DDFF);
+								r.drawRect(emptyX, emptyY, 29, 29, 0xFF66CCFF);
+							}
+						}
+					}
+					if (status != currentColor && status != "empty") {
+						if (mapLine.get(status) != null) {
+							int notEmptyIdTileBoard = mapLine.get(status);
+							if (this.mapBoard.get(notEmptyIdTileBoard) != null) {
+								int notEmptyX = this.mapBoard.get(notEmptyIdTileBoard)[0] - 3;
+								int notEmptyY = this.mapBoard.get(notEmptyIdTileBoard)[1] - 3;
+
+								r.drawFillRect(notEmptyX + 1, notEmptyY + 1, 27, 27, 0x55FF6666);
+								r.drawRect(notEmptyX, notEmptyY, 29, 29, 0xFFCC0000);
+							}
+						}
 					}
 				}
 			}
@@ -109,12 +167,12 @@ public class MapBoard extends GUI {
 	}
 
 	private void selectionRules() {
-		ArrayList<Integer> newListNextIdTileBoard = new ArrayList<Integer>();
+		mapLines = new HashMap<Integer, HashMap<String, Integer>>();
 
 		int countMoveUpperLeft = 0;
 		int countMoveUpperRight = 0;
 		int countMoveDownLeft = 0;
-		int countMoveDownRigth = 0;
+		int countMoveDownRight = 0;
 
 		if (currentCheckerTag.indexOf("normal") != -1) {
 			String currentColor = "";
@@ -127,7 +185,7 @@ public class MapBoard extends GUI {
 
 			if (currentCheckerTag.indexOf("black") != -1) {
 				countMoveDownLeft = 1;
-				countMoveDownRigth = 1;
+				countMoveDownRight = 1;
 				currentColor = "black";
 			}
 
@@ -144,123 +202,267 @@ public class MapBoard extends GUI {
 				}
 
 				if (currentColor != checkerColor) {
-					if (currentIdTileBoard % 10 <= 4) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5
-								|| checker.getIdTileBoard() == currentIdTileBoard + 6) {
+					if (currentIdTileBoard % 10 < 4) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
 							countMoveUpperLeft = 2;
-							countMoveDownRigth = 2;
-						} else if (checker.getIdTileBoard() == currentIdTileBoard - 4
-								|| checker.getIdTileBoard() == currentIdTileBoard + 5) {
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 6) {
+							countMoveDownRight = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 4) {
 							countMoveUpperRight = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
 							countMoveDownLeft = 2;
 						}
-					} else if (currentIdTileBoard % 10 >= 5) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 6
-								|| checker.getIdTileBoard() == currentIdTileBoard + 5) {
+					} else if (currentIdTileBoard % 10 > 5) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 6) {
 							countMoveUpperLeft = 2;
-							countMoveDownRigth = 2;
-						} else if (checker.getIdTileBoard() == currentIdTileBoard - 5
-								|| checker.getIdTileBoard() == currentIdTileBoard + 4) {
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownRight = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
 							countMoveUpperRight = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 4) {
 							countMoveDownLeft = 2;
+						}
+					} else if (currentIdTileBoard % 10 == 4) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperLeft = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownLeft = 2;
+						}
+					} else if (currentIdTileBoard % 10 == 5) {
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownRight = 2;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperRight = 2;
+						}
+					}
+				} else {
+					if (currentIdTileBoard % 10 < 4) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperLeft = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 6) {
+							countMoveDownRight = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 4) {
+							countMoveUpperRight = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownLeft = 0;
+						}
+					} else if (currentIdTileBoard % 10 > 5) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 6) {
+							countMoveUpperLeft = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownRight = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperRight = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 4) {
+							countMoveDownLeft = 0;
+						}
+					} else if (currentIdTileBoard % 10 == 4) {
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperLeft = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownLeft = 0;
+						}
+					} else if (currentIdTileBoard % 10 == 5) {
+						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
+							countMoveDownRight = 0;
+						}
+						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
+							countMoveUpperRight = 0;
 						}
 					}
 				}
 			}
 
 		} else if (currentCheckerTag.indexOf("super") != -1) {
-
+			countMoveUpperLeft = 10;
+			countMoveUpperRight = 10;
+			countMoveDownLeft = 10;
+			countMoveDownRight = 10;
 		}
 
+		int checkersInLine;
+
+		checkersInLine = 0;
 		int upperLeft = currentIdTileBoard;
+		HashMap<String, Integer> mapUpperLeft = new HashMap<String, Integer>();
 		for (int i = 0; i < countMoveUpperLeft; i++) {
+			if (upperLeft % 10 == 5 || upperLeft < 5) {
+				mapUpperLeft.clear();
+				break;
+			}
+
 			if (upperLeft % 10 <= 4) {
 				upperLeft -= 5;
 			} else if (upperLeft % 10 > 5) {
 				upperLeft -= 6;
 			}
 
-			newListNextIdTileBoard.add(upperLeft);
+			for (int j = 0; j < listCheckers.size(); j++) {
+				Sprites checker = listCheckers.get(j);
+				if (checker.getIdTileBoard() == upperLeft) {
+					checkersInLine++;
+					if (checkersInLine == 1) {
+						if (checker.tag.indexOf("white") != -1) {
+							mapUpperLeft.put("white", upperLeft);
+						}
 
-			if (upperLeft < 0) {
-				newListNextIdTileBoard.remove((Integer) upperLeft);
-				break;
-			} else if (upperLeft % 10 == 5) {
+						if (checker.tag.indexOf("black") != -1) {
+							mapUpperLeft.put("black", upperLeft);
+						}
+					}
+				}
+			}
+
+			if (checkersInLine < 2) {
+				mapUpperLeft.put("empty", upperLeft);
+			}
+
+			if (checkersInLine == 2) {
+				mapUpperLeft.clear();
 				break;
 			}
 		}
+		mapLines.put(0, mapUpperLeft);
 
+		checkersInLine = 0;
 		int upperRight = currentIdTileBoard;
+		HashMap<String, Integer> mapUpperRight = new HashMap<String, Integer>();
 		for (int i = 0; i < countMoveUpperRight; i++) {
+			if (upperRight % 10 == 4 || upperRight < 5) {
+				mapUpperRight.clear();
+				break;
+			}
+
 			if (upperRight % 10 < 4) {
 				upperRight -= 4;
 			} else if (upperRight % 10 >= 5) {
 				upperRight -= 5;
 			}
 
-			newListNextIdTileBoard.add(upperRight);
+			for (int j = 0; j < listCheckers.size(); j++) {
+				Sprites checker = listCheckers.get(j);
+				if (checker.getIdTileBoard() == upperRight) {
+					checkersInLine++;
+					if (checkersInLine == 1) {
+						if (checker.tag.indexOf("white") != -1) {
+							mapUpperRight.put("white", upperRight);
+						}
 
-			if (upperRight < 0) {
-				newListNextIdTileBoard.remove((Integer) upperRight);
-				break;
-			} else if (upperRight % 10 == 4) {
+						if (checker.tag.indexOf("black") != -1) {
+							mapUpperRight.put("black", upperRight);
+						}
+					}
+				}
+			}
+
+			if (checkersInLine < 2) {
+				mapUpperRight.put("empty", upperRight);
+			}
+
+			if (checkersInLine == 2) {
+				mapUpperRight.clear();
 				break;
 			}
 		}
+		mapLines.put(1, mapUpperRight);
 
+		checkersInLine = 0;
 		int downLeft = currentIdTileBoard;
+		HashMap<String, Integer> mapDownLeft = new HashMap<String, Integer>();
 		for (int i = 0; i < countMoveDownLeft; i++) {
+			if (downLeft % 10 == 5 || downLeft > 44) {
+				mapDownLeft.clear();
+				break;
+			}
 			if (downLeft % 10 <= 4) {
 				downLeft += 5;
 			} else if (downLeft % 10 > 5) {
 				downLeft += 4;
 			}
 
-			newListNextIdTileBoard.add(downLeft);
+			for (int j = 0; j < listCheckers.size(); j++) {
+				Sprites checker = listCheckers.get(j);
+				if (checker.getIdTileBoard() == downLeft) {
+					checkersInLine++;
+					if (checkersInLine == 1) {
+						if (checker.tag.indexOf("white") != -1) {
+							mapDownLeft.put("white", downLeft);
+						}
 
-			if (downLeft > 50) {
-				newListNextIdTileBoard.remove((Integer) downLeft);
-				break;
-			} else if (downLeft % 10 == 5) {
+						if (checker.tag.indexOf("black") != -1) {
+							mapDownLeft.put("black", downLeft);
+						}
+					}
+				}
+			}
+
+			if (checkersInLine < 2) {
+				mapDownLeft.put("empty", downLeft);
+			}
+			
+			if (checkersInLine == 2) {
+				mapDownLeft.clear();
 				break;
 			}
 		}
+		mapLines.put(2, mapDownLeft);
 
+		checkersInLine = 0;
 		int downRight = currentIdTileBoard;
-		for (int i = 0; i < countMoveDownRigth; i++) {
+		HashMap<String, Integer> mapDownRight = new HashMap<String, Integer>();
+		for (int i = 0; i < countMoveDownRight; i++) {
+			if (downRight % 10 == 4 || downRight > 44) {
+				mapDownRight.clear();
+				break;
+			}
+
 			if (downRight % 10 < 4) {
 				downRight += 6;
 			} else if (downRight % 10 >= 5) {
 				downRight += 5;
 			}
 
-			newListNextIdTileBoard.add(downRight);
-
-			if (downRight > 50) {
-				newListNextIdTileBoard.remove((Integer) downRight);
-				break;
-			} else if (downRight % 10 == 4) {
-				break;
-			}
-		}
-
-		Collections.sort(newListNextIdTileBoard);
-
-		listNextIdTileBoard = new int[newListNextIdTileBoard.size()];
-
-		for (int i = 0; i < newListNextIdTileBoard.size(); i++) {
-			listNextIdTileBoard[i] = newListNextIdTileBoard.get(i);
 			for (int j = 0; j < listCheckers.size(); j++) {
 				Sprites checker = listCheckers.get(j);
-				if (checker.getIdTileBoard() == newListNextIdTileBoard.get(i)) {
-					listNextIdTileBoard[i] = -1;
-					break;
+				if (checker.getIdTileBoard() == downRight) {
+					checkersInLine++;
+					if (checkersInLine == 1) {
+						if (checker.tag.indexOf("white") != -1) {
+							mapDownRight.put("white", downRight);
+						}
+						
+						if (checker.tag.indexOf("black") != -1) {
+							mapDownRight.put("black", downRight);
+						}
+					}
 				}
 			}
+
+			if (checkersInLine < 2) {
+				mapDownRight.put("empty", downRight);
+			}
+
+			if (checkersInLine == 2) {
+				mapDownRight.clear();
+				break;
+			}
 		}
-
-		newListNextIdTileBoard.clear();
-
+		mapLines.put(3, mapDownRight);
 	}
 
 	public void setCheckerList(ArrayList<Sprites> listCheckers) {

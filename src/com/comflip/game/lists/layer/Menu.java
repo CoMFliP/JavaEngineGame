@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 import com.comflip.game.lists.gui.Button;
