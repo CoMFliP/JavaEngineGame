@@ -44,12 +44,14 @@ public class Font extends Sprite {
 				int offsetRight = 0;
 
 				for (int i = 0; i < listX.size(); i++) {
-					if (i < listX.size() - 1) {
+					try {
 						if (listX.get(i + 1) - listX.get(i) == 1) {
 							offsetLeft++;
 						} else {
 							break;
 						}
+					} catch (Exception e) {
+						break;
 					}
 				}
 

@@ -2,6 +2,7 @@ package com.comflip.game.lists.gui;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import com.comflip.engine.Collisions;
@@ -17,9 +18,8 @@ public class MapBoard extends GUI {
 	ArrayList<Sprites> listCheckers = new ArrayList<Sprites>();
 	private int currentIdTileBoard;
 	private String currentCheckerTag;
-	private boolean isPickUpChecker;
 
-	HashMap<Integer, HashMap<String, Integer>> mapLines;
+	HashMap<String, HashMap<Integer, String>> mapTravel;
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -48,116 +48,126 @@ public class MapBoard extends GUI {
 				if (checker.isPickUp()) {
 					currentIdTileBoard = checker.getIdTileBoard();
 					currentCheckerTag = checker.tag;
-					isPickUpChecker = true;
 
-					selectionRules();
+					selectionRules(checker);
 				}
 
 				if (input.isButtonUp(MouseEvent.BUTTON1)) {
 					if (checker.tag.equals(currentCheckerTag)) {
 						boolean isSetIdTileBoard = false;
 
-						for (int idLine = 0; idLine < mapLines.size(); idLine++) {
-							HashMap<String, Integer> mapLine = mapLines.get(idLine);
-							for (String status : mapLine.keySet()) {
-								String currentColor = "";
+						for (String line : mapTravel.keySet()) {
+							HashMap<Integer, String> mapLine = mapTravel.get(line);
 
-								if (currentCheckerTag.indexOf("white") != -1) {
-									currentColor = "white";
-								}
+							for (int idTileBoard : mapLine.keySet()) {
 
-								if (currentCheckerTag.indexOf("black") != -1) {
-									currentColor = "black";
-								}
+								String currentColor = currentCheckerTag.split("_")[0];
+								String checkerColor = mapLine.get(idTileBoard);
 
-								if (status == "empty") {
-									if (mapLine.get(status) != null) {
-										int emptyIdTileBoard = mapLine.get(status);
-										if (this.mapBoard.get(emptyIdTileBoard) != null) {
-											int emptyX = this.mapBoard.get(emptyIdTileBoard)[0] - 3;
-											int emptyY = this.mapBoard.get(emptyIdTileBoard)[1] - 3;
+								if (checkerColor.equals("empty")) {
+									int emptyX = this.mapBoard.get(idTileBoard)[0] - 3;
+									int emptyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
-											boolean axisEmptyX = Collisions.axisX(checker.posX + (checker.width / 2), 0,
-													emptyX, 29);
-											boolean axisEmptyY = Collisions.axisY(checker.posY + (checker.height / 2),
-													0, emptyY, 29);
+									boolean axisEmptyX = Collisions.axisX(checker.posX + (checker.width / 2), 0, emptyX,
+											29);
+									boolean axisEmptyY = Collisions.axisY(checker.posY + (checker.height / 2), 0,
+											emptyY, 29);
 
-											if (axisEmptyX && axisEmptyY) {
-												checker.posX = emptyX + 3;
-												checker.posY = emptyY + 3;
-												checker.setIdTileBoard(emptyIdTileBoard);
-												isSetIdTileBoard = true;
+									if (axisEmptyX && axisEmptyY) {
+										checker.posX = emptyX + 3;
+										checker.posY = emptyY + 3;
+										checker.setIdTileBoard(idTileBoard);
+										killChecker(currentColor, checker.getIdTileBoard(), line, mapLine);
+										isSetIdTileBoard = true;
 
-												for (String checkerColor : mapLine.keySet()) {
-													if (currentColor != checkerColor && checkerColor != "empty") {
-														for (int j = 0; j < listCheckers.size(); j++) {
-															Sprites enemyChecker = listCheckers.get(j);
-															if (enemyChecker.getIdTileBoard() == mapLine
-																	.get(checkerColor)) {
-																listCheckers.remove(enemyChecker);
-																break;
-															}
-														}
-													}
-												}
-											}
-										}
+//										System.out.println(line + " " + mapLine + " " + checker.getIdTileBoard()); 
+
+									}
+
+									if (currentColor.equals("white") && checker.getIdTileBoard() <= 4) {
+										checker.tag = currentCheckerTag.replaceAll("normal", "super");
+									} else if (currentColor.equals("black") && checker.getIdTileBoard() >= 45) {
+										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									}
 								}
 							}
 						}
+
 						if (!isSetIdTileBoard) {
 							checker.posX = this.mapBoard.get(currentIdTileBoard)[0];
 							checker.posY = this.mapBoard.get(currentIdTileBoard)[1];
 						}
 					}
-					isPickUpChecker = false;
+				}
+			}
+		}
+	}
+
+	private void killChecker(String currentColor, int currentIdTileBoard, String line,
+			HashMap<Integer, String> mapLine) {
+		for (int enemyIdTileBoard : mapLine.keySet()) {
+			String checkerColor = null;
+			
+			if (line.equals("UL") || line.equals("UR")) {
+				if (currentIdTileBoard < enemyIdTileBoard) {
+					checkerColor = mapLine.get(enemyIdTileBoard);
+				}
+			}
+			
+			if (line.equals("DL") || line.equals("DR")) {
+				if (currentIdTileBoard > enemyIdTileBoard) {
+					checkerColor = mapLine.get(enemyIdTileBoard);
+				}
+			}
+
+			if (checkerColor != null) {
+				if (!currentColor.equals(checkerColor) && !checkerColor.equals("empty")) {
+					for (int i = 0; i < listCheckers.size(); i++) {
+						Sprites enemyChecker = listCheckers.get(i);
+						if (enemyChecker.getIdTileBoard() == enemyIdTileBoard) {
+							listCheckers.remove(enemyChecker);
+							break;
+						}
+					}
 				}
 			}
 		}
 	}
 
 	public void render(Renderer r) {
-		if (isPickUpChecker) {
-			int x = this.mapBoard.get(currentIdTileBoard)[0] - 3;
-			int y = this.mapBoard.get(currentIdTileBoard)[1] - 3;
-			r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FFFF66);
-			r.drawRect(x, y, 29, 29, 0xFFCCCC00);
+		if (!listCheckers.isEmpty()) {
+			for (int i = 0; i < listCheckers.size(); i++) {
+				Sprites checker = listCheckers.get(i);
+				if (checker.isPickUp()) {
+					currentIdTileBoard = checker.getIdTileBoard();
 
-			for (int idLine = 0; idLine < mapLines.size(); idLine++) {
-				HashMap<String, Integer> mapLine = mapLines.get(idLine);
-				for (String status : mapLine.keySet()) {
-					String currentColor = "";
+					int x = this.mapBoard.get(currentIdTileBoard)[0] - 3;
+					int y = this.mapBoard.get(currentIdTileBoard)[1] - 3;
+					r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FFFF66);
+					r.drawRect(x, y, 29, 29, 0xFFCCCC00);
 
-					if (currentCheckerTag.indexOf("white") != -1) {
-						currentColor = "white";
-					}
+					for (String line : mapTravel.keySet()) {
+						HashMap<Integer, String> mapLine = mapTravel.get(line);
 
-					if (currentCheckerTag.indexOf("black") != -1) {
-						currentColor = "black";
-					}
+						for (int idTileBoard : mapLine.keySet()) {
 
-					if (status == "empty") {
-						if (mapLine.get(status) != null) {
-							int emptyIdTileBoard = mapLine.get(status);
-							if (this.mapBoard.get(emptyIdTileBoard) != null) {
-								int emptyX = this.mapBoard.get(emptyIdTileBoard)[0] - 3;
-								int emptyY = this.mapBoard.get(emptyIdTileBoard)[1] - 3;
+							String currentColor = currentCheckerTag.split("_")[0];
+							String checkerColor = mapLine.get(idTileBoard);
+
+							if (checkerColor.equals("empty")) {
+								int emptyX = this.mapBoard.get(idTileBoard)[0] - 3;
+								int emptyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
 								r.drawFillRect(emptyX + 1, emptyY + 1, 27, 27, 0x5599DDFF);
 								r.drawRect(emptyX, emptyY, 29, 29, 0xFF66CCFF);
 							}
-						}
-					}
-					if (status != currentColor && status != "empty") {
-						if (mapLine.get(status) != null) {
-							int notEmptyIdTileBoard = mapLine.get(status);
-							if (this.mapBoard.get(notEmptyIdTileBoard) != null) {
-								int notEmptyX = this.mapBoard.get(notEmptyIdTileBoard)[0] - 3;
-								int notEmptyY = this.mapBoard.get(notEmptyIdTileBoard)[1] - 3;
 
-								r.drawFillRect(notEmptyX + 1, notEmptyY + 1, 27, 27, 0x55FF6666);
-								r.drawRect(notEmptyX, notEmptyY, 29, 29, 0xFFCC0000);
+							if (!checkerColor.equals(currentColor) && !checkerColor.equals("empty")) {
+								int enemyX = this.mapBoard.get(idTileBoard)[0] - 3;
+								int enemyY = this.mapBoard.get(idTileBoard)[1] - 3;
+
+								r.drawFillRect(enemyX + 1, enemyY + 1, 27, 27, 0x55FF6666);
+								r.drawRect(enemyX, enemyY, 29, 29, 0xFFCC0000);
 							}
 						}
 					}
@@ -166,303 +176,310 @@ public class MapBoard extends GUI {
 		}
 	}
 
-	private void selectionRules() {
-		mapLines = new HashMap<Integer, HashMap<String, Integer>>();
+	private void selectionRules(Sprites checker) {
+		String colorChecker = checker.tag.split("_")[0];
+		String modeChecker = checker.tag.split("_")[1];
+		int positionChecker = checker.getIdTileBoard();
 
-		int countMoveUpperLeft = 0;
-		int countMoveUpperRight = 0;
-		int countMoveDownLeft = 0;
-		int countMoveDownRight = 0;
+		mapTravel = hashMapLines(positionChecker);
 
-		if (currentCheckerTag.indexOf("normal") != -1) {
-			String currentColor = "";
+		if (modeChecker.equals("normal")) {
+			modeSelection(colorChecker, modeChecker, mapTravel);
 
-			if (currentCheckerTag.indexOf("white") != -1) {
-				countMoveUpperLeft = 1;
-				countMoveUpperRight = 1;
-				currentColor = "white";
-			}
-
-			if (currentCheckerTag.indexOf("black") != -1) {
-				countMoveDownLeft = 1;
-				countMoveDownRight = 1;
-				currentColor = "black";
-			}
-
-			for (int j = 0; j < listCheckers.size(); j++) {
-				Sprites checker = listCheckers.get(j);
-				String checkerColor = "";
-
-				if (checker.tag.indexOf("white") != -1) {
-					checkerColor = "white";
-				}
-
-				if (checker.tag.indexOf("black") != -1) {
-					checkerColor = "black";
-				}
-
-				if (currentColor != checkerColor) {
-					if (currentIdTileBoard % 10 < 4) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperLeft = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 6) {
-							countMoveDownRight = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 4) {
-							countMoveUpperRight = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownLeft = 2;
-						}
-					} else if (currentIdTileBoard % 10 > 5) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 6) {
-							countMoveUpperLeft = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownRight = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperRight = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 4) {
-							countMoveDownLeft = 2;
-						}
-					} else if (currentIdTileBoard % 10 == 4) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperLeft = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownLeft = 2;
-						}
-					} else if (currentIdTileBoard % 10 == 5) {
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownRight = 2;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperRight = 2;
-						}
-					}
-				} else {
-					if (currentIdTileBoard % 10 < 4) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperLeft = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 6) {
-							countMoveDownRight = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 4) {
-							countMoveUpperRight = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownLeft = 0;
-						}
-					} else if (currentIdTileBoard % 10 > 5) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 6) {
-							countMoveUpperLeft = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownRight = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperRight = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 4) {
-							countMoveDownLeft = 0;
-						}
-					} else if (currentIdTileBoard % 10 == 4) {
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperLeft = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownLeft = 0;
-						}
-					} else if (currentIdTileBoard % 10 == 5) {
-						if (checker.getIdTileBoard() == currentIdTileBoard + 5) {
-							countMoveDownRight = 0;
-						}
-						if (checker.getIdTileBoard() == currentIdTileBoard - 5) {
-							countMoveUpperRight = 0;
-						}
-					}
-				}
-			}
-
-		} else if (currentCheckerTag.indexOf("super") != -1) {
-			countMoveUpperLeft = 10;
-			countMoveUpperRight = 10;
-			countMoveDownLeft = 10;
-			countMoveDownRight = 10;
+		} else if (modeChecker.equals("super")) {
+			modeSelection(colorChecker, modeChecker, mapTravel);
 		}
+	}
 
-		int checkersInLine;
+	private void modeSelection(String colorChecker, String modeChecker,
+			HashMap<String, HashMap<Integer, String>> mapTravel) {
 
-		checkersInLine = 0;
-		int upperLeft = currentIdTileBoard;
-		HashMap<String, Integer> mapUpperLeft = new HashMap<String, Integer>();
-		for (int i = 0; i < countMoveUpperLeft; i++) {
-			if (upperLeft % 10 == 5 || upperLeft < 5) {
-				mapUpperLeft.clear();
-				break;
+		for (String line : mapTravel.keySet()) {
+			HashMap<Integer, String> newMapLine = new HashMap<Integer, String>();
+			ArrayList<Integer> newListKeys = new ArrayList<Integer>();
+
+			HashMap<Integer, String> mapLine = mapTravel.get(line);
+
+			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
+
+			if (line.equals("DL") || line.equals("DR")) {
+				Collections.sort(listKeys);
 			}
 
+			if (line.equals("UL") || line.equals("UR")) {
+				Collections.sort(listKeys, Collections.reverseOrder());
+			}
+
+			if (modeChecker.equals("normal")) {
+				for (int i = 0; i < listKeys.size(); i++) {
+					newListKeys.add(listKeys.get(i));
+					if (newListKeys.size() == 2) {
+						break;
+					}
+				}
+			}
+
+			if (modeChecker.equals("super")) {
+				for (int i = 0; i < listKeys.size(); i++) {
+					newListKeys.add(listKeys.get(i));
+				}
+			}
+
+			for (int i = 0; i < newListKeys.size(); i++) {
+				try {
+					int firstKey = newListKeys.get(i);
+					int secondKey = newListKeys.get(i + 1);
+
+					if (modeChecker.equals("normal")) {
+						if (colorChecker.equals("white")) {
+							if (line.equals("UL") || line.equals("UR")) {
+								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+									newMapLine.put(firstKey, mapLine.get(firstKey));
+									break;
+								}
+								if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+									newMapLine.put(firstKey, mapLine.get(firstKey));
+									break;
+								}
+							}
+							if (line.equals("DL") || line.equals("DR")) {
+								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+									break;
+								}
+							}
+						}
+
+						if (colorChecker.equals("black")) {
+							if (line.equals("DL") || line.equals("DR")) {
+								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+									newMapLine.put(firstKey, mapLine.get(firstKey));
+									break;
+								}
+								if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+									newMapLine.put(firstKey, mapLine.get(firstKey));
+									break;
+								}
+							}
+							if (line.equals("UL") || line.equals("UR")) {
+								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+									break;
+								}
+							}
+						}
+
+						if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+							newMapLine.put(secondKey, mapLine.get(secondKey));
+							break;
+						}
+
+					}
+
+					if (modeChecker.equals("super")) {
+						if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+							newMapLine.put(secondKey, mapLine.get(secondKey));
+						}
+						if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+						}
+
+						if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+							newMapLine.put(secondKey, mapLine.get(secondKey));
+						}
+					}
+
+					if (mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
+						break;
+					}
+
+					if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+						break;
+					}
+
+				} catch (Exception e) {
+					break;
+				}
+			}
+
+			if (newListKeys.size() == 1) {
+				int key = newListKeys.get(0);
+				if (modeChecker.equals("normal")) {
+					if (colorChecker.equals("white")) {
+						if (line.equals("UL") || line.equals("UR")) {
+							if (mapLine.get(key).equals("empty")) {
+								newMapLine.put(key, mapLine.get(key));
+							}
+						}
+					}
+
+					if (colorChecker.equals("black")) {
+						if (line.equals("DL") || line.equals("DR")) {
+							if (mapLine.get(key).equals("empty")) {
+								newMapLine.put(key, mapLine.get(key));
+							}
+						}
+					}
+				}
+
+				if (modeChecker.equals("super")) {
+					if (mapLine.get(key).equals("empty")) {
+						newMapLine.put(key, mapLine.get(key));
+					}
+				}
+			}
+
+			mapTravel.put(line, newMapLine);
+		}
+	}
+
+	private HashMap<String, HashMap<Integer, String>> hashMapLines(int positionChecker) {
+		HashMap<String, HashMap<Integer, String>> hashMapLines = new HashMap<String, HashMap<Integer, String>>();
+
+		int upperLeft = positionChecker;
+		HashMap<Integer, String> mapUpperLeft = new HashMap<Integer, String>();
+		for (int i = 0; i < 10; i++) {
 			if (upperLeft % 10 <= 4) {
 				upperLeft -= 5;
 			} else if (upperLeft % 10 > 5) {
 				upperLeft -= 6;
 			}
 
+			if (upperLeft < 0) {
+				break;
+			}
+
+			mapUpperLeft.put(upperLeft, "empty");
+
 			for (int j = 0; j < listCheckers.size(); j++) {
 				Sprites checker = listCheckers.get(j);
+				String checkerColor = checker.tag.split("_")[0];
 				if (checker.getIdTileBoard() == upperLeft) {
-					checkersInLine++;
-					if (checkersInLine == 1) {
-						if (checker.tag.indexOf("white") != -1) {
-							mapUpperLeft.put("white", upperLeft);
-						}
+					if (checkerColor.equals("white")) {
+						mapUpperLeft.put(upperLeft, "white");
+					}
 
-						if (checker.tag.indexOf("black") != -1) {
-							mapUpperLeft.put("black", upperLeft);
-						}
+					if (checkerColor.equals("black")) {
+						mapUpperLeft.put(upperLeft, "black");
 					}
 				}
 			}
 
-			if (checkersInLine < 2) {
-				mapUpperLeft.put("empty", upperLeft);
-			}
-
-			if (checkersInLine == 2) {
-				mapUpperLeft.clear();
+			if (upperLeft % 10 == 5 || upperLeft <= 4) {
 				break;
 			}
 		}
-		mapLines.put(0, mapUpperLeft);
+		hashMapLines.put("UL", mapUpperLeft);
 
-		checkersInLine = 0;
-		int upperRight = currentIdTileBoard;
-		HashMap<String, Integer> mapUpperRight = new HashMap<String, Integer>();
-		for (int i = 0; i < countMoveUpperRight; i++) {
-			if (upperRight % 10 == 4 || upperRight < 5) {
-				mapUpperRight.clear();
-				break;
-			}
-
+		int upperRight = positionChecker;
+		HashMap<Integer, String> mapUpperRight = new HashMap<Integer, String>();
+		for (int i = 0; i < 10; i++) {
 			if (upperRight % 10 < 4) {
 				upperRight -= 4;
 			} else if (upperRight % 10 >= 5) {
 				upperRight -= 5;
 			}
 
+			if (upperRight < 0) {
+				break;
+			}
+
+			mapUpperRight.put(upperRight, "empty");
+
 			for (int j = 0; j < listCheckers.size(); j++) {
 				Sprites checker = listCheckers.get(j);
+				String checkerColor = checker.tag.split("_")[0];
 				if (checker.getIdTileBoard() == upperRight) {
-					checkersInLine++;
-					if (checkersInLine == 1) {
-						if (checker.tag.indexOf("white") != -1) {
-							mapUpperRight.put("white", upperRight);
-						}
+					if (checkerColor.equals("white")) {
+						mapUpperRight.put(upperRight, "white");
+					}
 
-						if (checker.tag.indexOf("black") != -1) {
-							mapUpperRight.put("black", upperRight);
-						}
+					if (checkerColor.equals("black")) {
+						mapUpperRight.put(upperRight, "black");
 					}
 				}
 			}
 
-			if (checkersInLine < 2) {
-				mapUpperRight.put("empty", upperRight);
-			}
-
-			if (checkersInLine == 2) {
-				mapUpperRight.clear();
+			if (upperRight % 10 == 4 || upperRight <= 4) {
 				break;
 			}
 		}
-		mapLines.put(1, mapUpperRight);
+		hashMapLines.put("UR", mapUpperRight);
 
-		checkersInLine = 0;
-		int downLeft = currentIdTileBoard;
-		HashMap<String, Integer> mapDownLeft = new HashMap<String, Integer>();
-		for (int i = 0; i < countMoveDownLeft; i++) {
-			if (downLeft % 10 == 5 || downLeft > 44) {
-				mapDownLeft.clear();
-				break;
-			}
+		int downLeft = positionChecker;
+		HashMap<Integer, String> mapDownLeft = new HashMap<Integer, String>();
+		for (int i = 0; i < 10; i++) {
 			if (downLeft % 10 <= 4) {
 				downLeft += 5;
 			} else if (downLeft % 10 > 5) {
 				downLeft += 4;
 			}
 
+			if (downLeft > 49) {
+				break;
+			}
+
+			mapDownLeft.put(downLeft, "empty");
+
 			for (int j = 0; j < listCheckers.size(); j++) {
 				Sprites checker = listCheckers.get(j);
+				String checkerColor = checker.tag.split("_")[0];
 				if (checker.getIdTileBoard() == downLeft) {
-					checkersInLine++;
-					if (checkersInLine == 1) {
-						if (checker.tag.indexOf("white") != -1) {
-							mapDownLeft.put("white", downLeft);
-						}
+					if (checkerColor.equals("white")) {
+						mapDownLeft.put(downLeft, "white");
+					}
 
-						if (checker.tag.indexOf("black") != -1) {
-							mapDownLeft.put("black", downLeft);
-						}
+					if (checkerColor.equals("black")) {
+						mapDownLeft.put(downLeft, "black");
 					}
 				}
 			}
 
-			if (checkersInLine < 2) {
-				mapDownLeft.put("empty", downLeft);
-			}
-			
-			if (checkersInLine == 2) {
-				mapDownLeft.clear();
+			if (downLeft % 10 == 5 || downLeft >= 45) {
 				break;
 			}
+
 		}
-		mapLines.put(2, mapDownLeft);
+		hashMapLines.put("DL", mapDownLeft);
 
-		checkersInLine = 0;
-		int downRight = currentIdTileBoard;
-		HashMap<String, Integer> mapDownRight = new HashMap<String, Integer>();
-		for (int i = 0; i < countMoveDownRight; i++) {
-			if (downRight % 10 == 4 || downRight > 44) {
-				mapDownRight.clear();
-				break;
-			}
-
+		int downRight = positionChecker;
+		HashMap<Integer, String> mapDownRight = new HashMap<Integer, String>();
+		for (int i = 0; i < 10; i++) {
 			if (downRight % 10 < 4) {
 				downRight += 6;
 			} else if (downRight % 10 >= 5) {
 				downRight += 5;
 			}
 
+			if (downRight > 49) {
+				break;
+			}
+
+			mapDownRight.put(downRight, "empty");
+
 			for (int j = 0; j < listCheckers.size(); j++) {
 				Sprites checker = listCheckers.get(j);
+				String checkerColor = checker.tag.split("_")[0];
 				if (checker.getIdTileBoard() == downRight) {
-					checkersInLine++;
-					if (checkersInLine == 1) {
-						if (checker.tag.indexOf("white") != -1) {
-							mapDownRight.put("white", downRight);
-						}
-						
-						if (checker.tag.indexOf("black") != -1) {
-							mapDownRight.put("black", downRight);
-						}
+					if (checkerColor.equals("white")) {
+						mapDownRight.put(downRight, "white");
+					}
+
+					if (checkerColor.equals("black")) {
+						mapDownRight.put(downRight, "black");
 					}
 				}
 			}
 
-			if (checkersInLine < 2) {
-				mapDownRight.put("empty", downRight);
-			}
-
-			if (checkersInLine == 2) {
-				mapDownRight.clear();
+			if (downRight % 10 == 4 || downRight >= 45) {
 				break;
 			}
+
 		}
-		mapLines.put(3, mapDownRight);
+		hashMapLines.put("DR", mapDownRight);
+
+		return hashMapLines;
 	}
 
 	public void setCheckerList(ArrayList<Sprites> listCheckers) {
