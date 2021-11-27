@@ -10,6 +10,7 @@ import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.game.lists.GUI;
+import com.comflip.game.lists.Layer;
 import com.comflip.game.lists.Sprites;
 
 public class MapBoard extends GUI {
@@ -20,6 +21,7 @@ public class MapBoard extends GUI {
 	private String currentCheckerTag;
 
 	HashMap<String, HashMap<Integer, String>> mapTravel;
+	boolean isEnemy = false;
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -76,12 +78,11 @@ public class MapBoard extends GUI {
 									if (axisEmptyX && axisEmptyY) {
 										checker.posX = emptyX + 3;
 										checker.posY = emptyY + 3;
+//										System.out.println(currentColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cells."); 
 										checker.setIdTileBoard(idTileBoard);
 										killChecker(currentColor, checker.getIdTileBoard(), line, mapLine);
+										Layer.GAME.changeTurn(currentColor);
 										isSetIdTileBoard = true;
-
-//										System.out.println(line + " " + mapLine + " " + checker.getIdTileBoard()); 
-
 									}
 
 									if (currentColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -89,6 +90,7 @@ public class MapBoard extends GUI {
 									} else if (currentColor.equals("black") && checker.getIdTileBoard() >= 45) {
 										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									}
+									isEnemy = false;
 								}
 							}
 						}
@@ -107,13 +109,13 @@ public class MapBoard extends GUI {
 			HashMap<Integer, String> mapLine) {
 		for (int enemyIdTileBoard : mapLine.keySet()) {
 			String checkerColor = null;
-			
+
 			if (line.equals("UL") || line.equals("UR")) {
 				if (currentIdTileBoard < enemyIdTileBoard) {
 					checkerColor = mapLine.get(enemyIdTileBoard);
 				}
 			}
-			
+
 			if (line.equals("DL") || line.equals("DR")) {
 				if (currentIdTileBoard > enemyIdTileBoard) {
 					checkerColor = mapLine.get(enemyIdTileBoard);
@@ -182,19 +184,16 @@ public class MapBoard extends GUI {
 		int positionChecker = checker.getIdTileBoard();
 
 		mapTravel = hashMapLines(positionChecker);
-
-		if (modeChecker.equals("normal")) {
-			modeSelection(colorChecker, modeChecker, mapTravel);
-
-		} else if (modeChecker.equals("super")) {
-			modeSelection(colorChecker, modeChecker, mapTravel);
-		}
+		modeSelection(colorChecker, modeChecker, mapTravel);
 	}
+
+	
 
 	private void modeSelection(String colorChecker, String modeChecker,
 			HashMap<String, HashMap<Integer, String>> mapTravel) {
 
-		for (String line : mapTravel.keySet()) {
+		for (String line : mapTravel.keySet()) {			
+			
 			HashMap<Integer, String> newMapLine = new HashMap<Integer, String>();
 			ArrayList<Integer> newListKeys = new ArrayList<Integer>();
 
@@ -231,65 +230,58 @@ public class MapBoard extends GUI {
 					int secondKey = newListKeys.get(i + 1);
 
 					if (modeChecker.equals("normal")) {
+
+						firstKey = newListKeys.get(0);
+						secondKey = newListKeys.get(1);
+
+						if (!mapLine.get(firstKey).equals(colorChecker) 
+								&& !mapLine.get(firstKey).equals("empty")
+								&& mapLine.get(secondKey).equals("empty")) {
+							
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+							newMapLine.put(secondKey, mapLine.get(secondKey));
+							
+							isEnemy = true;
+						}
+
 						if (colorChecker.equals("white")) {
-							if (line.equals("UL") || line.equals("UR")) {
-								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+							if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
+								if (line.equals("UL") || line.equals("UR")) {
 									newMapLine.put(firstKey, mapLine.get(firstKey));
-									break;
-								}
-								if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
-									newMapLine.put(firstKey, mapLine.get(firstKey));
-									break;
-								}
-							}
-							if (line.equals("DL") || line.equals("DR")) {
-								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
-									break;
 								}
 							}
 						}
 
 						if (colorChecker.equals("black")) {
-							if (line.equals("DL") || line.equals("DR")) {
-								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+							if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
+								if (line.equals("DL") || line.equals("DR")) {
 									newMapLine.put(firstKey, mapLine.get(firstKey));
-									break;
-								}
-								if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
-									newMapLine.put(firstKey, mapLine.get(firstKey));
-									break;
-								}
-							}
-							if (line.equals("UL") || line.equals("UR")) {
-								if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
-									break;
 								}
 							}
 						}
-
-						if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-							newMapLine.put(secondKey, mapLine.get(secondKey));
-							break;
-						}
-
 					}
 
 					if (modeChecker.equals("super")) {
-						if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty")) {
+						if (!mapLine.get(firstKey).equals(colorChecker) 
+								&& !mapLine.get(firstKey).equals("empty")
+								&& mapLine.get(secondKey).equals("empty")) {
+							newMapLine.put(firstKey, mapLine.get(firstKey));
+							newMapLine.put(secondKey, mapLine.get(secondKey));
+							
+							isEnemy = true;
+						}
+
+						if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty") && !isEnemy) {
 							newMapLine.put(firstKey, mapLine.get(firstKey));
 							newMapLine.put(secondKey, mapLine.get(secondKey));
 						}
-						if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+						
+						if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty") && !isEnemy) {
 							newMapLine.put(firstKey, mapLine.get(firstKey));
 						}
 
-						if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-							newMapLine.put(secondKey, mapLine.get(secondKey));
-						}
 					}
-
+					
 					if (mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
 						break;
 					}
@@ -297,7 +289,7 @@ public class MapBoard extends GUI {
 					if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
 						break;
 					}
-
+					
 				} catch (Exception e) {
 					break;
 				}
@@ -306,7 +298,7 @@ public class MapBoard extends GUI {
 			if (newListKeys.size() == 1) {
 				int key = newListKeys.get(0);
 				if (modeChecker.equals("normal")) {
-					if (colorChecker.equals("white")) {
+					if (colorChecker.equals("white") && !isEnemy) {
 						if (line.equals("UL") || line.equals("UR")) {
 							if (mapLine.get(key).equals("empty")) {
 								newMapLine.put(key, mapLine.get(key));
@@ -314,7 +306,7 @@ public class MapBoard extends GUI {
 						}
 					}
 
-					if (colorChecker.equals("black")) {
+					if (colorChecker.equals("black") && !isEnemy) {
 						if (line.equals("DL") || line.equals("DR")) {
 							if (mapLine.get(key).equals("empty")) {
 								newMapLine.put(key, mapLine.get(key));
@@ -323,7 +315,7 @@ public class MapBoard extends GUI {
 					}
 				}
 
-				if (modeChecker.equals("super")) {
+				if (modeChecker.equals("super") && !isEnemy) {
 					if (mapLine.get(key).equals("empty")) {
 						newMapLine.put(key, mapLine.get(key));
 					}
@@ -337,6 +329,7 @@ public class MapBoard extends GUI {
 	private HashMap<String, HashMap<Integer, String>> hashMapLines(int positionChecker) {
 		HashMap<String, HashMap<Integer, String>> hashMapLines = new HashMap<String, HashMap<Integer, String>>();
 
+		// Calculating cells along the diagonal
 		int upperLeft = positionChecker;
 		HashMap<Integer, String> mapUpperLeft = new HashMap<Integer, String>();
 		for (int i = 0; i < 10; i++) {
@@ -372,6 +365,7 @@ public class MapBoard extends GUI {
 		}
 		hashMapLines.put("UL", mapUpperLeft);
 
+		// Calculating cells along the diagonal
 		int upperRight = positionChecker;
 		HashMap<Integer, String> mapUpperRight = new HashMap<Integer, String>();
 		for (int i = 0; i < 10; i++) {
@@ -407,6 +401,7 @@ public class MapBoard extends GUI {
 		}
 		hashMapLines.put("UR", mapUpperRight);
 
+		// Calculating cells along the diagonal
 		int downLeft = positionChecker;
 		HashMap<Integer, String> mapDownLeft = new HashMap<Integer, String>();
 		for (int i = 0; i < 10; i++) {
@@ -443,6 +438,7 @@ public class MapBoard extends GUI {
 		}
 		hashMapLines.put("DL", mapDownLeft);
 
+		// Calculating cells along the diagonal
 		int downRight = positionChecker;
 		HashMap<Integer, String> mapDownRight = new HashMap<Integer, String>();
 		for (int i = 0; i < 10; i++) {

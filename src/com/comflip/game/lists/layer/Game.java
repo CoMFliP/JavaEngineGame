@@ -17,6 +17,8 @@ public class Game extends Layer {
 
 	ArrayList<Sprites> listCheckers = new ArrayList<Sprites>();
 	ArrayList<GUI> listGUI = new ArrayList<GUI>();
+	
+	private String firstMove = "white";
 
 	public Game(String tag) {
 		this.tag = tag;
@@ -51,13 +53,15 @@ public class Game extends Layer {
 
 		listGUI.add(GUI.MAP_BOARD);
 	}
-
+	
 	public void update(GameContainer gc, float dt) {
-
+		
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
-				checker.update(gc, dt);
+//				if(!firstMove.equals(checker.tag.split("_")[0])) {
+					checker.update(gc, dt);
+//				}
 			}
 		}
 
@@ -71,7 +75,6 @@ public class Game extends Layer {
 				}
 			}
 		}
-
 	}
 
 	public void render(Renderer r) {
@@ -96,5 +99,11 @@ public class Game extends Layer {
 				}
 			}
 		}
+		
+//		r.drawFillRect(0, 0, widthWindow, heigthWindow, 0x88000000);
+	}
+
+	public void changeTurn(String currentColor) {
+		firstMove = currentColor;
 	}
 }
