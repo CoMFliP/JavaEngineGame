@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -17,8 +18,8 @@ public class Game extends Layer {
 
 	ArrayList<Sprites> listCheckers = new ArrayList<Sprites>();
 	ArrayList<GUI> listGUI = new ArrayList<GUI>();
-	
-	private String firstMove = "white";
+
+	private String canMove = "white";
 
 	public Game(String tag) {
 		this.tag = tag;
@@ -53,15 +54,15 @@ public class Game extends Layer {
 
 		listGUI.add(GUI.MAP_BOARD);
 	}
-	
+
 	public void update(GameContainer gc, float dt) {
-		
+
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
-//				if(!firstMove.equals(checker.tag.split("_")[0])) {
+				if (canMove.equals(checker.tag.split("_")[0])) {
 					checker.update(gc, dt);
-//				}
+				}
 			}
 		}
 
@@ -91,6 +92,10 @@ public class Game extends Layer {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
 				checker.render(r);
+
+				if (canMove.equals(checker.tag.split("_")[0])) {
+					r.drawText(canMove.toUpperCase(), 10, 30, Color.WHITE);
+				}
 			}
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
@@ -99,11 +104,16 @@ public class Game extends Layer {
 				}
 			}
 		}
-		
+
 //		r.drawFillRect(0, 0, widthWindow, heigthWindow, 0x88000000);
 	}
 
-	public void changeTurn(String currentColor) {
-		firstMove = currentColor;
+	public void nextMove(String currentColor) {
+		if (currentColor.equals("white")) {
+			this.canMove = "black";
+		}
+		if (currentColor.equals("black")) {
+			this.canMove = "white";
+		}
 	}
 }
