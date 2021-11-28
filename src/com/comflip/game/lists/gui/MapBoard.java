@@ -183,6 +183,7 @@ public class MapBoard extends GUI {
 			HashMap<String, HashMap<Integer, String>> hashMapLines) {
 
 		boolean isEnemy = false;
+		ArrayList<String> listKeysEnemy = new ArrayList<String>();
 
 		// Search for the enemy in line and return line where enemy
 		for (String line : hashMapLines.keySet()) {
@@ -214,11 +215,16 @@ public class MapBoard extends GUI {
 				if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
 						&& mapLine.get(secondKey).equals("empty")) {
 					isEnemy = true;
-
+					listKeysEnemy.add(line);
+				}
+				
+				if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+					break;
 				}
 			}
 		}
 
+		
 		for (String line : hashMapLines.keySet()) {
 			HashMap<Integer, String> newMapLine = new HashMap<Integer, String>();
 
@@ -256,11 +262,25 @@ public class MapBoard extends GUI {
 						}
 					}
 
-					if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
-							&& mapLine.get(secondKey).equals("empty") && isEnemy) {
+					if (isEnemy) {
+						for (String lineEnemy : listKeysEnemy) {
+							if (line.equals(lineEnemy)) {
+								newMapLine.put(firstKey, mapLine.get(firstKey));
+								newMapLine.put(secondKey, mapLine.get(secondKey));
+							}
+						}
+					}
+					
+					if (mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
+						newMapLine.remove(firstKey);
+						newMapLine.remove(secondKey);
+						break;
+					}
 
-						newMapLine.put(firstKey, mapLine.get(firstKey));
-						newMapLine.put(secondKey, mapLine.get(secondKey));
+					if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+						newMapLine.remove(firstKey);
+						newMapLine.remove(secondKey);
+						break;
 					}
 				}
 
@@ -276,16 +296,38 @@ public class MapBoard extends GUI {
 						newMapLine.put(firstKey, mapLine.get(firstKey));
 					}
 
-					if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty") && isEnemy) {
-						newMapLine.put(firstKey, mapLine.get(firstKey));
-						newMapLine.put(secondKey, mapLine.get(secondKey));
+					if (isEnemy) {
+
+						for (String lineEnemy : listKeysEnemy) {
+
+							if (line.equals(lineEnemy)) {
+								if (!mapLine.get(firstKey).equals("empty")) {
+									
+									for (int j = i; j < listKeys.size(); j++) {
+										int nextKey = listKeys.get(j);
+									
+										if (j == listKeys.size() - 1) {
+											if (!mapLine.get(nextKey).equals("empty")) {
+												break;
+											}
+										}
+										
+										newMapLine.put(nextKey, mapLine.get(nextKey));
+									}
+								}
+							}
+						}
 					}
 
 					if (mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
+						newMapLine.remove(firstKey);
+						newMapLine.remove(secondKey);
 						break;
 					}
 
 					if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+						newMapLine.remove(firstKey);
+						newMapLine.remove(secondKey);
 						break;
 					}
 				}
