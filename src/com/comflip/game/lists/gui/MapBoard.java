@@ -20,8 +20,7 @@ public class MapBoard extends GUI {
 	private int currentIdTileBoard;
 	private String currentCheckerTag;
 
-	HashMap<String, HashMap<Integer, String>> mapTravel;
-	boolean isEnemy = false;
+	HashMap<String, HashMap<Integer, String>> mapTravel = new HashMap<String, HashMap<Integer, String>>();
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -51,7 +50,10 @@ public class MapBoard extends GUI {
 					currentIdTileBoard = checker.getIdTileBoard();
 					currentCheckerTag = checker.tag;
 
-					selectionRules(checker);
+					String colorChecker = currentCheckerTag.split("_")[0];
+					String modeChecker = currentCheckerTag.split("_")[1];
+
+					modeSelection(colorChecker, modeChecker, hashMapLines(currentIdTileBoard));
 				}
 
 				if (input.isButtonUp(MouseEvent.BUTTON1)) {
@@ -90,7 +92,6 @@ public class MapBoard extends GUI {
 									} else if (currentColor.equals("black") && checker.getIdTileBoard() >= 45) {
 										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									}
-									isEnemy = false;
 								}
 							}
 						}
@@ -178,27 +179,50 @@ public class MapBoard extends GUI {
 		}
 	}
 
-	private void selectionRules(Sprites checker) {
-		String colorChecker = checker.tag.split("_")[0];
-		String modeChecker = checker.tag.split("_")[1];
-		int positionChecker = checker.getIdTileBoard();
-
-		mapTravel = hashMapLines(positionChecker);
-		modeSelection(colorChecker, modeChecker, mapTravel);
-	}
-
-	
-
 	private void modeSelection(String colorChecker, String modeChecker,
-			HashMap<String, HashMap<Integer, String>> mapTravel) {
+			HashMap<String, HashMap<Integer, String>> hashMapLines) {
 
-		for (String line : mapTravel.keySet()) {			
-			
+		boolean isEnemy = false;
+
+		// Search for the enemy in line and return line where enemy
+		for (String line : hashMapLines.keySet()) {
+			HashMap<Integer, String> mapLine = hashMapLines.get(line);
+			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
+
+			int firstKey = 0;
+			int secondKey = 0;
+
+			if (line.equals("DL") || line.equals("DR")) {
+				Collections.sort(listKeys);
+			}
+
+			if (line.equals("UL") || line.equals("UR")) {
+				Collections.sort(listKeys, Collections.reverseOrder());
+			}
+
+			for (int i = 0; i < listKeys.size() - 1; i++) {
+				if (modeChecker.equals("normal")) {
+					firstKey = listKeys.get(0);
+					secondKey = listKeys.get(1);
+				}
+
+				if (modeChecker.equals("super")) {
+					firstKey = listKeys.get(i);
+					secondKey = listKeys.get(i + 1);
+				}
+
+				if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
+						&& mapLine.get(secondKey).equals("empty")) {
+					isEnemy = true;
+
+				}
+			}
+		}
+
+		for (String line : hashMapLines.keySet()) {
 			HashMap<Integer, String> newMapLine = new HashMap<Integer, String>();
-			ArrayList<Integer> newListKeys = new ArrayList<Integer>();
 
-			HashMap<Integer, String> mapLine = mapTravel.get(line);
-
+			HashMap<Integer, String> mapLine = hashMapLines.get(line);
 			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
 
 			if (line.equals("DL") || line.equals("DR")) {
@@ -209,79 +233,54 @@ public class MapBoard extends GUI {
 				Collections.sort(listKeys, Collections.reverseOrder());
 			}
 
-			if (modeChecker.equals("normal")) {
-				for (int i = 0; i < listKeys.size(); i++) {
-					newListKeys.add(listKeys.get(i));
-					if (newListKeys.size() == 2) {
-						break;
-					}
-				}
-			}
+			for (int i = 0; i < listKeys.size() - 1; i++) {
+				if (modeChecker.equals("normal")) {
 
-			if (modeChecker.equals("super")) {
-				for (int i = 0; i < listKeys.size(); i++) {
-					newListKeys.add(listKeys.get(i));
-				}
-			}
+					int firstKey = listKeys.get(0);
+					int secondKey = listKeys.get(1);
 
-			for (int i = 0; i < newListKeys.size(); i++) {
-				try {
-					int firstKey = newListKeys.get(i);
-					int secondKey = newListKeys.get(i + 1);
-
-					if (modeChecker.equals("normal")) {
-
-						firstKey = newListKeys.get(0);
-						secondKey = newListKeys.get(1);
-
-						if (!mapLine.get(firstKey).equals(colorChecker) 
-								&& !mapLine.get(firstKey).equals("empty")
-								&& mapLine.get(secondKey).equals("empty")) {
-							
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-							newMapLine.put(secondKey, mapLine.get(secondKey));
-							
-							isEnemy = true;
-						}
-
-						if (colorChecker.equals("white")) {
-							if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
-								if (line.equals("UL") || line.equals("UR")) {
-									newMapLine.put(firstKey, mapLine.get(firstKey));
-								}
+					if (colorChecker.equals("white")) {
+						if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
+							if (line.equals("UL") || line.equals("UR")) {
+								newMapLine.put(firstKey, mapLine.get(firstKey));
 							}
 						}
 
-						if (colorChecker.equals("black")) {
-							if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
-								if (line.equals("DL") || line.equals("DR")) {
-									newMapLine.put(firstKey, mapLine.get(firstKey));
-								}
+					}
+
+					if (colorChecker.equals("black")) {
+						if (mapLine.get(firstKey).equals("empty") && !isEnemy) {
+							if (line.equals("DL") || line.equals("DR")) {
+								newMapLine.put(firstKey, mapLine.get(firstKey));
 							}
 						}
 					}
 
-					if (modeChecker.equals("super")) {
-						if (!mapLine.get(firstKey).equals(colorChecker) 
-								&& !mapLine.get(firstKey).equals("empty")
-								&& mapLine.get(secondKey).equals("empty")) {
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-							newMapLine.put(secondKey, mapLine.get(secondKey));
-							
-							isEnemy = true;
-						}
+					if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
+							&& mapLine.get(secondKey).equals("empty") && isEnemy) {
 
-						if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty") && !isEnemy) {
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-							newMapLine.put(secondKey, mapLine.get(secondKey));
-						}
-						
-						if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty") && !isEnemy) {
-							newMapLine.put(firstKey, mapLine.get(firstKey));
-						}
-
+						newMapLine.put(firstKey, mapLine.get(firstKey));
+						newMapLine.put(secondKey, mapLine.get(secondKey));
 					}
-					
+				}
+
+				if (modeChecker.equals("super")) {
+					int firstKey = listKeys.get(i);
+					int secondKey = listKeys.get(i + 1);
+
+					if (mapLine.get(firstKey).equals("empty") && mapLine.get(secondKey).equals("empty") && !isEnemy) {
+						newMapLine.put(firstKey, mapLine.get(firstKey));
+						newMapLine.put(secondKey, mapLine.get(secondKey));
+					}
+					if (mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty") && !isEnemy) {
+						newMapLine.put(firstKey, mapLine.get(firstKey));
+					}
+
+					if (!mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty") && isEnemy) {
+						newMapLine.put(firstKey, mapLine.get(firstKey));
+						newMapLine.put(secondKey, mapLine.get(secondKey));
+					}
+
 					if (mapLine.get(firstKey).equals(colorChecker) && mapLine.get(secondKey).equals("empty")) {
 						break;
 					}
@@ -289,14 +288,11 @@ public class MapBoard extends GUI {
 					if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
 						break;
 					}
-					
-				} catch (Exception e) {
-					break;
 				}
 			}
 
-			if (newListKeys.size() == 1) {
-				int key = newListKeys.get(0);
+			if (listKeys.size() == 1) {
+				int key = listKeys.get(0);
 				if (modeChecker.equals("normal")) {
 					if (colorChecker.equals("white") && !isEnemy) {
 						if (line.equals("UL") || line.equals("UR")) {
