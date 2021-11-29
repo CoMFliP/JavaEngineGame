@@ -116,4 +116,11 @@ public class Game extends Layer {
 			this.canMove = "white";
 		}
 	}
+
+	/**
+	 * @return the canMove
+	 */
+	public String getCanMove() {
+		return this.canMove;
+	}
 }

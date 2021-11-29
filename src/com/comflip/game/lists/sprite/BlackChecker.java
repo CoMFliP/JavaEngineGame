@@ -28,9 +28,9 @@ public class BlackChecker extends Sprites {
 		boolean axisY = Collisions.axisY(this.posY, this.height, cursor.posY, 0);
 
 		if (axisX && axisY) {
-			if (input.isButtonDown(MouseEvent.BUTTON1)) {
+			if (input.isButtonDown(MouseEvent.BUTTON1) || input.isKeyDown(MouseEvent.BUTTON1)) {
 				this.pickUp = true;
-			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
+			} else if (input.isButtonUp(MouseEvent.BUTTON1) || input.isKeyUp(MouseEvent.BUTTON1)) {
 				this.pickUp = false;
 			}
 		}

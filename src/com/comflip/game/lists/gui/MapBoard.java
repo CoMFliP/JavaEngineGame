@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
@@ -22,6 +23,7 @@ public class MapBoard extends GUI {
 	private String currentCheckerTag;
 
 	HashMap<String, HashMap<Integer, String>> mapTravel = new HashMap<String, HashMap<Integer, String>>();
+	HashMap<Integer, String> hashMustAttack = new HashMap<Integer, String>();
 
 	private boolean nextTurn = true;
 
@@ -50,8 +52,10 @@ public class MapBoard extends GUI {
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
+				
+				mustAttack(checker);
 
-				if (checker.isPickUp() && input.isButtonDown(MouseEvent.BUTTON1)) {
+				if (checker.isPickUp() && (input.isButtonDown(MouseEvent.BUTTON1) || input.isKeyDown(MouseEvent.BUTTON1))) {
 					currentIdTileBoard = checker.getIdTileBoard();
 					currentCheckerTag = checker.tag;
 
@@ -59,14 +63,16 @@ public class MapBoard extends GUI {
 					String modeChecker = currentCheckerTag.split("_")[1];
 
 					modeSelection(colorChecker, modeChecker, hashMapLines(currentIdTileBoard));
-					
+
+
 					SFX.PICK_UP_CHECKER.setVolume(-10);
 					if (!SFX.PICK_UP_CHECKER.isRunning()) {
 						SFX.PICK_UP_CHECKER.play();
 					}
 				}
 
-				if (input.isButtonUp(MouseEvent.BUTTON1)) {
+				if (input.isButtonUp(MouseEvent.BUTTON1) || input.isKeyUp(MouseEvent.BUTTON1)) {
+					
 					if (checker.tag.equals(currentCheckerTag)) {
 						boolean isSetIdTileBoard = false;
 						String currentCheckerColor = currentCheckerTag.split("_")[0];
@@ -76,9 +82,9 @@ public class MapBoard extends GUI {
 
 							for (int idTileBoard : mapLine.keySet()) {
 
-								String checkerColor = mapLine.get(idTileBoard);
+								String valueIdTileBoard = mapLine.get(idTileBoard);
 
-								if (checkerColor.equals("empty")) {
+								if (valueIdTileBoard.equals("empty")) {
 									int emptyX = this.mapBoard.get(idTileBoard)[0] - 3;
 									int emptyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
@@ -91,24 +97,17 @@ public class MapBoard extends GUI {
 										checker.posX = emptyX + 3;
 										checker.posY = emptyY + 3;
 
-//										System.out.println(currentColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cells."); 
+//										System.out.println(currentColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cel)ls."); 
 
-										currentIdTileBoard = checker.getIdTileBoard();
-										String colorChecker = checker.tag.split("_")[0];
-										String modeChecker = checker.tag.split("_")[1];
+										checkNextTurn(checker, idTileBoard);
 
-										if (searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard)).size() > 0
-												&& searchEnemy(colorChecker, modeChecker, hashMapLines(currentIdTileBoard)).size() > 0) {
-											nextTurn = false;
-										} else {
-											nextTurn = true;
-										}
-										
 										checker.setIdTileBoard(idTileBoard);
-										killChecker(currentCheckerColor, checker.getIdTileBoard(), line, mapLine);
 
-										isSetIdTileBoard = true;
+										killChecker(checker, line, mapLine);
 										
+										hashMustAttack.clear();
+										
+										isSetIdTileBoard = true;
 									}
 
 									if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -126,46 +125,6 @@ public class MapBoard extends GUI {
 							checker.posY = this.mapBoard.get(currentIdTileBoard)[1];
 							nextTurn = false;
 						}
-						if (nextTurn) {
-							Layer.GAME.nextMove(currentCheckerColor);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void killChecker(String currentColor, int currentIdTileBoard, String line,
-			HashMap<Integer, String> mapLine) {
-		for (int enemyIdTileBoard : mapLine.keySet()) {
-			String checkerColor = null;
-
-			if (line.equals("UL") || line.equals("UR")) {
-				if (currentIdTileBoard < enemyIdTileBoard) {
-					checkerColor = mapLine.get(enemyIdTileBoard);
-				}
-			}
-
-			if (line.equals("DL") || line.equals("DR")) {
-				if (currentIdTileBoard > enemyIdTileBoard) {
-					checkerColor = mapLine.get(enemyIdTileBoard);
-				}
-			}
-
-			if (checkerColor != null) {
-				if (!currentColor.equals(checkerColor) && !checkerColor.equals("empty")) {
-					for (int i = 0; i < listCheckers.size(); i++) {
-						Sprites enemyChecker = listCheckers.get(i);
-						if (enemyChecker.getIdTileBoard() == enemyIdTileBoard) {
-							listCheckers.remove(enemyChecker);
-							
-							SFX.KILL_CHECKER.setVolume(-10);
-							if (!SFX.KILL_CHECKER.isRunning()) {
-								SFX.KILL_CHECKER.play();
-							}
-							
-							break;
-						}
 					}
 				}
 			}
@@ -176,6 +135,7 @@ public class MapBoard extends GUI {
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
+				
 				if (checker.isPickUp()) {
 					currentIdTileBoard = checker.getIdTileBoard();
 
@@ -190,9 +150,9 @@ public class MapBoard extends GUI {
 						for (int idTileBoard : mapLine.keySet()) {
 
 							String currentColor = currentCheckerTag.split("_")[0];
-							String checkerColor = mapLine.get(idTileBoard);
+							String valueIdTileBoard = mapLine.get(idTileBoard);
 
-							if (checkerColor.equals("empty")) {
+							if (valueIdTileBoard.equals("empty")) {
 								int emptyX = this.mapBoard.get(idTileBoard)[0] - 3;
 								int emptyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
@@ -200,7 +160,7 @@ public class MapBoard extends GUI {
 								r.drawRect(emptyX, emptyY, 29, 29, 0xFF66CCFF);
 							}
 
-							if (!checkerColor.equals(currentColor) && !checkerColor.equals("empty")) {
+							if (!valueIdTileBoard.equals(currentColor) && !valueIdTileBoard.equals("empty")) {
 								int enemyX = this.mapBoard.get(idTileBoard)[0] - 3;
 								int enemyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
@@ -212,51 +172,90 @@ public class MapBoard extends GUI {
 				}
 			}
 		}
-	}
-
-	private ArrayList<String> searchEnemy(String colorChecker, String modeChecker,
-			HashMap<String, HashMap<Integer, String>> hashMapLines) {
-
-		ArrayList<String> listKeysEnemy = new ArrayList<String>();
-
-		for (String line : hashMapLines.keySet()) {
-			HashMap<Integer, String> mapLine = hashMapLines.get(line);
-			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
-
-			int firstKey = 0;
-			int secondKey = 0;
-
-			if (line.equals("DL") || line.equals("DR")) {
-				Collections.sort(listKeys);
-			}
-
-			if (line.equals("UL") || line.equals("UR")) {
-				Collections.sort(listKeys, Collections.reverseOrder());
-			}
-
-			for (int i = 0; i < listKeys.size() - 1; i++) {
-				if (modeChecker.equals("normal")) {
-					firstKey = listKeys.get(0);
-					secondKey = listKeys.get(1);
-				}
-
-				if (modeChecker.equals("super")) {
-					firstKey = listKeys.get(i);
-					secondKey = listKeys.get(i + 1);
-				}
-
-				if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
-						&& mapLine.get(secondKey).equals("empty")) {
-					listKeysEnemy.add(line);
-				}
-
-				if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
-					break;
+		
+		if (!hashMustAttack.isEmpty()) {
+			for (int idTileBoard : hashMustAttack.keySet()) {
+				String checkerColor = hashMustAttack.get(idTileBoard).split("_")[0];
+				
+				if (Layer.GAME.getCanMove().equals(checkerColor)) {
+					int x = this.mapBoard.get(idTileBoard)[0] - 3;
+					int y = this.mapBoard.get(idTileBoard)[1] - 3;
+					r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FFFF66);
+					r.drawRect(x, y, 29, 29, 0xFFCCCC00);
 				}
 			}
 		}
-		return listKeysEnemy;
 	}
+
+	private void mustAttack(Sprites checker) {
+		String colorChecker = checker.tag.split("_")[0];
+		String modeChecker = checker.tag.split("_")[1];
+		int idTileBoard = checker.getIdTileBoard();
+		
+		ArrayList<String> listKeysEnemy = searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard));
+		
+		if (listKeysEnemy.size() > 0) {
+			hashMustAttack.put(idTileBoard, checker.tag);
+		}
+	}
+
+	private void checkNextTurn(Sprites checker, int idTileBoard) {
+		currentIdTileBoard = checker.getIdTileBoard();
+		String colorChecker = checker.tag.split("_")[0];
+		String modeChecker = checker.tag.split("_")[1];
+
+		if (searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard)).size() > 0
+				&& searchEnemy(colorChecker, modeChecker, hashMapLines(currentIdTileBoard)).size() > 0) {
+			nextTurn = false;
+		} else {
+			nextTurn = true;
+		}
+
+		if (nextTurn) {
+			Layer.GAME.nextMove(colorChecker);
+		}
+	}
+
+	private void killChecker(Sprites checker, String line, HashMap<Integer, String> mapLine) {
+
+		int currentIdTileBoard = checker.getIdTileBoard();
+		String checkerColor = checker.tag.split("_")[0];
+
+		for (int idTileBoard : mapLine.keySet()) {
+			String valueIdTileBoard = null;
+
+			if (line.equals("UL") || line.equals("UR")) {
+				if (currentIdTileBoard < idTileBoard) {
+					valueIdTileBoard = mapLine.get(idTileBoard);
+				}
+			}
+
+			if (line.equals("DL") || line.equals("DR")) {
+				if (currentIdTileBoard > idTileBoard) {
+					valueIdTileBoard = mapLine.get(idTileBoard);
+				}
+			}
+
+			if (valueIdTileBoard != null) {
+				if (!valueIdTileBoard.equals(checkerColor) && !valueIdTileBoard.equals("empty")) {
+					for (int i = 0; i < listCheckers.size(); i++) {
+						Sprites enemyChecker = listCheckers.get(i);
+						if (enemyChecker.getIdTileBoard() == idTileBoard) {
+							listCheckers.remove(enemyChecker);
+
+							SFX.KILL_CHECKER.setVolume(-10);
+							if (!SFX.KILL_CHECKER.isRunning()) {
+								SFX.KILL_CHECKER.play();
+							}
+
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 	private void modeSelection(String colorChecker, String modeChecker,
 			HashMap<String, HashMap<Integer, String>> hashMapLines) {
@@ -411,6 +410,50 @@ public class MapBoard extends GUI {
 
 			mapTravel.put(line, newMapLine);
 		}
+	}
+
+	private ArrayList<String> searchEnemy(String colorChecker, String modeChecker,
+			HashMap<String, HashMap<Integer, String>> hashMapLines) {
+
+		ArrayList<String> listKeysEnemy = new ArrayList<String>();
+
+		for (String line : hashMapLines.keySet()) {
+			HashMap<Integer, String> mapLine = hashMapLines.get(line);
+			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
+
+			int firstKey = 0;
+			int secondKey = 0;
+
+			if (line.equals("DL") || line.equals("DR")) {
+				Collections.sort(listKeys);
+			}
+
+			if (line.equals("UL") || line.equals("UR")) {
+				Collections.sort(listKeys, Collections.reverseOrder());
+			}
+
+			for (int i = 0; i < listKeys.size() - 1; i++) {
+				if (modeChecker.equals("normal")) {
+					firstKey = listKeys.get(0);
+					secondKey = listKeys.get(1);
+				}
+
+				if (modeChecker.equals("super")) {
+					firstKey = listKeys.get(i);
+					secondKey = listKeys.get(i + 1);
+				}
+
+				if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
+						&& mapLine.get(secondKey).equals("empty")) {
+					listKeysEnemy.add(line);
+				}
+
+				if (!mapLine.get(firstKey).equals("empty") && !mapLine.get(secondKey).equals("empty")) {
+					break;
+				}
+			}
+		}
+		return listKeysEnemy;
 	}
 
 	private HashMap<String, HashMap<Integer, String>> hashMapLines(int positionChecker) {
