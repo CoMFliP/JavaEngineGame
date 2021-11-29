@@ -11,6 +11,7 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
+import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 
 public class MapBoard extends GUI {
@@ -50,7 +51,7 @@ public class MapBoard extends GUI {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
 
-				if (checker.isPickUp()) {
+				if (checker.isPickUp() && input.isButtonDown(MouseEvent.BUTTON1)) {
 					currentIdTileBoard = checker.getIdTileBoard();
 					currentCheckerTag = checker.tag;
 
@@ -58,6 +59,11 @@ public class MapBoard extends GUI {
 					String modeChecker = currentCheckerTag.split("_")[1];
 
 					modeSelection(colorChecker, modeChecker, hashMapLines(currentIdTileBoard));
+					
+					SFX.PICK_UP_CHECKER.setVolume(-10);
+					if (!SFX.PICK_UP_CHECKER.isRunning()) {
+						SFX.PICK_UP_CHECKER.play();
+					}
 				}
 
 				if (input.isButtonUp(MouseEvent.BUTTON1)) {
@@ -87,10 +93,22 @@ public class MapBoard extends GUI {
 
 //										System.out.println(currentColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cells."); 
 
+										currentIdTileBoard = checker.getIdTileBoard();
+										String colorChecker = checker.tag.split("_")[0];
+										String modeChecker = checker.tag.split("_")[1];
+
+										if (searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard)).size() > 0
+												&& searchEnemy(colorChecker, modeChecker, hashMapLines(currentIdTileBoard)).size() > 0) {
+											nextTurn = false;
+										} else {
+											nextTurn = true;
+										}
+										
 										checker.setIdTileBoard(idTileBoard);
 										killChecker(currentCheckerColor, checker.getIdTileBoard(), line, mapLine);
 
 										isSetIdTileBoard = true;
+										
 									}
 
 									if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -98,6 +116,7 @@ public class MapBoard extends GUI {
 									} else if (currentCheckerColor.equals("black") && checker.getIdTileBoard() >= 45) {
 										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									}
+
 								}
 							}
 						}
@@ -105,7 +124,9 @@ public class MapBoard extends GUI {
 						if (!isSetIdTileBoard) {
 							checker.posX = this.mapBoard.get(currentIdTileBoard)[0];
 							checker.posY = this.mapBoard.get(currentIdTileBoard)[1];
-						} else if (nextTurn) {
+							nextTurn = false;
+						}
+						if (nextTurn) {
 							Layer.GAME.nextMove(currentCheckerColor);
 						}
 					}
@@ -137,6 +158,12 @@ public class MapBoard extends GUI {
 						Sprites enemyChecker = listCheckers.get(i);
 						if (enemyChecker.getIdTileBoard() == enemyIdTileBoard) {
 							listCheckers.remove(enemyChecker);
+							
+							SFX.KILL_CHECKER.setVolume(-10);
+							if (!SFX.KILL_CHECKER.isRunning()) {
+								SFX.KILL_CHECKER.play();
+							}
+							
 							break;
 						}
 					}
@@ -170,7 +197,7 @@ public class MapBoard extends GUI {
 								int emptyY = this.mapBoard.get(idTileBoard)[1] - 3;
 
 								r.drawFillRect(emptyX + 1, emptyY + 1, 27, 27, 0x5599DDFF);
-								r.drawRect(emptyX, emptyY, 29, 29, 0xFF66CCFF); 
+								r.drawRect(emptyX, emptyY, 29, 29, 0xFF66CCFF);
 							}
 
 							if (!checkerColor.equals(currentColor) && !checkerColor.equals("empty")) {
@@ -187,14 +214,11 @@ public class MapBoard extends GUI {
 		}
 	}
 
-	private void modeSelection(String colorChecker, String modeChecker,
+	private ArrayList<String> searchEnemy(String colorChecker, String modeChecker,
 			HashMap<String, HashMap<Integer, String>> hashMapLines) {
-
-		boolean isEnemy = false;
 
 		ArrayList<String> listKeysEnemy = new ArrayList<String>();
 
-		// Search for the enemy in line and return line where enemy
 		for (String line : hashMapLines.keySet()) {
 			HashMap<Integer, String> mapLine = hashMapLines.get(line);
 			ArrayList<Integer> listKeys = new ArrayList<Integer>(mapLine.keySet());
@@ -223,7 +247,6 @@ public class MapBoard extends GUI {
 
 				if (!mapLine.get(firstKey).equals(colorChecker) && !mapLine.get(firstKey).equals("empty")
 						&& mapLine.get(secondKey).equals("empty")) {
-					isEnemy = true;
 					listKeysEnemy.add(line);
 				}
 
@@ -232,6 +255,23 @@ public class MapBoard extends GUI {
 				}
 			}
 		}
+		return listKeysEnemy;
+	}
+
+	private void modeSelection(String colorChecker, String modeChecker,
+			HashMap<String, HashMap<Integer, String>> hashMapLines) {
+
+		boolean isEnemy = false;
+
+		ArrayList<String> listKeysEnemy = searchEnemy(colorChecker, modeChecker, hashMapLines);
+
+		// Search for the enemy in line and return line where enemy
+		if (listKeysEnemy.size() > 0) {
+			isEnemy = true;
+		} else {
+			isEnemy = false;
+		}
+		;
 
 		// Setting the direction according to the rules
 		for (String line : hashMapLines.keySet()) {
@@ -370,7 +410,6 @@ public class MapBoard extends GUI {
 			}
 
 			mapTravel.put(line, newMapLine);
-			nextTurn = !isEnemy;
 		}
 	}
 

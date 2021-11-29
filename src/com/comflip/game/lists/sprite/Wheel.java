@@ -95,7 +95,7 @@ public class Wheel extends Sprites  {
 		
 		if (!animationWheel) {
 			SFX.COLLISION_SFX.soundClip.setVolume(-10);
-			if(!SFX.COLLISION_SFX.soundClip.isRunning()) {
+			if(!SFX.COLLISION_SFX.isRunning()) {
 				SFX.COLLISION_SFX.soundClip.play();				
 			}
 		}
