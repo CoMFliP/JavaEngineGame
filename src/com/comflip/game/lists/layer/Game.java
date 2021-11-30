@@ -63,24 +63,32 @@ public class Game extends Layer {
 				Sprites checker = listCheckers.get(i);
 				HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
 
-				if (canMove.equals(checker.tag.split("_")[0])) {
-				
-					if (!hashMustAttack.isEmpty()) {
-							for (int key : hashMustAttack.keySet()) {
-								String checkerTag = hashMustAttack.get(key);
-								
-								if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
-									checker.update(gc, dt);
-								}
-								
-								if (!canMove.equals(checkerTag.split("_")[0])) {
-									hashMustAttack.clear();
-								}
-								
+				if (!hashMustAttack.isEmpty()) {
+					ArrayList<Integer> listKeys = new ArrayList<Integer>(hashMustAttack.keySet());
+					for (int j = 0; j < listKeys.size(); j++) {
+
+						if (listKeys.size() == 1) {
+							String checkerTag = hashMustAttack.get(listKeys.get(0));
+							if (!canMove.equals(checkerTag.split("_")[0])
+									&& canMove.equals(checker.tag.split("_")[0])) {
+								checker.update(gc, dt);
 							}
-					} else {
-						checker.update(gc, dt);
+
+							if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
+								checker.update(gc, dt);
+							}
+						}
+
+						if (listKeys.size() > 1) {
+							String checkerTag = hashMustAttack.get(listKeys.get(j));
+							if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
+								checker.update(gc, dt);
+							}
+						}
 					}
+
+				} else {
+					checker.update(gc, dt);
 				}
 			}
 		}

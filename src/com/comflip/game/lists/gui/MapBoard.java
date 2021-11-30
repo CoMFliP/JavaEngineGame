@@ -11,6 +11,7 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
+import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 
 public class MapBoard extends GUI {
@@ -72,6 +73,7 @@ public class MapBoard extends GUI {
 							for (int idTileBoard : mapLine.keySet()) {
 
 								String valueIdTileBoard = mapLine.get(idTileBoard);
+								String currentCheckerColor = currentCheckerTag.split("_")[0];
 
 								if (valueIdTileBoard.equals("empty")) {
 									int emptyX = this.mapBoard.get(idTileBoard)[0] - 3;
@@ -97,7 +99,6 @@ public class MapBoard extends GUI {
 										isSetIdTileBoard = true;
 									}
 
-									String currentCheckerColor = currentCheckerTag.split("_")[0];
 									if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
 										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									} else if (currentCheckerColor.equals("black") && checker.getIdTileBoard() >= 45) {
@@ -176,9 +177,8 @@ public class MapBoard extends GUI {
 	}
 
 	private void mustAttack() {
-		
 		hashMustAttack.clear();
-		
+
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
@@ -187,9 +187,7 @@ public class MapBoard extends GUI {
 				String modeChecker = checker.tag.split("_")[1];
 				int idTileBoard = checker.getIdTileBoard();
 
-				ArrayList<String> listKeysEnemy = searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard));
-
-				if (listKeysEnemy.size() > 0) {
+				if (searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard)).size() > 0) {
 					hashMustAttack.put(idTileBoard, checker.tag);
 				}
 			}
@@ -217,6 +215,7 @@ public class MapBoard extends GUI {
 			if (colorChecker.equals("black")) {
 				this.canMove = "white";
 			}
+			
 		}
 
 		Layer.GAME.setCanMove(this.canMove);
