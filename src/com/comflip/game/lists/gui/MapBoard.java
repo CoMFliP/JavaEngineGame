@@ -11,7 +11,6 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
-import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 
 public class MapBoard extends GUI {
@@ -92,7 +91,6 @@ public class MapBoard extends GUI {
 										checkNextTurn(checker, idTileBoard);
 
 										checker.setIdTileBoard(idTileBoard);
-
 
 										killChecker(checker, line, mapLine);
 
@@ -251,12 +249,6 @@ public class MapBoard extends GUI {
 						Sprites enemyChecker = listCheckers.get(i);
 						if (enemyChecker.getIdTileBoard() == idTileBoard) {
 							listCheckers.remove(enemyChecker);
-
-							if (!SFX.KILL_CHECKER.isRunning()) {
-								SFX.KILL_CHECKER.setVolume(-10);
-								SFX.KILL_CHECKER.play();
-							}
-
 							break;
 						}
 					}

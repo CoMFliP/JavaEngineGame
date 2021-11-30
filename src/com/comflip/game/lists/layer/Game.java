@@ -61,17 +61,23 @@ public class Game extends Layer {
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
+				HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
+
 				if (canMove.equals(checker.tag.split("_")[0])) {
-					if (!GUI.MAP_BOARD.getHashMustAttack().isEmpty()) {
-						HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
-						for (int key : hashMustAttack.keySet()) {
-							String checkerTag = hashMustAttack.get(key);
-							
-							if(checker.tag.equals(checkerTag)) {
-								checker.update(gc, dt);
+				
+					if (!hashMustAttack.isEmpty()) {
+							for (int key : hashMustAttack.keySet()) {
+								String checkerTag = hashMustAttack.get(key);
+								
+								if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
+									checker.update(gc, dt);
+								}
+								
+								if (!canMove.equals(checkerTag.split("_")[0])) {
+									hashMustAttack.clear();
+								}
+								
 							}
-							
-						}
 					} else {
 						checker.update(gc, dt);
 					}
