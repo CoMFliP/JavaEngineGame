@@ -1,6 +1,7 @@
 package com.comflip.game.lists.layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
@@ -61,7 +62,19 @@ public class Game extends Layer {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
 				if (canMove.equals(checker.tag.split("_")[0])) {
-					checker.update(gc, dt);
+					if (!GUI.MAP_BOARD.getHashMustAttack().isEmpty()) {
+						HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
+						for (int key : hashMustAttack.keySet()) {
+							String checkerTag = hashMustAttack.get(key);
+							
+							if(checker.tag.equals(checkerTag)) {
+								checker.update(gc, dt);
+							}
+							
+						}
+					} else {
+						checker.update(gc, dt);
+					}
 				}
 			}
 		}
@@ -108,19 +121,7 @@ public class Game extends Layer {
 //		r.drawFillRect(0, 0, widthWindow, heigthWindow, 0x88000000);
 	}
 
-	public void nextMove(String currentColor) {
-		if (currentColor.equals("white")) {
-			this.canMove = "black";
-		}
-		if (currentColor.equals("black")) {
-			this.canMove = "white";
-		}
-	}
-
-	/**
-	 * @return the canMove
-	 */
-	public String getCanMove() {
-		return this.canMove;
+	public void setCanMove(String canMove) {
+		this.canMove = canMove;
 	}
 }

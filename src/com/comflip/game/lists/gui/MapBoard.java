@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
@@ -25,7 +24,7 @@ public class MapBoard extends GUI {
 	HashMap<String, HashMap<Integer, String>> mapTravel = new HashMap<String, HashMap<Integer, String>>();
 	HashMap<Integer, String> hashMustAttack = new HashMap<Integer, String>();
 
-	private boolean nextTurn = true;
+	private String canMove = "white";
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -52,10 +51,8 @@ public class MapBoard extends GUI {
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
-				
-				mustAttack(checker);
 
-				if (checker.isPickUp() && (input.isButtonDown(MouseEvent.BUTTON1) || input.isKeyDown(MouseEvent.BUTTON1))) {
+				if (checker.isPickUp() && (input.isButtonDown(MouseEvent.BUTTON1))) {
 					currentIdTileBoard = checker.getIdTileBoard();
 					currentCheckerTag = checker.tag;
 
@@ -63,19 +60,12 @@ public class MapBoard extends GUI {
 					String modeChecker = currentCheckerTag.split("_")[1];
 
 					modeSelection(colorChecker, modeChecker, hashMapLines(currentIdTileBoard));
-
-
-					SFX.PICK_UP_CHECKER.setVolume(-10);
-					if (!SFX.PICK_UP_CHECKER.isRunning()) {
-						SFX.PICK_UP_CHECKER.play();
-					}
 				}
 
-				if (input.isButtonUp(MouseEvent.BUTTON1) || input.isKeyUp(MouseEvent.BUTTON1)) {
-					
+				if (input.isButtonUp(MouseEvent.BUTTON1)) {
+
 					if (checker.tag.equals(currentCheckerTag)) {
 						boolean isSetIdTileBoard = false;
-						String currentCheckerColor = currentCheckerTag.split("_")[0];
 
 						for (String line : mapTravel.keySet()) {
 							HashMap<Integer, String> mapLine = mapTravel.get(line);
@@ -97,19 +87,19 @@ public class MapBoard extends GUI {
 										checker.posX = emptyX + 3;
 										checker.posY = emptyY + 3;
 
-//										System.out.println(currentColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cel)ls."); 
+//										System.out.println(currentCheckerColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cells."); 
 
 										checkNextTurn(checker, idTileBoard);
 
 										checker.setIdTileBoard(idTileBoard);
 
+
 										killChecker(checker, line, mapLine);
-										
-										hashMustAttack.clear();
-										
+
 										isSetIdTileBoard = true;
 									}
 
+									String currentCheckerColor = currentCheckerTag.split("_")[0];
 									if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
 										checker.tag = currentCheckerTag.replaceAll("normal", "super");
 									} else if (currentCheckerColor.equals("black") && checker.getIdTileBoard() >= 45) {
@@ -123,9 +113,9 @@ public class MapBoard extends GUI {
 						if (!isSetIdTileBoard) {
 							checker.posX = this.mapBoard.get(currentIdTileBoard)[0];
 							checker.posY = this.mapBoard.get(currentIdTileBoard)[1];
-							nextTurn = false;
 						}
 					}
+					mustAttack();
 				}
 			}
 		}
@@ -135,7 +125,7 @@ public class MapBoard extends GUI {
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
-				
+
 				if (checker.isPickUp()) {
 					currentIdTileBoard = checker.getIdTileBoard();
 
@@ -172,12 +162,12 @@ public class MapBoard extends GUI {
 				}
 			}
 		}
-		
+
 		if (!hashMustAttack.isEmpty()) {
 			for (int idTileBoard : hashMustAttack.keySet()) {
 				String checkerColor = hashMustAttack.get(idTileBoard).split("_")[0];
-				
-				if (Layer.GAME.getCanMove().equals(checkerColor)) {
+
+				if (this.canMove.equals(checkerColor)) {
 					int x = this.mapBoard.get(idTileBoard)[0] - 3;
 					int y = this.mapBoard.get(idTileBoard)[1] - 3;
 					r.drawFillRect(x + 1, y + 1, 27, 27, 0x55FFFF66);
@@ -187,15 +177,24 @@ public class MapBoard extends GUI {
 		}
 	}
 
-	private void mustAttack(Sprites checker) {
-		String colorChecker = checker.tag.split("_")[0];
-		String modeChecker = checker.tag.split("_")[1];
-		int idTileBoard = checker.getIdTileBoard();
+	private void mustAttack() {
 		
-		ArrayList<String> listKeysEnemy = searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard));
+		hashMustAttack.clear();
 		
-		if (listKeysEnemy.size() > 0) {
-			hashMustAttack.put(idTileBoard, checker.tag);
+		if (!listCheckers.isEmpty()) {
+			for (int i = 0; i < listCheckers.size(); i++) {
+				Sprites checker = listCheckers.get(i);
+
+				String colorChecker = checker.tag.split("_")[0];
+				String modeChecker = checker.tag.split("_")[1];
+				int idTileBoard = checker.getIdTileBoard();
+
+				ArrayList<String> listKeysEnemy = searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard));
+
+				if (listKeysEnemy.size() > 0) {
+					hashMustAttack.put(idTileBoard, checker.tag);
+				}
+			}
 		}
 	}
 
@@ -203,6 +202,8 @@ public class MapBoard extends GUI {
 		currentIdTileBoard = checker.getIdTileBoard();
 		String colorChecker = checker.tag.split("_")[0];
 		String modeChecker = checker.tag.split("_")[1];
+
+		boolean nextTurn = false;
 
 		if (searchEnemy(colorChecker, modeChecker, hashMapLines(idTileBoard)).size() > 0
 				&& searchEnemy(colorChecker, modeChecker, hashMapLines(currentIdTileBoard)).size() > 0) {
@@ -212,8 +213,16 @@ public class MapBoard extends GUI {
 		}
 
 		if (nextTurn) {
-			Layer.GAME.nextMove(colorChecker);
+			if (colorChecker.equals("white")) {
+				this.canMove = "black";
+			}
+			if (colorChecker.equals("black")) {
+				this.canMove = "white";
+			}
 		}
+
+		Layer.GAME.setCanMove(this.canMove);
+		nextTurn = false;
 	}
 
 	private void killChecker(Sprites checker, String line, HashMap<Integer, String> mapLine) {
@@ -243,8 +252,8 @@ public class MapBoard extends GUI {
 						if (enemyChecker.getIdTileBoard() == idTileBoard) {
 							listCheckers.remove(enemyChecker);
 
-							SFX.KILL_CHECKER.setVolume(-10);
 							if (!SFX.KILL_CHECKER.isRunning()) {
+								SFX.KILL_CHECKER.setVolume(-10);
 								SFX.KILL_CHECKER.play();
 							}
 
@@ -255,7 +264,6 @@ public class MapBoard extends GUI {
 			}
 		}
 	}
-
 
 	private void modeSelection(String colorChecker, String modeChecker,
 			HashMap<String, HashMap<Integer, String>> hashMapLines) {
@@ -614,5 +622,9 @@ public class MapBoard extends GUI {
 
 	public int[] getPossiton(int idTileBoard) {
 		return this.mapBoard.get(idTileBoard);
+	}
+
+	public HashMap<Integer, String> getHashMustAttack() {
+		return hashMustAttack;
 	}
 }

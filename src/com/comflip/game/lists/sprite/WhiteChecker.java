@@ -8,6 +8,7 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.lists.GUI;
+import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.gui.Cursor;
 
@@ -28,9 +29,9 @@ public class WhiteChecker extends Sprites {
 		boolean axisY = Collisions.axisY(this.posY, this.height, cursor.posY, 0);
 
 		if (axisX && axisY) {
-			if (input.isButtonDown(MouseEvent.BUTTON1) || input.isKeyDown(MouseEvent.BUTTON1)) {
+			if (input.isButtonDown(MouseEvent.BUTTON1)) {
 				this.pickUp = true;
-			} else if (input.isButtonUp(MouseEvent.BUTTON1) || input.isKeyUp(MouseEvent.BUTTON1)) {
+			} else if (input.isButtonUp(MouseEvent.BUTTON1)) {
 				this.pickUp = false;
 			}
 		}
