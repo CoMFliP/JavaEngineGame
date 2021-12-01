@@ -1,17 +1,11 @@
 package com.comflip.game.lists.gui;
 
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import com.comflip.engine.Collisions;
-import com.comflip.engine.GameContainer;
-import com.comflip.engine.Input;
-import com.comflip.engine.Renderer;
-import com.comflip.game.lists.GUI;
-import com.comflip.game.lists.Layer;
-import com.comflip.game.lists.Sprites;
+import com.comflip.engine.*;
+import com.comflip.game.lists.*;
 
 public class MapBoard extends GUI {
 	HashMap<Integer, int[]> mapBoard = new HashMap<Integer, int[]>();
@@ -24,6 +18,8 @@ public class MapBoard extends GUI {
 	HashMap<Integer, String> hashMustAttack = new HashMap<Integer, String>();
 
 	private String canMove = "white";
+
+	private FileWriter writer;
 
 	public MapBoard() {
 		int idTileBoard = 0;
@@ -40,6 +36,19 @@ public class MapBoard extends GUI {
 
 				this.mapBoard.put(idTileBoard++, coordinate);
 			}
+		}
+
+		File file = new File("log.txt");
+		try {
+			if (file.exists()) {
+				file.delete();
+			}
+
+			file.createNewFile();
+			writer = new FileWriter(file, true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -87,7 +96,16 @@ public class MapBoard extends GUI {
 										checker.posX = emptyX + 3;
 										checker.posY = emptyY + 3;
 
-//										System.out.println(currentCheckerColor + " went from " + checker.getIdTileBoard() + " cell to " + idTileBoard + " cells."); 
+										try {
+											writer.write(currentCheckerColor + " went from "
+													+ Integer.toString(checker.getIdTileBoard()) + " cell to "
+													+ Integer.toString(idTileBoard) + " cells." + '\n');
+
+											writer.flush();
+
+										} catch (IOException e) {
+											e.printStackTrace();
+										}
 
 										checkNextTurn(checker, idTileBoard);
 
@@ -214,7 +232,7 @@ public class MapBoard extends GUI {
 			if (colorChecker.equals("black")) {
 				this.canMove = "white";
 			}
-			
+
 		}
 
 		Layer.GAME.setCanMove(this.canMove);

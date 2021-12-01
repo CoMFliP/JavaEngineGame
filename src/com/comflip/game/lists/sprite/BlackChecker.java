@@ -12,9 +12,15 @@ import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.gui.Cursor;
 
 public class BlackChecker extends Sprites {
+	private Sprite imageSuper;
+
 	public BlackChecker(String path, String tag) {
 		this.image = new Sprite(path);
+		this.imageSuper = new Sprite("/checker/Black_Super.png");
+		
 		this.tag = tag;
+		
+		System.out.println("s");
 	}
 
 	public void update(GameContainer gc, float dt) {
@@ -38,6 +44,10 @@ public class BlackChecker extends Sprites {
 		if (this.pickUp) {
 			this.posX = cursor.posX - (this.width / 2);
 			this.posY = cursor.posY - (this.height / 2);
+		}
+		
+		if (this.tag.split("_")[1].equals("super")) {
+			this.image = this.imageSuper;
 		}
 	}
 

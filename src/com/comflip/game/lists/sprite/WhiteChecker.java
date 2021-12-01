@@ -12,8 +12,11 @@ import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.gui.Cursor;
 
 public class WhiteChecker extends Sprites {
+	private Sprite imageSuper;
+
 	public WhiteChecker(String path, String tag) {
 		this.image = new Sprite(path);
+		this.imageSuper = new Sprite("/checker/White_Super.png");
 		this.tag = tag;
 	}
 
@@ -38,6 +41,10 @@ public class WhiteChecker extends Sprites {
 		if (this.pickUp) {
 			this.posX = cursor.posX - (this.width / 2);
 			this.posY = cursor.posY - (this.height / 2);
+		}
+		
+		if (this.tag.split("_")[1].equals("super")) {
+			this.image = this.imageSuper;
 		}
 	}
 

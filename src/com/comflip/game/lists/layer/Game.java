@@ -1,18 +1,12 @@
 package com.comflip.game.lists.layer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
-import com.comflip.engine.GameContainer;
-import com.comflip.engine.Renderer;
-import com.comflip.engine.gfc.Color;
-import com.comflip.engine.gfc.Sprite;
-import com.comflip.game.lists.GUI;
-import com.comflip.game.lists.Layer;
-import com.comflip.game.lists.Sprites;
+import com.comflip.engine.*;
+import com.comflip.engine.gfc.*;
+import com.comflip.game.lists.*;
+import com.comflip.game.lists.sprite.*;
 import com.comflip.game.lists.gui.MapBoard;
-import com.comflip.game.lists.sprite.BlackChecker;
-import com.comflip.game.lists.sprite.WhiteChecker;
 
 public class Game extends Layer {
 	private Sprite imageBoard;
