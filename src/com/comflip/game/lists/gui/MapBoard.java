@@ -11,7 +11,6 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
-import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 
 public class MapBoard extends GUI {

@@ -54,7 +54,7 @@ public class GameContainer implements Runnable {
 		int fps = 0;
 
 		while (running) {
-//			render = false; // Lock to 60 FPS
+			render = false; // Lock to 60 FPS
 
 			firstTime = System.nanoTime() / 1000000000.0;
 			passedTime = firstTime - lastTime;

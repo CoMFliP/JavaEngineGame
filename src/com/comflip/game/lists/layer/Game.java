@@ -57,38 +57,40 @@ public class Game extends Layer {
 	}
 
 	public void update(GameContainer gc, float dt) {
-
 		if (!listCheckers.isEmpty()) {
 			for (int i = 0; i < listCheckers.size(); i++) {
 				Sprites checker = listCheckers.get(i);
 				HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
 
-				if (!hashMustAttack.isEmpty()) {
-					ArrayList<Integer> listKeys = new ArrayList<Integer>(hashMustAttack.keySet());
-					for (int j = 0; j < listKeys.size(); j++) {
+				if (canMove.equals(checker.tag.split("_")[0])) {
 
-						if (listKeys.size() == 1) {
-							String checkerTag = hashMustAttack.get(listKeys.get(0));
-							if (!canMove.equals(checkerTag.split("_")[0])
-									&& canMove.equals(checker.tag.split("_")[0])) {
-								checker.update(gc, dt);
+					if (!hashMustAttack.isEmpty()) {
+						ArrayList<Integer> listKeys = new ArrayList<Integer>(hashMustAttack.keySet());
+						for (int j = 0; j < listKeys.size(); j++) {
+
+							if (listKeys.size() == 1) {
+								String checkerTag = hashMustAttack.get(listKeys.get(0));
+								if (!canMove.equals(checkerTag.split("_")[0])
+										&& canMove.equals(checker.tag.split("_")[0])) {
+									checker.update(gc, dt);
+								}
+
+								if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
+									checker.update(gc, dt);
+								}
 							}
 
-							if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
-								checker.update(gc, dt);
+							if (listKeys.size() > 1) {
+								String checkerTag = hashMustAttack.get(listKeys.get(j));
+								if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
+									checker.update(gc, dt);
+								}
 							}
 						}
 
-						if (listKeys.size() > 1) {
-							String checkerTag = hashMustAttack.get(listKeys.get(j));
-							if (checker.tag.equals(checkerTag) && canMove.equals(checkerTag.split("_")[0])) {
-								checker.update(gc, dt);
-							}
-						}
+					} else {
+						checker.update(gc, dt);
 					}
-
-				} else {
-					checker.update(gc, dt);
 				}
 			}
 		}
@@ -120,8 +122,12 @@ public class Game extends Layer {
 				Sprites checker = listCheckers.get(i);
 				checker.render(r);
 
-				if (canMove.equals(checker.tag.split("_")[0])) {
-					r.drawText(canMove.toUpperCase(), 10, 30, Color.WHITE);
+				try {
+					if (canMove.equals(checker.tag.split("_")[0])) {
+						r.drawText(Layer.SELECT_NAME.getChoosePlayer().get(canMove) + " (" + canMove + ")", 10, 30,
+								Color.WHITE);
+					}
+				} catch (Exception e) {
 				}
 			}
 			for (int i = 0; i < listCheckers.size(); i++) {
@@ -132,7 +138,6 @@ public class Game extends Layer {
 			}
 		}
 
-//		r.drawFillRect(0, 0, widthWindow, heigthWindow, 0x88000000);
 	}
 
 	public void setCanMove(String canMove) {

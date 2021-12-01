@@ -16,7 +16,7 @@ public class Menu extends Layer {
 	Sprite image = new Sprite("/menu.png");
 
 	public Menu() {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			GUI.button = new Button("button_" + i);
 			listGUI.add(GUI.button);
 		}
@@ -36,13 +36,11 @@ public class Menu extends Layer {
 						switch (button.tag) {
 						case "button_0":
 							Layer.GAME.isActive = true;
+							Layer.SELECT_NAME.isActive = true;
 							this.isActive = false;
 							break;
+						
 						case "button_1":
-							Layer.GAME.isActive = true;
-							this.isActive = false;
-							break;
-						case "button_2":
 							System.exit(0);
 							break;
 
@@ -64,23 +62,21 @@ public class Menu extends Layer {
 				if (elementGui.tag.indexOf("button") != -1) {
 					Button button = (Button) listGUI.get(i);
 					button.width = widthWindow / 3;
-					button.height = 15;
+					button.height = 25;
 
 					button.posX = button.width;
 					button.posY = heigthWindow / 2;
 
 					switch (button.tag) {
 					case "button_0":
-						button.setText("One player");
+						button.setText("Play");
 						break;
+						
 					case "button_1":
-						button.setText("Two player");
-						button.posY += 20;
-						break;
-					case "button_2":
 						button.setText("Exit");
-						button.posY += 40;
+						button.posY += 30;
 						break;
+
 					default:
 						break;
 					}

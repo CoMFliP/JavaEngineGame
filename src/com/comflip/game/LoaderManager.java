@@ -33,9 +33,10 @@ public class LoaderManager implements AbstractGame {
 	public LoaderManager() {
 		listLayers.add(Layer.MENU);
 		listLayers.add(Layer.GAME);
+		listLayers.add(Layer.SELECT_NAME);
 
 		listGUI.add(GUI.CURSOR);
-		
+
 		if (Layer.MENU != null) {
 			Layer.MENU.isActive = true;
 		}
@@ -45,10 +46,12 @@ public class LoaderManager implements AbstractGame {
 		if (!listLayers.isEmpty()) {
 			for (int i = 0; i < listLayers.size(); i++) {
 				Layer layer = listLayers.get(i);
-				if (layer != null) {
-					if (layer.isActive) {
-						layer.update(gc, dt);
-					}
+				if (layer.isActive && layer.equals(Layer.SELECT_NAME)) {
+					layer.update(gc, dt);
+				} else if (layer.isActive && layer.equals(Layer.MENU)){
+					layer.update(gc, dt);
+				} else if (layer.isActive && layer.equals(Layer.GAME)){
+					layer.update(gc, dt);
 				}
 			}
 		}
@@ -56,9 +59,7 @@ public class LoaderManager implements AbstractGame {
 		if (!listGUI.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
 				GUI elementGui = listGUI.get(i);
-				if (elementGui != null) {
-					elementGui.update(gc, dt);
-				}
+				elementGui.update(gc, dt);
 			}
 		}
 	}
@@ -68,10 +69,8 @@ public class LoaderManager implements AbstractGame {
 		if (!listLayers.isEmpty()) {
 			for (int i = 0; i < listLayers.size(); i++) {
 				Layer layer = listLayers.get(i);
-				if (layer != null) {
-					if (layer.isActive) {
-						layer.render(r);
-					}
+				if (layer.isActive) {
+					layer.render(r);
 				}
 			}
 		}
@@ -79,47 +78,13 @@ public class LoaderManager implements AbstractGame {
 		if (!listGUI.isEmpty()) {
 			for (int i = 0; i < listGUI.size(); i++) {
 				GUI elementGui = listGUI.get(i);
-				if (elementGui != null) {
-					elementGui.image.setScale(0.6f);
-					elementGui.render(r);
-				}
+				elementGui.image.setScale(0.6f);
+				elementGui.render(r);
 			}
 		}
 
-		if (Main.getArgs().length > 0) {
-			for (String arg : Main.getArgs()) {
-				if (arg.equals("-debugMode")) {
-//					debugMode(r);
-				}
-			}
-		}
-
-		r.drawText("Test Engine", 0, 0, 0xFFFFFFFF);
-		r.drawText("FPS: " + FPS, 8, 12, 0xff00ffff);
+		r.drawText("FPS: " + FPS, 0, 0, 0xff00ffff);
 	}
-
-//	private void debugMode(Renderer r) {
-//		for (Sprites object : listSprites) {
-//			if (object.image != null) {
-//				r.drawRect(object.posX, object.posY, object.image.getW(), object.image.getH(), 0xFF00FF00);
-//			}
-//			if (object.imageTile != null) {
-//				r.drawRect(object.posX, object.posY, object.imageTile.getTileW(), object.imageTile.getTileH(),
-//						0xFF00FF00);
-//			}
-//		}
-//
-//		for (GUI elementGui : listGUI) {
-//			if (elementGui.image != null) {
-//				r.drawRect(elementGui.posX, elementGui.posY, elementGui.image.getW(), elementGui.image.getH(),
-//						0xFF00FF00);
-//			}
-//			if (elementGui.imageTile != null) {
-//				r.drawRect(elementGui.posX, elementGui.posY, elementGui.imageTile.getTileW(),
-//						elementGui.imageTile.getTileH(), 0xFF00FF00);
-//			}
-//		}
-//	}
 
 	public int setFPS(int fps) {
 		return this.FPS = fps;

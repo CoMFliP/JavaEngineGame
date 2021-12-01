@@ -8,7 +8,6 @@ import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.lists.GUI;
-import com.comflip.game.lists.SFX;
 import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.gui.Cursor;
 
