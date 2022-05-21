@@ -4,15 +4,15 @@ import java.awt.event.*;
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-	private GameContainer gc;
+	private final GameContainer gc;
 
 	private final int NUM_KEYS = 256;
-	private boolean[] keys = new boolean[NUM_KEYS];
-	private boolean[] keysLast = new boolean[NUM_KEYS];
+	private final boolean[] keys = new boolean[NUM_KEYS];
+	private final boolean[] keysLast = new boolean[NUM_KEYS];
 
 	private final int NUM_BUTTONS = 256;
-	private boolean[] buttons = new boolean[NUM_BUTTONS];
-	private boolean[] buttonsLast = new boolean[NUM_BUTTONS];
+	private final boolean[] buttons = new boolean[NUM_BUTTONS];
+	private final boolean[] buttonsLast = new boolean[NUM_BUTTONS];
 
 	private int mouseX, mouseY;
 	private int scroll;
@@ -32,13 +32,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	public void update() {
 		scroll = 0;
 
-		for (int i = 0; i < NUM_KEYS; i++) {
-			keysLast[i] = keys[i];
-		}
-
-		for (int i = 0; i < NUM_BUTTONS; i++) {
-			buttonsLast[i] = buttons[i];
-		}
+		System.arraycopy(keys, 0, keysLast, 0, NUM_KEYS);
+		System.arraycopy(buttons, 0, buttonsLast, 0, NUM_BUTTONS);
 	}
 
 	public boolean isKey(int keyCode) {

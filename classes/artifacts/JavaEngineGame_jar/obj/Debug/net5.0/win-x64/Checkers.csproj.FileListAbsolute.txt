@@ -1,0 +1,14 @@
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\Checkers.exe
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\Checkers.deps.json
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\Checkers.runtimeconfig.json
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\Checkers.runtimeconfig.dev.json
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\Checkers.dll
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\bin\Debug\net5.0\win-x64\ref\Checkers.dll
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.csproj.AssemblyReference.cache
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.AssemblyInfoInputs.cache
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.AssemblyInfo.cs
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.csproj.CoreCompileInputs.cache
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.dll
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\ref\Checkers.dll
+C:\Users\filip\git\JavaEngineGame\classes\artifacts\JavaEngineGame_jar\obj\Debug\net5.0\win-x64\Checkers.genruntimeconfig.cache

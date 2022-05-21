@@ -1,24 +1,10 @@
 package com.comflip.game.lists;
 
+import com.comflip.engine.IO;
 import com.comflip.game.LoaderManager;
-import com.comflip.game.lists.sprite.BlackChecker;
-import com.comflip.game.lists.sprite.WhiteChecker;
+import com.comflip.game.lists.sprite.Checker;
 
-public abstract class Sprites extends LoaderManager {
-	protected boolean pickUp;
-
-	protected int idTileBoard;
-	public static WhiteChecker whiteChecker;
-	public static BlackChecker blackChecker;
-
-	public boolean isPickUp() {
-		return pickUp;
-	}
-
-	public void setIdTileBoard(int idTileBoard) {
-		this.idTileBoard = idTileBoard;
-	}
-	public int getIdTileBoard() {
-		return this.idTileBoard;
-	}
+public interface Sprites extends IO {
+	 Checker whiteChecker = new Checker("/checker/white_normal.png");
+	 Checker blackChecker = new Checker("/checker/black_normal.png");
 }

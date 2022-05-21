@@ -1,22 +1,18 @@
 package com.comflip.engine;
 
-import java.awt.*;
-
-import javax.swing.ImageIcon;
-
 import com.comflip.game.LoaderManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Objects;
 
 public class GameContainer implements Runnable {
 
-	private Thread thread;
 	private Window window;
 	private Renderer renderer;
 	private Input input;
 
-	private LoaderManager loaderManager;
-	
-	private boolean running = false;
-	private final double UPDATE = 1.0 / 60.0;
+	private final LoaderManager loaderManager;
 
 	private int width, heigth;
 	private float scale;
@@ -32,8 +28,8 @@ public class GameContainer implements Runnable {
 		renderer = new Renderer(this);
 		input = new Input(this);
 
-		thread = new Thread(this);
-		thread.run();
+		Thread thread = new Thread(this);
+		thread.start();
 	}
 
 	public void stop() {
@@ -41,12 +37,12 @@ public class GameContainer implements Runnable {
 	}
 
 	public void run() {
-		running = true;
+		boolean running = true;
 
-		boolean render = false;
-		double firstTime = 0;
+		boolean render;
+		double firstTime;
 		double lastTime = System.nanoTime() / 1000000000.0;
-		double passedTime = 0;
+		double passedTime;
 		double unprocessedTime = 0;
 
 		double frameTime = 0;
@@ -63,6 +59,7 @@ public class GameContainer implements Runnable {
 			unprocessedTime += passedTime;
 			frameTime += passedTime;
 
+			double UPDATE = 1.0 / 60.0;
 			while (unprocessedTime >= UPDATE) {
 				unprocessedTime -= UPDATE;
 				render = true;
@@ -142,7 +139,7 @@ public class GameContainer implements Runnable {
 	}
 
 	public void setIconImage(String path) {
-		 this.imageIcon = new ImageIcon(getClass().getResource(path));
+		 this.imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
 	}
 
 	public Image getIconImage() {

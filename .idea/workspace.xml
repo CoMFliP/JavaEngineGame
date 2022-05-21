@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="JavaEngineGame:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 21.05.2022&#10;Changed from Eclipse IDE to Intellij and version Java from 1.8 to 18">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/JavaEngineGame.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DATA.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Checkers.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/DATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/Checkers.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/Checkers.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/DATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/Checkers.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/Checkers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/Checkers.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/Checkers.runtimeconfig.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/Checkers.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/publish/Checkers.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/bin/Debug/net5.0/win-x64/ref/Checkers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/icon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Checkers.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Checkers.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Checkers.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/.NETCoreApp,Version=v5.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/Checkers.genruntimeconfig.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/PublishOutputs.2592c9daf9.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/apphost.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/Debug/net5.0/win-x64/ref/Checkers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/artifacts/JavaEngineGame_jar/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/Checkers.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/DATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/audio/1.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/audio/kill_checker.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/audio/oh-shit-iam-sorry.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/audio/pick_up.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/board.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/Collisions.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/GameContainer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/GameObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/IO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/Input.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/Renderer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/Window.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/audio/SoundClip.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/gfc/Color.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/gfc/Font.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/gfc/Sprite.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/gfc/SpriteRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/gfc/SpriteTile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/LoaderManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/GUI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/Layer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/SFX.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/Sprites.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/gui/Button.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/gui/Cursor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/gui/MapBoard.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/SelectName.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/sprite/Checker.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/cursor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/fonts/new-standard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/fonts/non-standard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/fonts/standard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/menu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/checker/black_normal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/checker/black_super.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/checker/white_normal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/checker/white_super.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/comflip/engine/IO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/AbstractGame.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/Collisions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/GameContainer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/GameObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/Input.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/Renderer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/Renderer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/Window.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/audio/SoundClip.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/gfc/Color.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/gfc/Font.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/gfc/Sprite.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/gfc/SpriteRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/engine/gfc/SpriteTile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/game/LoaderManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/com/comflip/game/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/checker/Black.png" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/checker/black_normal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/checker/Black_Super.png" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/checker/black_super.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/checker/White.png" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/checker/white_normal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/checker/White_Super.png" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/checker/white_super.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/AbstractGame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/GameContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/GameContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/audio/SoundClip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/audio/SoundClip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Font.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Font.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/gfc/Sprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/gfc/SpriteTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/gfc/SpriteTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/Layer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/Layer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/SFX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/SFX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/Sprites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/Sprites.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/Cursor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/Cursor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/SelectName.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/SelectName.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/sfx/KillChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/sfx/PickUpChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/sprite/BlackChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/sprite/WhiteChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/sprite/Checker.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="29NvzJ8oDp1jWNobtbCcN4YcS4Z" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "C:/Users/filip/git/JavaEngineGame/classes/artifacts",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.comflip.game.lists.gui" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.comflip.game.lists.gui" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ClientRun">
+    <configuration name="ClientRun" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.comflip.game.Main" />
+      <module name="JavaEngineGame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.comflip.game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavaEngineGame.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/classes/artifacts/JavaEngineGame/JavaEngineGame.jar" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.ClientRun" />
+      <item itemvalue="JAR Application.JavaEngineGame.jar" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JAR Application.JavaEngineGame.jar" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="" />
+      <created>1652966618246</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652966618246</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Version 21.05.2022&#10;Changed from Eclipse IDE to Intellij and version Java from 1.8 to 18" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 21.05.2022&#10;Changed from Eclipse IDE to Intellij and version Java from 1.8 to 18" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="dart-exception" />
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

@@ -6,24 +6,22 @@ import java.util.HashMap;
 public class Font extends Sprite {
 	public static final Font STANDARD = new Font("/fonts/new-standard.png");
 
-	private Sprite fontImage;
-
-	HashMap<Integer, int[]> mapFont = new HashMap<Integer, int[]>();
+	HashMap<Integer, int[]> mapFont = new HashMap<>();
 
 	private int unicode;
 
-	private int tileFontWidth, tileFontHeight;
+	private final int tileFontWidth, tileFontHeight;
 
 	public Font(String path) {
 		super(path);
-		fontImage = this;
+		Sprite fontImage = this;
 		this.tileFontWidth = 12;
 		this.tileFontHeight = 12;
 		this.scale = 1;
 
 		for (int tileY = 0; tileY < fontImage.getHeight() / this.tileFontHeight; tileY++) {
 			for (int tileX = 0; tileX < fontImage.getWidth() / this.tileFontWidth; tileX++) {
-				ArrayList<Integer> listX = new ArrayList<Integer>();
+				ArrayList<Integer> listX = new ArrayList<>();
 				unicode++;
 
 				for (int x = 0; x < this.tileFontWidth; x++) {
@@ -33,7 +31,7 @@ public class Font extends Sprite {
 								+ (y + tileY * this.tileFontHeight) * fontImage.getWidth()] == Color.BLACK) {
 							sumY += y;
 
-							if (sumY == ((0 + (this.tileFontHeight - 1)) * this.tileFontHeight) / 2) {
+							if (sumY == ((this.tileFontHeight - 1) * this.tileFontHeight) / 2) {
 								listX.add(x);
 							}
 						}
@@ -41,7 +39,7 @@ public class Font extends Sprite {
 				}
 
 				int offsetLeft = 0;
-				int offsetRight = 0;
+				int offsetRight;
 
 				for (int i = 0; i < listX.size(); i++) {
 					try {
@@ -70,7 +68,6 @@ public class Font extends Sprite {
 				}
 
 				this.mapFont.put(unicode, fontPixel);
-				fontPixel = null;
 			}
 		}
 	}

@@ -1,24 +1,22 @@
 package com.comflip.engine.gfc;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-
 import com.comflip.engine.GameObject;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
+
 public class Sprite extends GameObject {
-	protected BufferedImage image = null;
+	protected BufferedImage image;
 	
 	protected int[] pixel;
 	protected boolean alpha = false;
 	protected float scale;
 
 	public Sprite(String path) {
-		super(path);
-
 		try {
-			image = ImageIO.read(getClass().getResource(path));
+			image = ImageIO.read(Objects.requireNonNull(getClass().getResource(path)));
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": File (" + path + ") is " + e.fillInStackTrace().getCause()
 					+ " or not found");
@@ -34,8 +32,14 @@ public class Sprite extends GameObject {
 		setScale(1);
 	}
 
-	public Sprite(int[] pixelTile, int tileWidht, int tileHeight) {
-		super(pixelTile, tileWidht, tileHeight);
+	public Sprite(int[] pixelTile, int tileWidth, int tileHeight) {
+		this.pixel = pixelTile;
+		this.width = tileWidth;
+		this.height = tileHeight;
+	}
+
+	public Sprite(GameObject gameObject, int width, int height) {
+		super(gameObject, width, height);
 	}
 
 	public void setScale(float scale) {

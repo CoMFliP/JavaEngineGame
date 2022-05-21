@@ -6,25 +6,14 @@ public class GameObject {
 	private GameObject gameObject;
 
 	public GameObject(GameObject gameObject, int width, int height) {
-		this.setGameObject(gameObject);
+		this.gameObject = gameObject;
 		this.width = width;
 		this.height = height;
 	}
 
-	protected GameObject(String path) {
+	public GameObject() {
 	}
 
-	protected GameObject(int[] pixel, int tileWidth, int tileHeight) {
-	}
-
-	public GameObject getGameObject() {
-		return gameObject;
-	}
-
-	public void setGameObject(GameObject gameObject) {
-		this.gameObject = gameObject;
-	}
-	
 	public int getWidth() {
 		return this.width;
 	}
@@ -34,42 +23,43 @@ public class GameObject {
 	}
 
 	public int[] getPixel() {
-		return getGameObject().getPixel();
+		return this.gameObject.getPixel();
 	}
 
 	public boolean isAlpha() {
-		return getGameObject().isAlpha();
+		return this.gameObject.isAlpha();
 	}
 
 	public void setAlpha(boolean alpha) {
-		getGameObject().setAlpha(alpha);
+		this.gameObject.setAlpha(alpha);
 	}
 
 	public int getTileWidth() {
-		return getGameObject().getTileWidth();
+		return this.gameObject.getTileWidth();
 	}
 
 	public void setTileWidth(int tileWidth) {
-		getGameObject().setTileWidth(tileWidth);
+		this.gameObject.setTileWidth(tileWidth);
 	}
 
 	public int getTileHeight() {
-		return getGameObject().getTileWidth();
+		return this.gameObject.getTileWidth();
 	}
 
 	public void setTileHeight(int tileHeight) {
-		getGameObject().getTileHeight();
+		this.gameObject.getTileHeight();
 	}
 
 	public void setScale(float scale) {
-		getGameObject().setScale(scale);
+		this.gameObject.setScale(scale);
 	}
 
 	public float getScale() {
-		return getGameObject().getScale();
+		return this.gameObject.getScale();
 	}
 
 	public void setScaleTile(float scale) {
-		getGameObject().setScaleTile(scale);
+		this.gameObject.setScaleTile(scale);
 	}
+
 }

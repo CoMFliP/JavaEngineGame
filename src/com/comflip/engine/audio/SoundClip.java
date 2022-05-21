@@ -1,8 +1,8 @@
 package com.comflip.engine.audio;
 
-import java.io.*;
-
 import javax.sound.sampled.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class SoundClip {
 	private Clip clip = null;
@@ -12,7 +12,7 @@ public class SoundClip {
 		try {
 			AudioInputStream audioStream;
 			clip = AudioSystem.getClip();
-			audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(path));
+			audioStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResourceAsStream(path)));
 			clip.open(audioStream);
 			gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {

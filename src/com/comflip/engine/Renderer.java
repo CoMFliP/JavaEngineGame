@@ -1,24 +1,17 @@
 package com.comflip.engine;
 
+import com.comflip.engine.gfc.*;
+
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.comflip.engine.gfc.Color;
-import com.comflip.engine.gfc.Font;
-import com.comflip.engine.gfc.Sprite;
-import com.comflip.engine.gfc.SpriteRequest;
-import com.comflip.engine.gfc.SpriteTile;
-
 public class Renderer {
-	private Font font = Font.STANDARD;
+	private final ArrayList<SpriteRequest> spriteRequest = new ArrayList<>();
 
-	private ArrayList<SpriteRequest> spriteRequest = new ArrayList<SpriteRequest>();
-
-	private int pixelWidth, pixelHeight;
-	private int[] pixel;
-	private int[] zbuffer;
+	private final int pixelWidth, pixelHeight;
+	private final int[] pixel, zbuffer;
 
 	private int zDepth = 0;
 	private boolean processing = false;
@@ -43,20 +36,9 @@ public class Renderer {
 	public void process() {
 		processing = true;
 
-		Collections.sort(spriteRequest, new Comparator<SpriteRequest>() {
-			public int compare(SpriteRequest i0, SpriteRequest i1) {
-				if (i0.zDepth < i1.zDepth) {
-					return -1;
-				} else if (i0.zDepth > i1.zDepth) {
-					return 1;
-				} else {
-					return 0;
-				}
-			}
-		});
+		spriteRequest.sort(Comparator.comparingInt(i0 -> i0.zDepth));
 
-		for (int i = 0; i < spriteRequest.size(); i++) {
-			SpriteRequest sr = spriteRequest.get(i);
+		for (SpriteRequest sr : spriteRequest) {
 			setzDepth(sr.zDepth);
 			sr.sprite.setAlpha(false);
 			drawSprite(sr.sprite, sr.offX, sr.offY);
@@ -132,6 +114,7 @@ public class Renderer {
 	}
 
 	public GameObject drawText(String text, int offX, int offY, int color) {
+		Font font = Font.STANDARD;
 		int offsetX = 0;
 		for (int i = 0; i < text.length(); i++) {
 			int unicode = text.codePointAt(i) - 32;
@@ -139,20 +122,20 @@ public class Renderer {
 			int[] fontPixel = font.getMapFont().get(unicode);
 
 			if (fontPixel != null) {
-				int widhtChar = (fontPixel.length / font.getTileFontWidth());
+				int widthChar = (fontPixel.length / font.getTileFontWidth());
 				
-				insideWindowRender(offX, offY, widhtChar, font.getTileFontHeight());
+				insideWindowRender(offX, offY, widthChar, font.getTileFontHeight());
 				
 				for (int y = 0; y < font.getTileFontHeight(); y++) {
-					for (int x = 0; x < widhtChar; x++) {
+					for (int x = 0; x < widthChar; x++) {
 						int newY = y + offY;
 						int newX = x + offX + offsetX;
-						if (fontPixel[x + y * widhtChar] == Color.WHITE) {
+						if (fontPixel[x + y * widthChar] == Color.WHITE) {
 							setPixel(newX, newY, color);
 						}
 					}
 				}
-				offsetX += widhtChar;
+				offsetX += widthChar;
 			}
 			if (unicode == 0) {
 				offsetX += 3;
@@ -206,7 +189,7 @@ public class Renderer {
 			setPixel(x + offX, offY, color);
 			setPixel(x + offX, offY + height, color);
 		}
-		return new GameObject(new GameObject(null), newWidth, newHeight);
+		return new GameObject(null, newWidth, newHeight);
 	}
 
 	public GameObject drawFillRect(int offX, int offY, int width, int height, int color) {
@@ -217,7 +200,7 @@ public class Renderer {
 				setPixel(x + offX, y + offY, color);
 			}
 		}
-		return new GameObject(new GameObject(null), newWidth, newHeight);
+		return new GameObject(null, newWidth, newHeight);
 	}
 
 	public int getzDepth() {

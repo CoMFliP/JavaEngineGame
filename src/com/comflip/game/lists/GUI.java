@@ -1,12 +1,12 @@
 package com.comflip.game.lists;
 
-import com.comflip.game.LoaderManager;
+import com.comflip.engine.IO;
 import com.comflip.game.lists.gui.Button;
 import com.comflip.game.lists.gui.Cursor;
 import com.comflip.game.lists.gui.MapBoard;
 
-public abstract class GUI extends LoaderManager {
-	public static final Cursor CURSOR = new Cursor("/cursor.png");
-	public static final MapBoard MAP_BOARD = new MapBoard();
-	public static Button button;
+public interface GUI extends IO {
+    Cursor CURSOR = new Cursor();
+    MapBoard MAP_BOARD = new MapBoard();
+    Button BUTTON = new Button();
 }

@@ -1,21 +1,17 @@
 package com.comflip.game.lists;
 
+import com.comflip.engine.GameContainer;
+import com.comflip.engine.IO;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.layer.Game;
 import com.comflip.game.lists.layer.Menu;
 import com.comflip.game.lists.layer.SelectName;
 
-public abstract class Layer extends LoaderManager {
-	public boolean isActive;
-	public static final Menu MENU = new Menu();
-	public static final Game GAME = new Game("");
-	public static final SelectName SELECT_NAME = new SelectName();
+public interface Layer extends IO{
+	Menu MENU = new Menu();
+	Game GAME = new Game();
+	SelectName SELECT_NAME = new SelectName();
 
-	public boolean isActive() {
-		return this.isActive;
-	}
-	
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+	boolean isActive();
+	void setActive(boolean isActive);
 }

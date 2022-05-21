@@ -1,92 +1,66 @@
 package com.comflip.game;
 
-import java.util.ArrayList;
-
-import com.comflip.engine.AbstractGame;
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.IO;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.engine.gfc.SpriteTile;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
-public class LoaderManager implements AbstractGame {
-	public Sprite image;
+import java.util.ArrayList;
 
-	public SpriteTile imageTile;
-	public int indexTileX, indexTileY;
-	public float frame;
+public class LoaderManager implements IO {
+    protected Sprite sprite;
+    protected SoundClip soundClip;
 
-	public SoundClip soundClip;
+    protected String tag = "null";
 
-	public String tag;
+    protected int posX = 0, posY = 0;
+    protected int width = 0, height = 0;
 
-	public int width, height;
-	public int posX, posY;
+    private int FPS;
 
-	private int FPS;
+    ArrayList<Layer> listLayers = new ArrayList<>();
+    protected boolean isActive = false;
 
-	ArrayList<Layer> listLayers = new ArrayList<Layer>();
-	ArrayList<GUI> listGUI = new ArrayList<GUI>();
+    public LoaderManager() {
+        listLayers.add(Layer.MENU);
+        listLayers.add(Layer.GAME);
+        listLayers.add(Layer.SELECT_NAME);
 
-	public LoaderManager() {
-		listLayers.add(Layer.MENU);
-		listLayers.add(Layer.GAME);
-		listLayers.add(Layer.SELECT_NAME);
+        try {
+            Layer.MENU.setActive(true);
+        } catch (Exception ignored) {
+        }
+    }
 
-		listGUI.add(GUI.CURSOR);
+    @Override
+    public void update(GameContainer gc, float dt) {
+        for (Layer layer : listLayers) {
+            if (layer.isActive()) {
+                layer.update(gc, dt);
+            }
+        }
 
-		if (Layer.MENU != null) {
-			Layer.MENU.isActive = true;
-		}
-	}
+        GUI.CURSOR.update(gc, dt);
+    }
 
-	public void update(GameContainer gc, float dt) {
-		if (!listLayers.isEmpty()) {
-			for (int i = 0; i < listLayers.size(); i++) {
-				Layer layer = listLayers.get(i);
-				if (layer.isActive && layer.equals(Layer.SELECT_NAME)) {
-					layer.update(gc, dt);
-				} else if (layer.isActive && layer.equals(Layer.MENU)){
-					layer.update(gc, dt);
-				} else if (layer.isActive && layer.equals(Layer.GAME)){
-					layer.update(gc, dt);
-				}
-			}
-		}
+    @Override
+    public void render(Renderer r) {
 
-		if (!listGUI.isEmpty()) {
-			for (int i = 0; i < listGUI.size(); i++) {
-				GUI elementGui = listGUI.get(i);
-				elementGui.update(gc, dt);
-			}
-		}
-	}
+        for (Layer layer : listLayers) {
+            if (layer.isActive()) {
+                layer.render(r);
+            }
+        }
 
-	public void render(Renderer r) {
+        GUI.CURSOR.render(r);
 
-		if (!listLayers.isEmpty()) {
-			for (int i = 0; i < listLayers.size(); i++) {
-				Layer layer = listLayers.get(i);
-				if (layer.isActive) {
-					layer.render(r);
-				}
-			}
-		}
+        r.drawText("FPS: " + FPS, 0, 0, 0xff00ffff);
+    }
 
-		if (!listGUI.isEmpty()) {
-			for (int i = 0; i < listGUI.size(); i++) {
-				GUI elementGui = listGUI.get(i);
-				elementGui.image.setScale(0.6f);
-				elementGui.render(r);
-			}
-		}
-
-		r.drawText("FPS: " + FPS, 0, 0, 0xff00ffff);
-	}
-
-	public int setFPS(int fps) {
-		return this.FPS = fps;
-	}
+    public void setFPS(int fps) {
+        this.FPS = fps;
+    }
 }

@@ -1,26 +1,17 @@
 package com.comflip.engine;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-
 public class Window {
 
-	private JFrame frame;
-	private BufferedImage image;
-	private Cursor cursor;
-	private BufferedImage imageCursor;
-	private Canvas canvas;
-	private BufferStrategy bs;
-	private Graphics g;
+	private final JFrame frame;
+	private final BufferedImage image;
+	private final Canvas canvas;
+	private final BufferStrategy bs;
+	private final Graphics g;
 
 	public Window(GameContainer gc) {
 		image = new BufferedImage(gc.getWidth(), gc.getHeigth(), BufferedImage.TYPE_INT_RGB);
@@ -40,9 +31,9 @@ public class Window {
 		frame.setVisible(true);
 		
 		frame.setIconImage(gc.getIconImage());
-		
-		imageCursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		cursor = Toolkit.getDefaultToolkit().createCustomCursor(imageCursor, new Point(0, 0), "blank cursor");
+
+		BufferedImage imageCursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(imageCursor, new Point(0, 0), "blank cursor");
 		frame.getContentPane().setCursor(cursor);
 
 		canvas.createBufferStrategy(2);

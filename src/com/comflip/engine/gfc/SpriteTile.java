@@ -1,28 +1,26 @@
 package com.comflip.engine.gfc;
 
 public class SpriteTile extends Sprite {
-	private int tileWidht, tileHeight;
+	private final int tileWidth, tileHeight;
 
-	public SpriteTile(String path, int tileWidht, int tileHeight) {
+	public SpriteTile(String path, int tileWidth, int tileHeight) {
 		super(path);
 		this.tileHeight = tileHeight;
-		this.tileWidht = tileWidht;
+		this.tileWidth = tileWidth;
 		this.scale = 1;
 	}
 
 	public Sprite getTileSprite(int tileX, int tileY) {
-		int[] pixelTile = new int[tileWidht * tileHeight];
+		int[] pixelTile = new int[tileWidth * tileHeight];
 		for (int y = 0; y < tileHeight; y++) {
-			for (int x = 0; x < tileWidht; x++) {
-				pixelTile[x + y * tileWidht] = this.pixel[(x + tileX * tileWidht)
-						+ (y + tileY * tileHeight) * this.width];
-			}
+			if (tileWidth >= 0)
+				System.arraycopy(this.pixel, (tileX * tileWidth) + (y + tileY * tileHeight) * this.width, pixelTile, y * tileWidth, tileWidth);
 		}
-		return new Sprite(pixelTile, tileWidht, tileHeight);
+		return new Sprite(pixelTile, tileWidth, tileHeight);
 	}
 	
 	public int getTileWidth() {
-		return Math.round(this.tileWidht * scale);
+		return Math.round(this.tileWidth * scale);
 	}
 
 	public int getTileHeight() {
