@@ -11,8 +11,6 @@ import com.comflip.game.lists.gui.Button;
 import java.util.ArrayList;
 
 public class Menu extends LoaderManager implements Layer, GUI {
-    private int widthWindow, heightWindow;
-
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     public Menu() {
@@ -25,8 +23,8 @@ public class Menu extends LoaderManager implements Layer, GUI {
     }
 
     public void update(GameContainer gc, float dt) {
-        widthWindow = gc.getWidth();
-        heightWindow = gc.getHeigth();
+        this.widthWindow = gc.getWidth();
+        this.heightWindow = gc.getHeigth();
 
         for (GUI elementGui : listGUI) {
             elementGui.update(gc, dt);

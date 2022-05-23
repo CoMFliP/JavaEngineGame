@@ -18,6 +18,7 @@ public class LoaderManager implements IO {
 
     protected int posX = 0, posY = 0;
     protected int width = 0, height = 0;
+    protected int widthWindow = 0, heightWindow = 0;
 
     private int FPS;
 
@@ -28,15 +29,11 @@ public class LoaderManager implements IO {
         listLayers.add(Layer.MENU);
         listLayers.add(Layer.GAME);
         listLayers.add(Layer.SELECT_NAME);
-
-        try {
-            Layer.MENU.setActive(true);
-        } catch (Exception ignored) {
-        }
+        listLayers.add(Layer.LOGIN);
     }
 
-    @Override
     public void update(GameContainer gc, float dt) {
+        Layer.LOGIN.setActive(true);
         for (Layer layer : listLayers) {
             if (layer.isActive()) {
                 layer.update(gc, dt);
@@ -46,7 +43,6 @@ public class LoaderManager implements IO {
         GUI.CURSOR.update(gc, dt);
     }
 
-    @Override
     public void render(Renderer r) {
 
         for (Layer layer : listLayers) {

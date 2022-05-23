@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SelectName extends LoaderManager implements Layer, GUI {
-
-    private int widthWindow, heightWindow;
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     private String namePlayer1;
@@ -40,8 +38,8 @@ public class SelectName extends LoaderManager implements Layer, GUI {
     }
 
     public void update(GameContainer gc, float dt) {
-        widthWindow = gc.getWidth();
-        heightWindow = gc.getHeigth();
+        this.widthWindow = gc.getWidth();
+        this.heightWindow = gc.getHeigth();
 
         if (!listGUI.isEmpty()) {
             for (GUI elementGui : listGUI) {

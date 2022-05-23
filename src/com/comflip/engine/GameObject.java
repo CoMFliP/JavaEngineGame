@@ -57,9 +57,4 @@ public class GameObject {
 	public float getScale() {
 		return this.gameObject.getScale();
 	}
-
-	public void setScaleTile(float scale) {
-		this.gameObject.setScaleTile(scale);
-	}
-
 }
