@@ -1,13 +1,15 @@
 package com.comflip.engine;
 
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private final GameContainer gc;
 
+    HashMap<Integer, Character> mapKey = new HashMap<>();
+
     private final int NUM_KEYS = 1024;
-    private char key;
     private final boolean[] keys = new boolean[NUM_KEYS];
     private final boolean[] keysLast = new boolean[NUM_KEYS];
 
@@ -100,12 +102,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;
-        int id = e.getID();
-        if (id == KeyEvent.KEY_PRESSED) {
-            key = e.getKeyChar();
-        } else {
-            key = 0;
-        }
+        mapKey.clear();
+        mapKey.put(e.getKeyCode(),e.getKeyChar());
     }
 
     public void keyReleased(KeyEvent e) {
@@ -124,7 +122,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
         return this.scroll;
     }
 
-    public char getKeyCode() {
-        return this.key;
+    public HashMap<Integer, Character> getMapKey() {
+        return this.mapKey;
     }
 }
