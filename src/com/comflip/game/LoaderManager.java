@@ -26,14 +26,19 @@ public class LoaderManager implements IO {
     protected boolean isActive = false;
 
     public LoaderManager() {
-        listLayers.add(Layer.MENU);
-        listLayers.add(Layer.GAME);
-        listLayers.add(Layer.SELECT_NAME);
         listLayers.add(Layer.LOGIN);
+        listLayers.add(Layer.REGISTER);
+        listLayers.add(Layer.MENU);
+        listLayers.add(Layer.SELECT_NAME);
+        listLayers.add(Layer.GAME);
+
+        try {
+            Layer.LOGIN.setActive(true);
+        } catch (Exception ignored){
+        }
     }
 
     public void update(GameContainer gc, float dt) {
-        Layer.LOGIN.setActive(true);
         for (Layer layer : listLayers) {
             if (layer.isActive()) {
                 layer.update(gc, dt);
@@ -44,7 +49,6 @@ public class LoaderManager implements IO {
     }
 
     public void render(Renderer r) {
-
         for (Layer layer : listLayers) {
             if (layer.isActive()) {
                 layer.render(r);

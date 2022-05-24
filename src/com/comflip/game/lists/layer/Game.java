@@ -14,7 +14,7 @@ import com.comflip.game.lists.sprite.Checker;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Game extends LoaderManager implements Layer, Sprites {
+public class Game extends LoaderManager implements Layer {
     ArrayList<Sprites> listSprites = new ArrayList<>();
 
     private String canMove = "white";

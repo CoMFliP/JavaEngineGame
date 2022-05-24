@@ -14,17 +14,14 @@ public class Form extends LoaderManager implements GUI {
     private boolean isActive;
 
     private final StringBuilder content = new StringBuilder();
-    private String text;
+    private String value = "";
+    private String text = "";
 
-    private String messageError;
+    private String messageError = "";
 
     private float timerKeyboard = 0;
     private float timerBlink = 0;
-
-
-    public Form() {
-
-    }
+    private int maxSize = 1024;
 
     public void update(GameContainer gc, float dt) {
         Input input = gc.getInput();
@@ -35,10 +32,10 @@ public class Form extends LoaderManager implements GUI {
         boolean axisY = Collisions.axisY(this.posY, this.height, cursor.getPosY(), 0);
 
         if ((axisX && axisY) && input.isButtonDown(MouseEvent.BUTTON1)) {
-            isActive = true;
+            this.isActive = true;
 
         } else if (!(axisX && axisY) && input.isButtonDown(MouseEvent.BUTTON1)) {
-            isActive = false;
+            this.isActive = false;
         }
 
         if (this.isActive) {
@@ -48,13 +45,18 @@ public class Form extends LoaderManager implements GUI {
             }
 
             for (Map.Entry<Integer, Character> entry : input.getMapKey().entrySet()) {
-                if (input.isKeyDown(entry.getKey()) && (entry.getValue() > 31 && entry.getValue() < 127)
-                        || input.isKeyDown(KeyEvent.VK_SHIFT) || input.isKeyDown(KeyEvent.VK_BACK_SPACE)) {
+                if (input.isKeyDown(entry.getKey())) {
+                    String key = "";
+
+                    if (entry.getValue() >= 32 && entry.getValue() <= 126) {
+                        key = entry.getValue().toString();
+                    }
+
                     if ((input.isKey(KeyEvent.VK_SHIFT) && !Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)
                             || (!input.isKey(KeyEvent.VK_SHIFT) && Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)))) {
-                        content.append(entry.getValue().toString().toUpperCase());
+                        content.append(key.toUpperCase());
                     } else if (input.isKey(KeyEvent.VK_SHIFT) && Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)) {
-                        content.append(entry.getValue().toString().toLowerCase());
+                        content.append(key.toLowerCase());
                     } else if (input.isKey(KeyEvent.VK_BACK_SPACE)) {
                         try {
                             content.deleteCharAt(content.length() - 1);
@@ -62,7 +64,7 @@ public class Form extends LoaderManager implements GUI {
                             break;
                         }
                     } else {
-                        content.append(entry.getValue().toString().toLowerCase());
+                        content.append(key);
                     }
                 }
 
@@ -79,16 +81,35 @@ public class Form extends LoaderManager implements GUI {
                 } else {
                     timerKeyboard = 0;
                 }
+
             }
+
+            if (content.toString().length() > this.maxSize) {
+                content.deleteCharAt(content.length() - 1);
+            }
+
+            this.value = content.toString();
+
         }
     }
 
     public void render(Renderer r) {
         r.drawFillRect(this.posX, this.posY, this.width, this.height, Color.LIGTH_GREY);
-        r.drawRect(this.posX, this.posY, this.width, this.height, Color.GREY);
+
+        if (this.isActive) {
+            r.drawRect(this.posX, this.posY, this.width, this.height, Color.DARK_GREY);
+        } else {
+            r.drawRect(this.posX, this.posY, this.width, this.height, Color.GREY);
+        }
 
         GameObject imageText = r.drawText(content.toString(), 0, 0, 0);
-        r.drawText(content.toString(), this.posX + 3, this.posY + ((this.height - imageText.getHeight()) / 2), Color.DARK_GREY);
+
+        if (this.tag.contains("form_password")) {
+            imageText = r.drawText(content.toString().replaceAll("[\\w\\W\\d]", "*"), 0, 0, 0);
+            r.drawText(content.toString().replaceAll("[\\w\\W\\d]", "*"), this.posX + 3, this.posY + ((this.height - imageText.getHeight()) / 2), Color.DARK_GREY);
+        } else {
+            r.drawText(content.toString(), this.posX + 3, this.posY + ((this.height - imageText.getHeight()) / 2), Color.DARK_GREY);
+        }
 
         if (timerBlink < 15 && this.isActive) {
             r.drawRect(this.posX + (imageText.getWidth() + 4), this.posY + ((this.height - imageText.getHeight()) / 2), 0, imageText.getHeight(), Color.DARK_GREY);
@@ -98,11 +119,12 @@ public class Form extends LoaderManager implements GUI {
             r.drawText(this.text, this.posX + 3, this.posY + ((this.height - imageText.getHeight()) / 2), Color.GREY);
         }
 
-        if (content.length() >= 15) {
-            content.setLength(15);
-            messageError = "* Too many characters!!! Max 15!";
-            r.drawText(messageError, this.posX + 3, this.posY + ((this.height - imageText.getHeight()) + 15), Color.BLACK);
-        }
+        r.drawText(this.messageError, this.posX + 3, this.posY + ((this.height - imageText.getHeight()) + 15), Color.BLACK);
+    }
+
+    public void clearContent() {
+        this.content.delete(0, this.content.length());
+        this.value = this.content.toString();
     }
 
     public int getPosX() {
@@ -151,5 +173,25 @@ public class Form extends LoaderManager implements GUI {
 
     public void setMessageError(String messageError) {
         this.messageError = messageError;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return this.tag;
+    }
+
+    public String getValue() {
+        return this.value;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    public StringBuilder getContent() {
+        return this.content;
     }
 }

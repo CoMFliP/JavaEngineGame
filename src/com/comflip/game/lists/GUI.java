@@ -12,4 +12,7 @@ public interface GUI extends IO {
     Button BUTTON = new Button();
 
     Form FORM = new Form();
+
+    String getTag();
+    void setTag(String tag);
 }

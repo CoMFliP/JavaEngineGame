@@ -1,7 +1,6 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
-import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.LoaderManager;
@@ -11,17 +10,17 @@ import com.comflip.game.lists.gui.Button;
 import com.comflip.game.lists.gui.Form;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Login extends LoaderManager implements Layer {
-
+public class Register extends LoaderManager implements Layer {
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     private String username;
     private String password;
+    private String passwordRepeat;
 
-    private boolean buttonRegisterExecute;
-
-    public Login() {
+    boolean buttonBackExecute = false;
+    public Register() {
         this.sprite = new Sprite("/menu.png");
 
         Form formUsername = new Form();
@@ -32,19 +31,24 @@ public class Login extends LoaderManager implements Layer {
         formPassword.setTag("form_password");
         listGUI.add(formPassword);
 
-        Button buttonLogin = new Button();
-        buttonLogin.setTag("button_login");
-        listGUI.add(buttonLogin);
+        Form formPasswordRepeat = new Form();
+        formPasswordRepeat.setTag("form_password_repeat");
+        listGUI.add(formPasswordRepeat);
 
         Button buttonRegister = new Button();
         buttonRegister.setTag("button_register");
         listGUI.add(buttonRegister);
+
+        Button buttonBack = new Button();
+        buttonBack.setTag("button_back");
+        listGUI.add(buttonBack);
     }
 
-    @Override
     public void update(GameContainer gc, float dt) {
+
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
+
 
         for (GUI elementGui : listGUI) {
             switch (elementGui.getTag()) {
@@ -54,17 +58,16 @@ public class Login extends LoaderManager implements Layer {
                     formUsername.setHeight(25);
 
                     formUsername.setPosX(formUsername.getWidth());
-                    formUsername.setPosY(heightWindow / 2 - 20);
+                    formUsername.setPosY(heightWindow / 2 - 60);
 
                     formUsername.setText("Username");
                     formUsername.setMaxSize(20);
 
                     this.username = formUsername.getValue();
 
-                    if (buttonRegisterExecute){
+                    if (buttonBackExecute) {
                         formUsername.clearContent();
                     }
-//                    formUsername.setMessageError("* Too Many Charters! Max 15");
                 }
 
                 case "form_password" -> {
@@ -73,28 +76,40 @@ public class Login extends LoaderManager implements Layer {
                     formPassword.setHeight(25);
 
                     formPassword.setPosX(formPassword.getWidth());
-                    formPassword.setPosY(heightWindow / 2 + 20);
+                    formPassword.setPosY(heightWindow / 2 - 20);
 
                     formPassword.setText("Password");
                     formPassword.setMaxSize(20);
 
                     this.password = formPassword.getValue();
 
-                    if (buttonRegisterExecute){
+                    if (buttonBackExecute) {
                         formPassword.clearContent();
                     }
-//                    formPassword.setMessageError("* Too Many Charters! Max 15");
                 }
 
-                case "button_login" -> {
-                    Button buttonLogin = (Button) elementGui;
-                    buttonLogin.setWidth(widthWindow / 6);
-                    buttonLogin.setHeight(25);
+                case "form_password_repeat" -> {
+                    Form formPasswordRepeat = (Form) elementGui;
+                    formPasswordRepeat.setWidth(widthWindow / 3);
+                    formPasswordRepeat.setHeight(25);
 
-                    buttonLogin.setPosX(buttonLogin.getWidth() * 2);
-                    buttonLogin.setPosY(heightWindow / 2 + 60);
+                    formPasswordRepeat.setPosX(formPasswordRepeat.getWidth());
+                    formPasswordRepeat.setPosY(heightWindow / 2 + 20);
 
-                    buttonLogin.setText("Login");
+                    formPasswordRepeat.setText("Repeat password");
+                    formPasswordRepeat.setMaxSize(20);
+
+                    this.passwordRepeat = formPasswordRepeat.getValue();
+
+                    if (!Objects.equals(this.password, this.passwordRepeat)) {
+                        formPasswordRepeat.setMessageError("* Is not same password!");
+                    } else {
+                        formPasswordRepeat.setMessageError("");
+                    }
+
+                    if (buttonBackExecute) {
+                        formPasswordRepeat.clearContent();
+                    }
                 }
 
                 case "button_register" -> {
@@ -105,12 +120,23 @@ public class Login extends LoaderManager implements Layer {
                     buttonRegister.setPosX(buttonRegister.getWidth() * 3 + 3);
                     buttonRegister.setPosY(heightWindow / 2 + 60);
 
-                    buttonRegister.setText("Sign Up");
+                    buttonRegister.setText("Create account");
+                }
 
-                    buttonRegisterExecute = buttonRegister.isExecute();
-                    if (buttonRegisterExecute){
-                        Layer.LOGIN.setActive(false);
-                        Layer.REGISTER.setActive(true);
+                case "button_back" -> {
+                    Button buttonBack = (Button) elementGui;
+                    buttonBack.setWidth(widthWindow / 6);
+                    buttonBack.setHeight(25);
+
+                    buttonBack.setPosX(buttonBack.getWidth() * 2);
+                    buttonBack.setPosY(heightWindow / 2 + 60);
+
+                    buttonBack.setText("Back");
+
+                    buttonBackExecute = buttonBack.isExecute();
+                    if (buttonBackExecute) {
+                        Layer.REGISTER.setActive(false);
+                        Layer.LOGIN.setActive(true);
                     }
                 }
             }
@@ -118,14 +144,11 @@ public class Login extends LoaderManager implements Layer {
         }
     }
 
-    @Override
     public void render(Renderer r) {
         r.drawSprite(this.sprite, 0, 0);
-
         for (GUI elementGui : listGUI) {
             elementGui.render(r);
         }
-
     }
 
     @Override

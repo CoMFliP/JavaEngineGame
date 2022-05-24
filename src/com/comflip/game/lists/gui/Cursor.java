@@ -32,4 +32,14 @@ public class Cursor extends LoaderManager implements GUI {
 	public int getPosY() {
 		return this.posY;
 	}
+
+	@Override
+	public String getTag() {
+		return null;
+	}
+
+	@Override
+	public void setTag(String tag) {
+
+	}
 }

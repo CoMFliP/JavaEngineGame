@@ -11,7 +11,7 @@ import com.comflip.game.lists.gui.Button;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SelectName extends LoaderManager implements Layer, GUI {
+public class SelectName extends LoaderManager implements Layer {
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     private String namePlayer1;

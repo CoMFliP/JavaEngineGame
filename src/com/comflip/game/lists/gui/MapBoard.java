@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class MapBoard extends LoaderManager implements GUI, Sprites {
+public class MapBoard extends LoaderManager implements GUI {
     HashMap<Integer, int[]> mapBoard = new HashMap<>();
 
     ArrayList<Sprites> listSprites = new ArrayList<>();
@@ -612,5 +612,15 @@ public class MapBoard extends LoaderManager implements GUI, Sprites {
 
     public HashMap<Integer, String> getHashMustAttack() {
         return hashMustAttack;
+    }
+
+    @Override
+    public String getTag() {
+        return null;
+    }
+
+    @Override
+    public void setTag(String tag) {
+
     }
 }

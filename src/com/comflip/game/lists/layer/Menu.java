@@ -1,6 +1,7 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.IO;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.LoaderManager;
@@ -10,7 +11,7 @@ import com.comflip.game.lists.gui.Button;
 
 import java.util.ArrayList;
 
-public class Menu extends LoaderManager implements Layer, GUI {
+public class Menu extends LoaderManager implements Layer {
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     public Menu() {
