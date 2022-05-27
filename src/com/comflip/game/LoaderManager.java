@@ -1,10 +1,13 @@
 package com.comflip.game;
 
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.IO;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.net.ClientSoket;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
@@ -13,12 +16,15 @@ import java.util.ArrayList;
 public class LoaderManager implements IO {
     protected Sprite sprite;
     protected SoundClip soundClip;
+    protected ClientSoket clientSoket = new ClientSoket();
 
     protected String tag = "null";
 
     protected int posX = 0, posY = 0;
     protected int width = 0, height = 0;
     protected int widthWindow = 0, heightWindow = 0;
+
+    private String serverStatus;
 
     private int FPS;
 
@@ -27,7 +33,7 @@ public class LoaderManager implements IO {
 
     public LoaderManager() {
         listLayers.add(Layer.LOGIN);
-        listLayers.add(Layer.REGISTER);
+        listLayers.add(Layer.SIGN_IN);
         listLayers.add(Layer.MENU);
         listLayers.add(Layer.SELECT_NAME);
         listLayers.add(Layer.GAME);
@@ -39,10 +45,22 @@ public class LoaderManager implements IO {
     }
 
     public void update(GameContainer gc, float dt) {
+        this.widthWindow = gc.getWidth();
+        this.heightWindow = gc.getHeigth();
+
         for (Layer layer : listLayers) {
             if (layer.isActive()) {
                 layer.update(gc, dt);
             }
+        }
+
+        try {
+            clientSoket.startConnection("127.0.0.1", 5555);
+            clientSoket.stopConnection();
+
+            serverStatus = "online";
+        } catch (Exception ignored) {
+            serverStatus = "offline";
         }
 
         GUI.CURSOR.update(gc, dt);
@@ -55,9 +73,17 @@ public class LoaderManager implements IO {
             }
         }
 
-        GUI.CURSOR.render(r);
-
         r.drawText("FPS: " + FPS, 0, 0, 0xff00ffff);
+
+        GameObject textStatus = r.drawText("Server is ", 5, heightWindow - 20, Color.WHITE);
+
+        if (serverStatus.equals("offline")) {
+            r.drawText(serverStatus, textStatus.getWidth() + 5, heightWindow - 20, Color.FIREBRICK);
+        } else if (serverStatus.equals("online")) {
+            r.drawText(serverStatus, textStatus.getWidth() + 5, heightWindow - 20, Color.LIMEGREEN);
+        }
+
+        GUI.CURSOR.render(r);
     }
 
     public void setFPS(int fps) {

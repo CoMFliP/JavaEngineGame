@@ -12,9 +12,14 @@ public class Button extends LoaderManager implements GUI {
 
     private boolean isActive = false;
     private boolean isExecute = false;
+    private boolean isBlock = false;
 
     @Override
     public void update(GameContainer gameContainer, float dt) {
+        if (isBlock){
+            return;
+        }
+
         Input input = gameContainer.getInput();
         Cursor cursor = GUI.CURSOR;
 
@@ -22,6 +27,7 @@ public class Button extends LoaderManager implements GUI {
         boolean axisY = Collisions.axisY(this.posY, this.height, cursor.getPosY(), 0);
 
         if (axisX && axisY) {
+            isExecute = false;
             if (input.isButtonDown(MouseEvent.BUTTON1)) {
                 isActive = true;
                 isExecute = false;
@@ -29,8 +35,7 @@ public class Button extends LoaderManager implements GUI {
                 isActive = false;
                 isExecute = true;
             }
-        } else {
-            isExecute = false;
+        } else if (input.isButtonUp(MouseEvent.BUTTON1)) {
             isActive = false;
         }
     }
@@ -39,13 +44,19 @@ public class Button extends LoaderManager implements GUI {
     public void render(Renderer r) {
         GameObject imageText = r.drawText(text, 0, 0, 0);
 
-        if (isActive) {
-            r.drawFillRect(posX, posY, width, height, Color.DARK_GREY);
-            r.drawRect(posX, posY, width, height, Color.BLACK);
+        if (isBlock) {
+            r.drawFillRect(posX, posY, width, height, Color.LIGTH_GREY);
+            r.drawRect(posX, posY, width, height, Color.GREY);
         } else {
-            r.drawFillRect(posX, posY, width, height, Color.GREY);
-            r.drawRect(posX, posY, width, height, Color.DARK_GREY);
+            if (isActive) {
+                r.drawFillRect(posX, posY, width, height, Color.DARK_GREY);
+                r.drawRect(posX, posY, width, height, Color.BLACK);
+            } else {
+                r.drawFillRect(posX, posY, width, height, Color.GREY);
+                r.drawRect(posX, posY, width, height, Color.DARK_GREY);
+            }
         }
+
 
         r.drawText(text, posX + ((width - imageText.getWidth()) / 2), posY + ((height - imageText.getHeight()) / 2), Color.WHITE);
     }
@@ -98,7 +109,9 @@ public class Button extends LoaderManager implements GUI {
         this.posY = posY;
     }
 
-    public int getWidth() { return this.width; }
+    public int getWidth() {
+        return this.width;
+    }
 
     public void setWidth(int width) {
         this.width = width;
@@ -110,5 +123,9 @@ public class Button extends LoaderManager implements GUI {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setBlock(boolean isBlock) {
+        this.isBlock = isBlock;
     }
 }

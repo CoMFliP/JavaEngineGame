@@ -1,7 +1,9 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
@@ -9,10 +11,11 @@ import com.comflip.game.lists.Layer;
 import com.comflip.game.lists.gui.Button;
 import com.comflip.game.lists.gui.Form;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Register extends LoaderManager implements Layer {
+public class SignUp extends LoaderManager implements Layer {
     ArrayList<GUI> listGUI = new ArrayList<>();
 
     private String username;
@@ -20,7 +23,9 @@ public class Register extends LoaderManager implements Layer {
     private String passwordRepeat;
 
     boolean buttonBackExecute = false;
-    public Register() {
+    private String rep = "";
+
+    public SignUp() {
         this.sprite = new Sprite("/menu.png");
 
         Form formUsername = new Form();
@@ -121,6 +126,19 @@ public class Register extends LoaderManager implements Layer {
                     buttonRegister.setPosY(heightWindow / 2 + 60);
 
                     buttonRegister.setText("Create account");
+
+                    buttonRegister.setBlock(!Objects.equals(this.password, this.passwordRepeat) || this.username.length() == 0 || this.password.length() == 0);
+
+                    if (buttonRegister.isExecute()) {
+                        try {
+                            clientSoket.startConnection("127.0.0.1", 5555);
+                            rep = clientSoket.sendMessage("create-account=" + this.username + ":" + this.password);
+                            clientSoket.stopConnection();
+                        } catch (IOException e) {
+                            rep = "Unable to connect to server. Please try again later";
+                            System.out.println(e);
+                        }
+                    }
                 }
 
                 case "button_back" -> {
@@ -135,7 +153,7 @@ public class Register extends LoaderManager implements Layer {
 
                     buttonBackExecute = buttonBack.isExecute();
                     if (buttonBackExecute) {
-                        Layer.REGISTER.setActive(false);
+                        Layer.SIGN_IN.setActive(false);
                         Layer.LOGIN.setActive(true);
                     }
                 }
@@ -149,6 +167,9 @@ public class Register extends LoaderManager implements Layer {
         for (GUI elementGui : listGUI) {
             elementGui.render(r);
         }
+
+        GameObject repText = r.drawText(rep, 0, 0, 0);
+        r.drawText(rep, (widthWindow - repText.getWidth()) / 2, heightWindow / 5 * 4, Color.WHITE);
     }
 
     @Override

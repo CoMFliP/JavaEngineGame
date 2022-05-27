@@ -1,8 +1,9 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
-import com.comflip.engine.Input;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
@@ -10,16 +11,18 @@ import com.comflip.game.lists.Layer;
 import com.comflip.game.lists.gui.Button;
 import com.comflip.game.lists.gui.Form;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Login extends LoaderManager implements Layer {
 
     ArrayList<GUI> listGUI = new ArrayList<>();
 
-    private String username;
-    private String password;
+    private String username = "";
+    private String password = "";
 
     private boolean buttonRegisterExecute;
+    private String rep = "";
 
     public Login() {
         this.sprite = new Sprite("/menu.png");
@@ -61,10 +64,9 @@ public class Login extends LoaderManager implements Layer {
 
                     this.username = formUsername.getValue();
 
-                    if (buttonRegisterExecute){
+                    if (buttonRegisterExecute) {
                         formUsername.clearContent();
                     }
-//                    formUsername.setMessageError("* Too Many Charters! Max 15");
                 }
 
                 case "form_password" -> {
@@ -80,10 +82,9 @@ public class Login extends LoaderManager implements Layer {
 
                     this.password = formPassword.getValue();
 
-                    if (buttonRegisterExecute){
+                    if (buttonRegisterExecute) {
                         formPassword.clearContent();
                     }
-//                    formPassword.setMessageError("* Too Many Charters! Max 15");
                 }
 
                 case "button_login" -> {
@@ -95,22 +96,35 @@ public class Login extends LoaderManager implements Layer {
                     buttonLogin.setPosY(heightWindow / 2 + 60);
 
                     buttonLogin.setText("Login");
+
+                    buttonLogin.setBlock(this.username.length() == 0 || this.password.length() == 0);
+
+                    if (buttonLogin.isExecute()){
+                        try {
+                            clientSoket.startConnection("127.0.0.1", 5555);
+                            rep = clientSoket.sendMessage("login-account=" + this.username + ":" + this.password);
+                            clientSoket.stopConnection();
+                        } catch (IOException e) {
+                            rep = "Unable to connect to server. Please try again later";
+                            System.out.println(e);
+                        }
+                    }
                 }
 
                 case "button_register" -> {
-                    Button buttonRegister = (Button) elementGui;
-                    buttonRegister.setWidth(widthWindow / 6);
-                    buttonRegister.setHeight(25);
+                    Button buttonSignUp = (Button) elementGui;
+                    buttonSignUp.setWidth(widthWindow / 6);
+                    buttonSignUp.setHeight(25);
 
-                    buttonRegister.setPosX(buttonRegister.getWidth() * 3 + 3);
-                    buttonRegister.setPosY(heightWindow / 2 + 60);
+                    buttonSignUp.setPosX(buttonSignUp.getWidth() * 3 + 3);
+                    buttonSignUp.setPosY(heightWindow / 2 + 60);
 
-                    buttonRegister.setText("Sign Up");
+                    buttonSignUp.setText("Sign Up");
 
-                    buttonRegisterExecute = buttonRegister.isExecute();
-                    if (buttonRegisterExecute){
+                    buttonRegisterExecute = buttonSignUp.isExecute();
+                    if (buttonRegisterExecute) {
                         Layer.LOGIN.setActive(false);
-                        Layer.REGISTER.setActive(true);
+                        Layer.SIGN_IN.setActive(true);
                     }
                 }
             }
@@ -126,6 +140,8 @@ public class Login extends LoaderManager implements Layer {
             elementGui.render(r);
         }
 
+        GameObject repText = r.drawText(rep, 0, 0, 0);
+        r.drawText(rep, (widthWindow - repText.getWidth()) / 2, heightWindow / 5 * 4, Color.WHITE);
     }
 
     @Override
