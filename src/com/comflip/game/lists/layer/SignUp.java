@@ -5,6 +5,8 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.net.ClientSession;
+import com.comflip.engine.net.ClientSoket;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -23,7 +25,8 @@ public class SignUp extends LoaderManager implements Layer {
     private String passwordRepeat;
 
     boolean buttonBackExecute = false;
-    private String rep = "";
+    private String message = "";
+    private float timer = 0;
 
     public SignUp() {
         this.sprite = new Sprite("/menu.png");
@@ -50,10 +53,14 @@ public class SignUp extends LoaderManager implements Layer {
     }
 
     public void update(GameContainer gc, float dt) {
-
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
 
+        if (timer > 100){
+            message = "";
+        } else {
+            timer += dt * 20;
+        }
 
         for (GUI elementGui : listGUI) {
             switch (elementGui.getTag()) {
@@ -130,13 +137,15 @@ public class SignUp extends LoaderManager implements Layer {
                     buttonRegister.setBlock(!Objects.equals(this.password, this.passwordRepeat) || this.username.length() == 0 || this.password.length() == 0);
 
                     if (buttonRegister.isExecute()) {
+                        this.timer = 0;
+
                         try {
                             clientSoket.startConnection("127.0.0.1", 5555);
-                            rep = clientSoket.sendMessage("create-account=" + this.username + ":" + this.password);
+                            String rep = clientSoket.sendMessage("create-account=" + this.username + ":" + this.password);
+                            message = ClientSoket.decodeReponse(rep).get("msg");
                             clientSoket.stopConnection();
                         } catch (IOException e) {
-                            rep = "Unable to connect to server. Please try again later";
-                            System.out.println(e);
+                            message = "Unable to connect to server. Please try again later";
                         }
                     }
                 }
@@ -168,8 +177,8 @@ public class SignUp extends LoaderManager implements Layer {
             elementGui.render(r);
         }
 
-        GameObject repText = r.drawText(rep, 0, 0, 0);
-        r.drawText(rep, (widthWindow - repText.getWidth()) / 2, heightWindow / 5 * 4, Color.WHITE);
+        GameObject repText = r.drawText(message, 0, 0, 0);
+        r.drawText(message, (widthWindow - repText.getWidth()) / 2, heightWindow / 5 * 4, Color.WHITE);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.comflip.engine.net;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class ClientSoket {
     private Socket clientSocket;
@@ -31,5 +32,15 @@ public class ClientSoket {
         in.close();
         out.close();
         clientSocket.close();
+    }
+
+    public static HashMap<String, String> decodeReponse(String reponse) {
+        HashMap<String, String> mapReponse = new HashMap<>();
+
+        for (String line : reponse.split("&")) {
+            mapReponse.put(line.split("=")[0], line.split("=")[1]);
+        }
+
+        return mapReponse;
     }
 }

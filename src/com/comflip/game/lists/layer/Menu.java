@@ -1,9 +1,11 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
-import com.comflip.engine.IO;
+import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.net.ClientSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -16,7 +18,7 @@ public class Menu extends LoaderManager implements Layer {
 
     public Menu() {
         this.sprite = new Sprite("/menu.png");
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             Button button = new Button();
             button.setTag("button_" + i);
             listGUI.add(button);
@@ -33,11 +35,19 @@ public class Menu extends LoaderManager implements Layer {
             if (button.isExecute()) {
                 switch (button.getTag()) {
                     case "button_0" -> {
-                        Layer.GAME.setActive(true);
-                        Layer.SELECT_NAME.setActive(true);
-                        this.isActive = false;
+//                        Layer.GAME.setActive(true);
+//                        Layer.SELECT_NAME.setActive(true);
+//                        this.isActive = false;
                     }
-                    case "button_1" -> System.exit(0);
+                    case "button_1" -> {
+
+                    }
+
+                    case "button_2" -> {
+//                        System.exit(0);
+
+                    }
+
                     default -> {
                     }
                 }
@@ -57,16 +67,35 @@ public class Menu extends LoaderManager implements Layer {
             button.setPosY(heightWindow / 2);
 
             switch (button.getTag()) {
-                case "button_0" -> button.setText("Play");
+                case "button_0" -> button.setText("Create match");
                 case "button_1" -> {
-                    button.setText("Exit");
+                    button.setText("Lobby");
                     button.setPosY(button.getPosY() + 30);
+                }
+                case "button_2" -> {
+                    button.setText("Exit");
+                    button.setPosY(button.getPosY() + 60);
+
+                    if (button.isExecute()) {
+                        try {
+                            clientSoket.startConnection("127.0.0.1", 5555);
+                            clientSoket.sendMessage("logout="+ClientSession.getUsername());
+                            clientSoket.stopConnection();
+
+                            Layer.MENU.setActive(false);
+                            Layer.LOGIN.setActive(true);
+                        } catch (Exception ignored) {
+                        }
+                    }
                 }
                 default -> {
                 }
             }
             elementGui.render(r);
         }
+
+        GameObject welcomeText = r.drawText("Welcome, " + ClientSession.getUsername(), 0, 0, 0);
+        r.drawText("Welcome, " + ClientSession.getUsername(), (widthWindow - welcomeText.getWidth()) / 2, heightWindow / 6 * 5, Color.WHITE);
     }
 
     public boolean isActive() {
