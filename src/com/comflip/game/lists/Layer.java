@@ -9,6 +9,7 @@ public interface Layer extends IO {
     SelectName SELECT_NAME = new SelectName();
     Login LOGIN = new Login();
     SignUp SIGN_IN = new SignUp();
+    Lobby LOBBY = new Lobby();
 
     boolean isActive();
 

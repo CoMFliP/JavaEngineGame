@@ -37,6 +37,7 @@ public class LoaderManager implements IO {
         listLayers.add(Layer.MENU);
         listLayers.add(Layer.SELECT_NAME);
         listLayers.add(Layer.GAME);
+        listLayers.add(Layer.LOBBY);
 
         try {
             Layer.LOGIN.setActive(true);
