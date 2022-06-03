@@ -1,10 +1,9 @@
 package com.comflip.game.lists.layer;
 
 import com.comflip.engine.GameContainer;
-import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
-import com.comflip.engine.net.ClientSoket;
+import com.comflip.engine.net.ClientSocket;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -29,12 +28,10 @@ public class Lobby extends LoaderManager implements Layer {
         this.heightWindow = gc.getHeigth();
 
         try {
-            clientSoket.startConnection("127.0.0.1", 5555);
-            rep = clientSoket.sendMessage("lobby=");
-            clientSoket.stopConnection();
-            fromTable = ClientSoket.decodeReponse(rep);
-                
-
+            clientSocket.startConnection("127.0.0.1", 5555);
+            rep = clientSocket.sendMessage("lobby=");
+            clientSocket.stopConnection();
+            fromTable = ClientSocket.decodeResponse(rep);
         } catch (Exception ignored) {
         }
 

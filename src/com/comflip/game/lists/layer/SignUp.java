@@ -5,8 +5,7 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.engine.net.ClientSession;
-import com.comflip.engine.net.ClientSoket;
+import com.comflip.engine.net.ClientSocket;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -56,7 +55,7 @@ public class SignUp extends LoaderManager implements Layer {
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
 
-        if (timer > 100){
+        if (timer > 100) {
             message = "";
         } else {
             timer += dt * 20;
@@ -76,6 +75,12 @@ public class SignUp extends LoaderManager implements Layer {
                     formUsername.setMaxSize(20);
 
                     this.username = formUsername.getValue();
+
+                    if (username.equals("null")) {
+                        formUsername.setMessageError("* Incorrect username");
+                    } else {
+                        formUsername.setMessageError("");
+                    }
 
                     if (buttonBackExecute) {
                         formUsername.clearContent();
@@ -134,16 +139,17 @@ public class SignUp extends LoaderManager implements Layer {
 
                     buttonRegister.setText("Create account");
 
-                    buttonRegister.setBlock(!Objects.equals(this.password, this.passwordRepeat) || this.username.length() == 0 || this.password.length() == 0);
+                    buttonRegister.setBlock(!Objects.equals(this.password, this.passwordRepeat) || this.username.length() == 0
+                            || this.password.length() == 0 || this.username.equals("null"));
 
                     if (buttonRegister.isExecute()) {
                         this.timer = 0;
 
                         try {
-                            clientSoket.startConnection("127.0.0.1", 5555);
-                            String rep = clientSoket.sendMessage("create-account=" + this.username + ":" + this.password);
-                            message = ClientSoket.decodeReponse(rep).get("msg");
-                            clientSoket.stopConnection();
+                            clientSocket.startConnection("127.0.0.1", 5555);
+                            String rep = clientSocket.sendMessage("create-account=" + this.username + ":" + this.password);
+                            message = ClientSocket.decodeResponse(rep).get("msg");
+                            clientSocket.stopConnection();
                         } catch (IOException e) {
                             message = "Unable to connect to server. Please try again later";
                         }

@@ -47,9 +47,9 @@ public class Menu extends LoaderManager implements Layer {
                     if (button.isExecute()) {
                         try {
                             i++;
-                            clientSoket.startConnection("127.0.0.1", 5555);
-                            clientSoket.sendMessage("create-match=id" + i);
-                            clientSoket.stopConnection();
+                            clientSocket.startConnection("127.0.0.1", 5555);
+                            clientSocket.sendMessage("create-match=id" + i);
+                            clientSocket.stopConnection();
                         } catch (Exception ignored) {
                         }
                     }
@@ -80,9 +80,9 @@ public class Menu extends LoaderManager implements Layer {
 
                     if (button.isExecute()) {
                         try {
-                            clientSoket.startConnection("127.0.0.1", 5555);
-                            clientSoket.sendMessage("logout=" + ClientSession.getUsername());
-                            clientSoket.stopConnection();
+                            clientSocket.startConnection("127.0.0.1", 5555);
+                            clientSocket.sendMessage("logout=" + ClientSession.getUsername());
+                            clientSocket.stopConnection();
 
                             Layer.MENU.setActive(false);
                             Layer.LOGIN.setActive(true);

@@ -6,6 +6,7 @@ import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class Button extends LoaderManager implements GUI {
     private String text = "";

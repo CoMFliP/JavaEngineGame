@@ -1,7 +1,7 @@
 package com.comflip.engine.net;
 
 public class ClientSession {
-    private static String session = "";
+    private static String session = "null:null";
 
     public static void setSession(String session) {
         ClientSession.session = session;

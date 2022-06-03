@@ -7,17 +7,19 @@ import com.comflip.engine.Renderer;
 import com.comflip.engine.audio.SoundClip;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.engine.net.ClientSoket;
+import com.comflip.engine.net.ClientSession;
+import com.comflip.engine.net.ClientSocket;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 
 public class LoaderManager implements IO {
     protected Sprite sprite;
     protected SoundClip soundClip;
-    protected ClientSoket clientSoket = new ClientSoket();
-
+    protected ClientSocket clientSocket = new ClientSocket();
     protected String tag = "null";
 
     protected int posX = 0, posY = 0;
@@ -31,6 +33,7 @@ public class LoaderManager implements IO {
     ArrayList<Layer> listLayers = new ArrayList<>();
     protected boolean isActive = false;
 
+
     public LoaderManager() {
         listLayers.add(Layer.LOGIN);
         listLayers.add(Layer.SIGN_IN);
@@ -41,11 +44,13 @@ public class LoaderManager implements IO {
 
         try {
             Layer.LOGIN.setActive(true);
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
         }
+
     }
 
     public void update(GameContainer gc, float dt) {
+
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
 
@@ -56,11 +61,14 @@ public class LoaderManager implements IO {
         }
 
         try {
-            clientSoket.startConnection("127.0.0.1", 5555);
-            clientSoket.stopConnection();
+            clientSocket.startConnection("127.0.0.1", 5555);
+            if (!ClientSession.getUsername().equals("null") && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
+                clientSocket.sendMessage("ping=" + ClientSession.getUsername());
+            }
+            clientSocket.stopConnection();
 
             serverStatus = "online";
-        } catch (Exception ignored) {
+        } catch (IOException ignored) {
             serverStatus = "offline";
         }
 

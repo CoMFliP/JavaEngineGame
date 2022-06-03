@@ -1,10 +1,11 @@
 package com.comflip.engine.net;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class ClientSoket {
+public class ClientSocket {
     private Socket clientSocket;
     private BufferedWriter out;
     private BufferedReader in;
@@ -34,13 +35,13 @@ public class ClientSoket {
         clientSocket.close();
     }
 
-    public static HashMap<String, String> decodeReponse(String reponse) {
-        HashMap<String, String> mapReponse = new HashMap<>();
+    public static HashMap<String, String> decodeResponse(String response) {
+        HashMap<String, String> mapResponse = new HashMap<>();
 
-        for (String line : reponse.split("&")) {
-            mapReponse.put(line.split("=")[0], line.split("=")[1]);
+        for (String line : response.split("&")) {
+            mapResponse.put(line.split("=")[0], line.split("=")[1]);
         }
 
-        return mapReponse;
+        return mapResponse;
     }
 }
