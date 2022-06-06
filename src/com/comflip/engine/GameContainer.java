@@ -24,9 +24,9 @@ public class GameContainer implements Runnable {
 	}
 
 	public void start() {
-		window = new Window(this);
-		renderer = new Renderer(this);
-		input = new Input(this);
+		this.window = new Window(this);
+		this.renderer = new Renderer(this);
+		this.input = new Input(this);
 
 		Thread thread = new Thread(this);
 		thread.start();
@@ -50,7 +50,7 @@ public class GameContainer implements Runnable {
 		int fps = 0;
 
 		while (running) {
-			render = false; // Lock to 60 FPS
+			render = false;
 
 			firstTime = System.nanoTime() / 1000000000.0;
 			passedTime = firstTime - lastTime;
@@ -59,13 +59,12 @@ public class GameContainer implements Runnable {
 			unprocessedTime += passedTime;
 			frameTime += passedTime;
 
-			double UPDATE = 1.0 / 60.0;
+			double UPDATE = 1.0 / 60.0; // Lock to 60 FPS
 			while (unprocessedTime >= UPDATE) {
 				unprocessedTime -= UPDATE;
 				render = true;
 
 				loaderManager.update(this, (float) UPDATE);
-
 				input.update();
 
 				if (frameTime >= 1.0) {

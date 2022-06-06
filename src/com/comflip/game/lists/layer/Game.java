@@ -4,6 +4,7 @@ import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.net.ClientSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -107,7 +108,7 @@ public class Game extends LoaderManager implements Layer {
 
                 try {
                     if (canMove.equals(checker.getTag().split("_")[0])) {
-                        r.drawText(Layer.SELECT_NAME.getChoosePlayer().get(canMove) + " (" + canMove + ")", 10, 30,
+                        r.drawText(ClientSession.getUsername() + " (" + canMove + ")", 10, 30,
                                 Color.WHITE);
                     }
                 } catch (Exception ignored) {

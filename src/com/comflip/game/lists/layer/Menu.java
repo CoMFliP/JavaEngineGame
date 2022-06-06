@@ -26,8 +26,6 @@ public class Menu extends LoaderManager implements Layer {
         }
     }
 
-    int i;
-
     public void update(GameContainer gc, float dt) {
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
@@ -43,13 +41,16 @@ public class Menu extends LoaderManager implements Layer {
                     button.setPosY(heightWindow / 2 - 30);
                     button.setText("Create match");
 
-
                     if (button.isExecute()) {
                         try {
-                            i++;
                             clientSocket.startConnection("127.0.0.1", 5555);
-                            clientSocket.sendMessage("create-match=id" + i);
+                            clientSocket.sendMessage("create-match=" + ClientSession.getUsername());
                             clientSocket.stopConnection();
+
+                            ClientSession.setColorChecker("white");
+
+                            Layer.MENU.setActive(false);
+                            Layer.GAME.setActive(true);
                         } catch (Exception ignored) {
                         }
                     }

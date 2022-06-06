@@ -4,7 +4,6 @@ import com.comflip.engine.gfc.*;
 
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Renderer {

@@ -1,7 +1,8 @@
 package com.comflip.engine.net;
 
 import java.io.*;
-import java.net.ServerSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.HashMap;
 
@@ -11,12 +12,14 @@ public class ClientSocket {
     private BufferedReader in;
 
     public void startConnection(String ip, int port) throws IOException {
-        clientSocket = new Socket(ip, port);
+        clientSocket = new Socket(ip , port);
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
     public String sendMessage(String msg) throws IOException {
+        clientSocket.setSoTimeout(10000);
+
         out.write(msg);
         out.newLine();
         out.flush();

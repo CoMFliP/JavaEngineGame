@@ -55,10 +55,10 @@ public class SignUp extends LoaderManager implements Layer {
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
 
-        if (timer > 100) {
+        if (timer > 30 * 5) {
             message = "";
         } else {
-            timer += dt * 20;
+            timer += dt * 30;
         }
 
         for (GUI elementGui : listGUI) {

@@ -13,8 +13,9 @@ import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class LoaderManager implements IO {
     protected Sprite sprite;
@@ -26,19 +27,19 @@ public class LoaderManager implements IO {
     protected int width = 0, height = 0;
     protected int widthWindow = 0, heightWindow = 0;
 
-    private String serverStatus;
+    private String serverStatus = "offline";
 
     private int FPS;
 
     ArrayList<Layer> listLayers = new ArrayList<>();
     protected boolean isActive = false;
+    private float timer;
 
 
     public LoaderManager() {
         listLayers.add(Layer.LOGIN);
         listLayers.add(Layer.SIGN_IN);
         listLayers.add(Layer.MENU);
-        listLayers.add(Layer.SELECT_NAME);
         listLayers.add(Layer.GAME);
         listLayers.add(Layer.LOBBY);
 
@@ -50,7 +51,6 @@ public class LoaderManager implements IO {
     }
 
     public void update(GameContainer gc, float dt) {
-
         this.widthWindow = gc.getWidth();
         this.heightWindow = gc.getHeigth();
 
@@ -58,18 +58,30 @@ public class LoaderManager implements IO {
             if (layer.isActive()) {
                 layer.update(gc, dt);
             }
+
+            if (serverStatus.equals("offline") && !layer.equals(Layer.LOGIN) && !layer.equals(Layer.SIGN_IN)){
+                layer.setActive(false);
+                Layer.LOGIN.setActive(true);
+            }
         }
 
-        try {
-            clientSocket.startConnection("127.0.0.1", 5555);
-            if (!ClientSession.getUsername().equals("null") && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
-                clientSocket.sendMessage("ping=" + ClientSession.getUsername());
-            }
-            clientSocket.stopConnection();
+        if (timer < 30) {
+            timer += dt * 30;
+        } else if (timer == 30) {
+            try {
+                clientSocket.startConnection("127.0.0.1", 5555);
 
-            serverStatus = "online";
-        } catch (IOException ignored) {
-            serverStatus = "offline";
+                if (ClientSession.isSesson() && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
+                    clientSocket.sendMessage("isOnline=" + ClientSession.getUsername());
+                }
+
+                clientSocket.stopConnection();
+                serverStatus = "online";
+            } catch (IOException ignored) {
+                serverStatus = "offline";
+                ClientSession.setSession("null:null");
+            }
+            timer = 0;
         }
 
         GUI.CURSOR.update(gc, dt);
