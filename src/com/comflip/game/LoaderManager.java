@@ -13,9 +13,7 @@ import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class LoaderManager implements IO {
     protected Sprite sprite;
@@ -71,7 +69,7 @@ public class LoaderManager implements IO {
             try {
                 clientSocket.startConnection("127.0.0.1", 5555);
 
-                if (ClientSession.isSesson() && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
+                if (ClientSession.isSession() && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
                     clientSocket.sendMessage("isOnline=" + ClientSession.getUsername());
                 }
 

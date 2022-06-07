@@ -6,6 +6,8 @@ import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.net.ClientSession;
+import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -44,10 +46,11 @@ public class Menu extends LoaderManager implements Layer {
                     if (button.isExecute()) {
                         try {
                             clientSocket.startConnection("127.0.0.1", 5555);
-                            clientSocket.sendMessage("create-match=" + ClientSession.getUsername());
+                            String rep = clientSocket.sendMessage("create-match=" + ClientSession.getUsername());
                             clientSocket.stopConnection();
 
-                            ClientSession.setColorChecker("white");
+                            MatchSession.setIdMatch(ClientSocket.decodeResponse(rep).get("idMatch"));
+                            MatchSession.setHost(ClientSession.getUsername());
 
                             Layer.MENU.setActive(false);
                             Layer.GAME.setActive(true);

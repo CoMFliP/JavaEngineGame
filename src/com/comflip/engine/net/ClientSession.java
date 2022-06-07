@@ -4,8 +4,6 @@ public class ClientSession {
     private static String session = "null:null";
     private static boolean isSession = false;
 
-    private static String colorChecker = "";
-
     public static void setSession(String session) {
         ClientSession.session = session;
         isSession = true;
@@ -19,15 +17,7 @@ public class ClientSession {
         return ClientSession.session.split(":")[1];
     }
 
-    public static boolean isSesson() {
+    public static boolean isSession() {
         return isSession;
-    }
-
-    public static String getColorChecker() {
-        return colorChecker;
-    }
-
-    public static void setColorChecker(String colorChecker) {
-        ClientSession.colorChecker = colorChecker;
     }
 }

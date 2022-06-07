@@ -3,7 +3,9 @@ package com.comflip.game.lists.layer;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Sprite;
+import com.comflip.engine.net.ClientSession;
 import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -20,7 +22,7 @@ public class Lobby extends LoaderManager implements Layer {
     private String rep = "";
     private float timer;
 
-    Button buttonBack;
+    private final Button buttonBack;
 
 
     public Lobby() {
@@ -52,7 +54,7 @@ public class Lobby extends LoaderManager implements Layer {
         buttonBack.setTag("button_back");
         buttonBack.setText("Back");
 
-        if (buttonBack.isExecute()){
+        if (buttonBack.isExecute()) {
             Layer.LOBBY.setActive(false);
             Layer.MENU.setActive(true);
         }
@@ -60,6 +62,28 @@ public class Lobby extends LoaderManager implements Layer {
         buttonBack.update(gc, dt);
 
         for (GUI elementGUI : listGUI) {
+            if (elementGUI.getClass().equals(GUI.BUTTON.getClass())) {
+                if (((Button) elementGUI).isExecute()) {
+                    try {
+                        clientSocket.startConnection("127.0.0.1", 5555);
+                        String rep = clientSocket.sendMessage("join=" + ClientSession.getUsername() + ":" + elementGUI.getTag());
+                        clientSocket.stopConnection();
+
+                        if (ClientSocket.decodeResponse(rep).get("msg").equals("done")){
+                            MatchSession.setIdMatch(elementGUI.getTag());
+                            MatchSession.setHost(ClientSocket.decodeResponse(rep).get("userHost"));
+                            MatchSession.setGuest(ClientSession.getUsername());
+                            Layer.LOBBY.setActive(false);
+                            Layer.GAME.setActive(true);
+                        }
+
+                    } catch (Exception ignored) {
+                    }
+
+                    System.out.println(elementGUI.getTag());
+                }
+            }
+
             elementGUI.update(gc, dt);
         }
 
@@ -96,7 +120,7 @@ public class Lobby extends LoaderManager implements Layer {
             matchButton.setPosX(matchButton.getWidth());
             matchButton.setPosY(startOffY);
 
-            matchButton.setTag(line);
+            matchButton.setTag(fromTable.get(line).split(":")[0]);
             matchButton.setText("Match ID: " + fromTable.get(line).split(":")[0] + " | Host: " + fromTable.get(line).split(":")[1]);
 
             listGUI.add(matchButton);
