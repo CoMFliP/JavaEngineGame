@@ -6,7 +6,7 @@ import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.net.ClientSession;
-import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.ClientSocketTCP;
 import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
@@ -75,16 +75,12 @@ public class Game extends LoaderManager implements Layer {
                 timer += dt * 30;
             } else if (timer == 30) {
                 try {
-                    clientSocket.startConnection("127.0.0.1", 5555);
-                    String rep = clientSocket.sendMessage("isGuest=" + MatchSession.getIdMatch());
-                    clientSocket.stopConnection();
+                    clientSocketTCP.startConnection("127.0.0.1", 5555);
+                    String rep = clientSocketTCP.sendMessage("isGuest=" + MatchSession.getIdMatch());
+                    clientSocketTCP.stopConnection();
 
-                    System.out.println(MatchSession.getIdMatch());
-
-                    System.out.println(rep);
-
-                    if (!ClientSocket.decodeResponse(rep).get("guestName").equals("null")){
-                        MatchSession.setGuest(ClientSocket.decodeResponse(rep).get("guestName"));
+                    if (!ClientSocketTCP.decodeResponse(rep).get("guestName").equals("null")){
+                        MatchSession.setGuest(ClientSocketTCP.decodeResponse(rep).get("guestName"));
                     }
 
                 } catch (IOException ignored) {
@@ -106,9 +102,9 @@ public class Game extends LoaderManager implements Layer {
                 Layer.MENU.setActive(true);
 
                 try {
-                    clientSocket.startConnection("127.0.0.1", 5555);
-                    clientSocket.sendMessage("cancel-match=" + MatchSession.getIdMatch());
-                    clientSocket.stopConnection();
+                    clientSocketTCP.startConnection("127.0.0.1", 5555);
+                    clientSocketTCP.sendMessage("cancel-match=" + MatchSession.getIdMatch());
+                    clientSocketTCP.stopConnection();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -8,7 +8,8 @@ import com.comflip.engine.audio.SoundClip;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.net.ClientSession;
-import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.ClientSocketTCP;
+import com.comflip.engine.net.ClientSocketUDP;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 public class LoaderManager implements IO {
     protected Sprite sprite;
     protected SoundClip soundClip;
-    protected ClientSocket clientSocket = new ClientSocket();
+    protected ClientSocketTCP clientSocketTCP = new ClientSocketTCP();
+    protected ClientSocketUDP clientSocketUDP = new ClientSocketUDP();
     protected String tag = "null";
 
     protected int posX = 0, posY = 0;
@@ -67,13 +69,10 @@ public class LoaderManager implements IO {
             timer += dt * 30;
         } else if (timer == 30) {
             try {
-                clientSocket.startConnection("127.0.0.1", 5555);
+                clientSocketUDP.startConnection("127.0.0.1", 5556);
+                String rep = clientSocketUDP.sendMessage("isOnline=" + ClientSession.getUsername());
+                clientSocketUDP.stopConnection();
 
-                if (ClientSession.isSession() && !Layer.LOGIN.isActive() && !Layer.SIGN_IN.isActive()) {
-                    clientSocket.sendMessage("isOnline=" + ClientSession.getUsername());
-                }
-
-                clientSocket.stopConnection();
                 serverStatus = "online";
             } catch (IOException ignored) {
                 serverStatus = "offline";

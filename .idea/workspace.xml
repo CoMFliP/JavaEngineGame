@@ -9,14 +9,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 06.06.2022">
-      <change afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/MatchSession.java" afterDir="false" />
+    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 07.06.2022">
+      <change afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketTCP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/net/ClientSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/engine/net/ClientSession.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/LoaderManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/LoaderManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Login.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/SignUp.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/SignUp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketUDP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/SignUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/SignUp.java" afterDir="false" />
     </list>
     <list id="76ab2e81-3370-44b3-b29f-9c2b08125d3b" name="Changes by mynam" comment="Changes by mynam" />
     <option name="SHOW_DIALOG" value="false" />
@@ -79,6 +88,9 @@
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.comflip.game.lists.gui" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.comflip.engine.net" />
     </key>
   </component>
   <component name="RunManager">
@@ -175,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654530982354</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Version 07.06.2022">
+      <created>1654613898686</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1654613898686</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -200,7 +219,8 @@
     <MESSAGE value="Version 01.06.2022" />
     <MESSAGE value="Version 03.06.2022" />
     <MESSAGE value="Version 06.06.2022" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 06.06.2022" />
+    <MESSAGE value="Version 07.06.2022" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 07.06.2022" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

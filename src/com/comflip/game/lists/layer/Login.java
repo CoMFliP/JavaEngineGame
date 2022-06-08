@@ -6,7 +6,7 @@ import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.net.ClientSession;
-import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.ClientSocketTCP;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -113,20 +113,20 @@ public class Login extends LoaderManager implements Layer {
                         this.timer = 0;
 
                         try {
-                            clientSocket.startConnection("127.0.0.1", 5555);
-                            String rep = clientSocket.sendMessage("login-account=" + this.username + ":" + this.password);
-                            message = ClientSocket.decodeResponse(rep).get("msg");
+                            clientSocketTCP.startConnection("127.0.0.1", 5555);
+                            String rep = clientSocketTCP.sendMessage("login-account=" + this.username + ":" + this.password);
+                            message = ClientSocketTCP.decodeResponse(rep).get("msg");
 
-                            String session = ClientSocket.decodeResponse(rep).get("data");
+                            String session = ClientSocketTCP.decodeResponse(rep).get("data");
                             ClientSession.setSession(session);
 
-                            if (ClientSocket.decodeResponse(rep).get("isAuth").equals("true")) {
+                            if (ClientSocketTCP.decodeResponse(rep).get("isAuth").equals("true")) {
                                 Layer.LOGIN.setActive(false);
                                 Layer.MENU.setActive(true);
                                 message = "";
                             }
 
-                            clientSocket.stopConnection();
+                            clientSocketTCP.stopConnection();
                         } catch (IOException e) {
                             message = "Unable to connect to server. Please try again later";
                         }

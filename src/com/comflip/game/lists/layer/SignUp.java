@@ -5,7 +5,7 @@ import com.comflip.engine.GameObject;
 import com.comflip.engine.Renderer;
 import com.comflip.engine.gfc.Color;
 import com.comflip.engine.gfc.Sprite;
-import com.comflip.engine.net.ClientSocket;
+import com.comflip.engine.net.ClientSocketTCP;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -146,10 +146,10 @@ public class SignUp extends LoaderManager implements Layer {
                         this.timer = 0;
 
                         try {
-                            clientSocket.startConnection("127.0.0.1", 5555);
-                            String rep = clientSocket.sendMessage("create-account=" + this.username + ":" + this.password);
-                            message = ClientSocket.decodeResponse(rep).get("msg");
-                            clientSocket.stopConnection();
+                            clientSocketTCP.startConnection("127.0.0.1", 5555);
+                            String rep = clientSocketTCP.sendMessage("create-account=" + this.username + ":" + this.password);
+                            message = ClientSocketTCP.decodeResponse(rep).get("msg");
+                            clientSocketTCP.stopConnection();
                         } catch (IOException e) {
                             message = "Unable to connect to server. Please try again later";
                         }
