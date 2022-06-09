@@ -19,6 +19,7 @@ import com.comflip.game.lists.sprite.Checker;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Game extends LoaderManager implements Layer {
     ArrayList<Sprites> listSprites = new ArrayList<>();
@@ -118,7 +119,7 @@ public class Game extends LoaderManager implements Layer {
         for (Sprites sprites : listSprites) {
             HashMap<Integer, String> hashMustAttack = GUI.MAP_BOARD.getHashMustAttack();
             Checker checker = (Checker) sprites;
-            if (canMove.equals(checker.getTag().split("_")[0])) {
+            if (canMove.equals(checker.getTag().split("_")[0]) && Objects.equals(ClientSession.getUsername(), MatchSession.getPlayers().get(canMove))) {
 
                 if (!hashMustAttack.isEmpty()) {
                     ArrayList<Integer> listKeys = new ArrayList<>(hashMustAttack.keySet());

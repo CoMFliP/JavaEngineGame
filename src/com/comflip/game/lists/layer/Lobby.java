@@ -114,6 +114,7 @@ public class Lobby extends LoaderManager implements Layer {
 
         listGUI.clear();
         if (fromTable.get("msg") == null) {
+            msg = "";
             int startOffY = 15;
             for (String line : fromTable.keySet()) {
                 Button matchButton = new Button();

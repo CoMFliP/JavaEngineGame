@@ -12,7 +12,6 @@ import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.sprite.Checker;
 
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,22 +49,32 @@ public class MapBoard extends LoaderManager implements GUI {
 
     @Override
     public void update(GameContainer gc, float dt) {
-
         Input input = gc.getInput();
 
         if (timer < 30) {
             timer += dt * 30;
         }
 
+
         for (int i = 0; i < listSprites.size(); i++) {
             Checker checker = (Checker) listSprites.get(i);
 
-            if (timer == 30){
-                syncWithServer(MatchSession.getIdMatch());
-                timer = 0;
+            String rep = syncWithServer(MatchSession.getIdMatch());
+
+            if (rep.length() != 0) {
+                String checkerTag = rep.split(":")[0];
+                int checkerPos = Integer.parseInt(rep.split(":")[1]);
+                String nextTurn = rep.split(":")[2];
+
+                if (checker.getTag().equals(checkerTag)) {
+                    checker.setPosX(this.mapBoard.get(checkerPos)[0]);
+                    checker.setPosY(this.mapBoard.get(checkerPos)[1]);
+                    checker.setIdTileBoard(checkerPos);
+
+                    this.canMove = nextTurn;
+                    Layer.GAME.setCanMove(nextTurn);
+                }
             }
-
-
 
             if (checker.isPickUp() && (input.isButtonDown(MouseEvent.BUTTON1))) {
                 currentIdTileBoard = checker.getIdTileBoard();
@@ -147,12 +156,15 @@ public class MapBoard extends LoaderManager implements GUI {
 
     private String syncWithServer(String idMatch) {
         String rep = "";
+        if (timer == 30) {
+
+            timer = 0;
+        }
         try {
             clientSocketUDP.startConnection("127.0.0.1", 5556);
             rep = clientSocketUDP.sendMessage("getDataMatch=" + idMatch);
             clientSocketUDP.stopConnection();
         } catch (Exception ignored) {
-
         }
         return rep;
     }
@@ -165,7 +177,6 @@ public class MapBoard extends LoaderManager implements GUI {
                     + idTileBoard + ":"
                     + canMove);
         } catch (Exception ignored) {
-
         }
     }
 

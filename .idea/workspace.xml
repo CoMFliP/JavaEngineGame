@@ -9,13 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 09.06.2022">
+    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 08.06.2022">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/LoaderManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/LoaderManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/LoaderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketUDP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketUDP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" afterDir="false" />
     </list>
     <list id="76ab2e81-3370-44b3-b29f-9c2b08125d3b" name="Changes by mynam" comment="Changes by mynam" />

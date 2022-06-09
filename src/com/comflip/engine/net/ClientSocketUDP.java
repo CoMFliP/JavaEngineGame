@@ -21,7 +21,7 @@ public class ClientSocketUDP {
     }
 
     public String sendMessage(String msg) throws IOException {
-        clientSocket.setSoTimeout(10000);
+        clientSocket.setSoTimeout(10);
 
         DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.getBytes().length, InetAddress.getByName(this.ip), this.port);
         clientSocket.send(packet);
