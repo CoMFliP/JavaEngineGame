@@ -9,14 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 08.06.2022">
+    <list default="true" id="7b1f932e-99d5-473b-ac32-5e322ed9a752" name="Changes" comment="Version 09.06.2022-1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/layer/Lobby.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketUDP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/engine/net/ClientSocketUDP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/gui/MapBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/production/JavaEngineGame/com/comflip/game/lists/gui/MapBoard.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/gui/MapBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/comflip/game/lists/layer/Lobby.java" afterDir="false" />
     </list>
     <list id="76ab2e81-3370-44b3-b29f-9c2b08125d3b" name="Changes by mynam" comment="Changes by mynam" />
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654613898686</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Version 09.06.2022-1">
+      <created>1654805375411</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1654805375411</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,7 +220,8 @@
     <MESSAGE value="Version 06.06.2022" />
     <MESSAGE value="Version 07.06.2022" />
     <MESSAGE value="Version 09.06.2022" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 09.06.2022" />
+    <MESSAGE value="Version 09.06.2022-1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 09.06.2022-1" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

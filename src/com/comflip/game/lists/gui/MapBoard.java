@@ -4,6 +4,7 @@ import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.net.ClientSession;
 import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MapBoard extends LoaderManager implements GUI {
     HashMap<Integer, int[]> mapBoard = new HashMap<>();
@@ -50,16 +52,17 @@ public class MapBoard extends LoaderManager implements GUI {
     @Override
     public void update(GameContainer gc, float dt) {
         Input input = gc.getInput();
+        String rep = "";
 
         if (timer < 30) {
             timer += dt * 30;
+        } else {
+            rep = syncWithServer(MatchSession.getIdMatch());
+            timer = 0;
         }
-
 
         for (int i = 0; i < listSprites.size(); i++) {
             Checker checker = (Checker) listSprites.get(i);
-
-            String rep = syncWithServer(MatchSession.getIdMatch());
 
             if (rep.length() != 0) {
                 String checkerTag = rep.split(":")[0];
@@ -123,6 +126,11 @@ public class MapBoard extends LoaderManager implements GUI {
 //											e.printStackTrace();
 //
 
+
+                                    if (Objects.equals(ClientSession.getUsername(), MatchSession.getPlayers().get(canMove))) {
+                                        sendToServer(checker.getTag(), idTileBoard, this.canMove);
+                                    }
+
                                     checkNextTurn(checker, idTileBoard);
 
                                     checker.setIdTileBoard(idTileBoard);
@@ -131,7 +139,6 @@ public class MapBoard extends LoaderManager implements GUI {
 
                                     isSetIdTileBoard = true;
 
-                                    sendToServer(checker.getTag(), checker.getIdTileBoard(), this.canMove);
                                 }
 
                                 if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -156,10 +163,6 @@ public class MapBoard extends LoaderManager implements GUI {
 
     private String syncWithServer(String idMatch) {
         String rep = "";
-        if (timer == 30) {
-
-            timer = 0;
-        }
         try {
             clientSocketUDP.startConnection("127.0.0.1", 5556);
             rep = clientSocketUDP.sendMessage("getDataMatch=" + idMatch);
