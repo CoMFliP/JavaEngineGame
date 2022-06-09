@@ -10,6 +10,7 @@ import com.comflip.engine.gfc.Sprite;
 import com.comflip.engine.net.ClientSession;
 import com.comflip.engine.net.ClientSocketTCP;
 import com.comflip.engine.net.ClientSocketUDP;
+import com.comflip.engine.net.MatchSession;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
 
@@ -59,7 +60,7 @@ public class LoaderManager implements IO {
                 layer.update(gc, dt);
             }
 
-            if (serverStatus.equals("offline") && !layer.equals(Layer.LOGIN) && !layer.equals(Layer.SIGN_IN)){
+            if (serverStatus.equals("offline") && !layer.equals(Layer.LOGIN) && !layer.equals(Layer.SIGN_IN)) {
                 layer.setActive(false);
                 Layer.LOGIN.setActive(true);
             }

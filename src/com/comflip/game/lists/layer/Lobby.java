@@ -83,8 +83,6 @@ public class Lobby extends LoaderManager implements Layer {
 
                     } catch (Exception ignored) {
                     }
-
-                    System.out.println(elementGUI.getTag());
                 }
             }
 
@@ -111,8 +109,6 @@ public class Lobby extends LoaderManager implements Layer {
         clientSocketUDP.startConnection("127.0.0.1", 5556);
         rep = clientSocketUDP.sendMessage("lobby=");
         clientSocketUDP.stopConnection();
-
-        System.out.println(rep);
 
         fromTable = ClientSocketUDP.decodeResponse(rep);
 

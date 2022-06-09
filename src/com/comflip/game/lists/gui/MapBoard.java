@@ -4,6 +4,7 @@ import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
+import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
 import com.comflip.game.lists.Layer;
@@ -11,6 +12,7 @@ import com.comflip.game.lists.Sprites;
 import com.comflip.game.lists.sprite.Checker;
 
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ public class MapBoard extends LoaderManager implements GUI {
     HashMap<Integer, String> hashMustAttack = new HashMap<>();
 
     private String canMove = "white";
+    private float timer;
 
     public MapBoard() {
         int idTileBoard = 0;
@@ -50,8 +53,19 @@ public class MapBoard extends LoaderManager implements GUI {
 
         Input input = gc.getInput();
 
+        if (timer < 30) {
+            timer += dt * 30;
+        }
+
         for (int i = 0; i < listSprites.size(); i++) {
             Checker checker = (Checker) listSprites.get(i);
+
+            if (timer == 30){
+                syncWithServer(MatchSession.getIdMatch());
+                timer = 0;
+            }
+
+
 
             if (checker.isPickUp() && (input.isButtonDown(MouseEvent.BUTTON1))) {
                 currentIdTileBoard = checker.getIdTileBoard();
@@ -98,7 +112,7 @@ public class MapBoard extends LoaderManager implements GUI {
 //
 //										} catch (IOException e) {
 //											e.printStackTrace();
-//										}
+//
 
                                     checkNextTurn(checker, idTileBoard);
 
@@ -107,6 +121,8 @@ public class MapBoard extends LoaderManager implements GUI {
                                     killChecker(checker, line, mapLine);
 
                                     isSetIdTileBoard = true;
+
+                                    sendToServer(checker.getTag(), checker.getIdTileBoard(), this.canMove);
                                 }
 
                                 if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -126,6 +142,30 @@ public class MapBoard extends LoaderManager implements GUI {
                     mustAttack();
                 }
             }
+        }
+    }
+
+    private String syncWithServer(String idMatch) {
+        String rep = "";
+        try {
+            clientSocketUDP.startConnection("127.0.0.1", 5556);
+            rep = clientSocketUDP.sendMessage("getDataMatch=" + idMatch);
+            clientSocketUDP.stopConnection();
+        } catch (Exception ignored) {
+
+        }
+        return rep;
+    }
+
+    private void sendToServer(String tag, int idTileBoard, String canMove) {
+        try {
+            clientSocketUDP.startConnection("127.0.0.1", 5556);
+            clientSocketUDP.sendMessage("updateDataMatch=" + MatchSession.getIdMatch() + ":"
+                    + tag + ":"
+                    + idTileBoard + ":"
+                    + canMove);
+        } catch (Exception ignored) {
+
         }
     }
 
