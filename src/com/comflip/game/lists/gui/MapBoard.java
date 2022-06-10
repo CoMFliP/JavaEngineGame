@@ -89,7 +89,10 @@ public class MapBoard extends LoaderManager implements GUI {
                 modeSelection(colorChecker, modeChecker, hashMapLines(currentIdTileBoard));
             }
 
-            if (input.isButtonUp(MouseEvent.BUTTON1)) {
+            boolean axisX = Collisions.axisX(checker.getPosX(), checker.getWidth(), GUI.CURSOR.getPosX(), 0);
+            boolean axisY = Collisions.axisY(checker.getPosY(), checker.getHeight(), GUI.CURSOR.getPosY(), 0);
+
+            if (input.isButtonUp(MouseEvent.BUTTON1) && (axisX && axisY)) {
 
                 if (checker.getTag().equals(currentCheckerTag)) {
                     boolean isSetIdTileBoard = false;
@@ -126,11 +129,6 @@ public class MapBoard extends LoaderManager implements GUI {
 //											e.printStackTrace();
 //
 
-
-                                    if (Objects.equals(ClientSession.getUsername(), MatchSession.getPlayers().get(canMove))) {
-                                        sendToServer(checker.getTag(), idTileBoard, this.canMove);
-                                    }
-
                                     checkNextTurn(checker, idTileBoard);
 
                                     checker.setIdTileBoard(idTileBoard);
@@ -139,6 +137,7 @@ public class MapBoard extends LoaderManager implements GUI {
 
                                     isSetIdTileBoard = true;
 
+                                    sendToServer(checker.getTag(), checker.getIdTileBoard(), this.canMove);
                                 }
 
                                 if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
