@@ -1,0 +1,1 @@
+C:\Users\filip\git\JavaEngineGame\bin\bin\Release\net5.0\win-x64\publish\Checkers.exe
