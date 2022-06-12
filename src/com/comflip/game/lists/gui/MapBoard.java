@@ -4,7 +4,6 @@ import com.comflip.engine.Collisions;
 import com.comflip.engine.GameContainer;
 import com.comflip.engine.Input;
 import com.comflip.engine.Renderer;
-import com.comflip.engine.net.ClientSession;
 import com.comflip.engine.net.MatchSession;
 import com.comflip.game.LoaderManager;
 import com.comflip.game.lists.GUI;
@@ -16,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MapBoard extends LoaderManager implements GUI {
     HashMap<Integer, int[]> mapBoard = new HashMap<>();
@@ -58,6 +56,7 @@ public class MapBoard extends LoaderManager implements GUI {
             timer += dt * 30;
         } else {
             rep = syncWithServer(MatchSession.getIdMatch());
+            mustAttack();
             timer = 0;
         }
 
@@ -68,6 +67,11 @@ public class MapBoard extends LoaderManager implements GUI {
                 String checkerTag = rep.split(":")[0];
                 int checkerPos = Integer.parseInt(rep.split(":")[1]);
                 String nextTurn = rep.split(":")[2];
+                String tagEnemyChecker = rep.split(":")[3];
+
+                if (checker.getTag().equals(tagEnemyChecker)){
+                    listSprites.remove(checker);
+                }
 
                 if (checker.getTag().equals(checkerTag)) {
                     checker.setPosX(this.mapBoard.get(checkerPos)[0]);
@@ -133,11 +137,11 @@ public class MapBoard extends LoaderManager implements GUI {
 
                                     checker.setIdTileBoard(idTileBoard);
 
-                                    killChecker(checker, line, mapLine);
+                                    String tagEnemyChecker = killChecker(checker, line, mapLine);
 
                                     isSetIdTileBoard = true;
 
-                                    sendToServer(checker.getTag(), checker.getIdTileBoard(), this.canMove);
+                                    sendToServer(checker.getTag(), checker.getIdTileBoard(), this.canMove, tagEnemyChecker);
                                 }
 
                                 if (currentCheckerColor.equals("white") && checker.getIdTileBoard() <= 4) {
@@ -154,7 +158,6 @@ public class MapBoard extends LoaderManager implements GUI {
                         checker.setPosX(this.mapBoard.get(currentIdTileBoard)[0]);
                         checker.setPosY(this.mapBoard.get(currentIdTileBoard)[1]);
                     }
-                    mustAttack();
                 }
             }
         }
@@ -171,13 +174,14 @@ public class MapBoard extends LoaderManager implements GUI {
         return rep;
     }
 
-    private void sendToServer(String tag, int idTileBoard, String canMove) {
+    private void sendToServer(String tag, int idTileBoard, String canMove, String tagEnemyChecker) {
         try {
             clientSocketUDP.startConnection("127.0.0.1", 5556);
             clientSocketUDP.sendMessage("updateDataMatch=" + MatchSession.getIdMatch() + ":"
                     + tag + ":"
                     + idTileBoard + ":"
-                    + canMove);
+                    + canMove + ":"
+                    + tagEnemyChecker);
         } catch (Exception ignored) {
         }
     }
@@ -278,7 +282,8 @@ public class MapBoard extends LoaderManager implements GUI {
         Layer.GAME.setCanMove(this.canMove);
     }
 
-    private void killChecker(Checker checker, String line, HashMap<Integer, String> mapLine) {
+    private String killChecker(Checker checker, String line, HashMap<Integer, String> mapLine) {
+        String tagEnemyChecker = "null";
 
         int currentIdTileBoard = checker.getIdTileBoard();
         String checkerColor = checker.getTag().split("_")[0];
@@ -304,12 +309,14 @@ public class MapBoard extends LoaderManager implements GUI {
                         Checker enemyChecker = (Checker) listSprites.get(i);
                         if (enemyChecker.getIdTileBoard() == idTileBoard) {
                             listSprites.remove(enemyChecker);
+                            tagEnemyChecker = enemyChecker.getTag();
                             break;
                         }
                     }
                 }
             }
         }
+        return tagEnemyChecker;
     }
 
     private void modeSelection(String colorChecker, String modeChecker,
